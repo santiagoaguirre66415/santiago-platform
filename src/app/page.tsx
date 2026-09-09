@@ -10,7 +10,6 @@ import TimelineSection from '@/components/TimelineSection';
 import SkillMeter from '@/components/SkillMeter';
 import AchievementCard from '@/components/AchievementCard';
 
-/** Datos de los 5 niveles del portafolio */
 const LEVELS = [
   { level: 1, title: 'El Inicio', xpReward: 20 },
   { level: 2, title: 'La Formación', xpReward: 20 },
@@ -34,50 +33,58 @@ const SKILLS = [
 
 const EXPERIENCE = [
   {
+    year: '2026 — Actual',
+    title: 'Desarrollo Full Stack & proyectos personales',
+    subtitle: 'Aprendizaje práctico',
+    description:
+      'Desarrollo proyectos utilizando tecnologías modernas para frontend, backend, bases de datos y servicios en la nube. Trabajo con TypeScript, JavaScript, React, Next.js, Node.js, Appwrite, SQL, Tailwind CSS, Python y Git.',
+  },
+  {
+    year: '2025 — 2026',
+    title: 'Proyecto de asistencia mediante QR',
+    subtitle: 'Proyecto académico',
+    description:
+      'Sistema de asistencia mediante códigos QR con validación de horario y distancia. Incluye código QR, rango de horario, validación de distancia, registro de asistencia, control de datos e interfaz web.',
+  },
+  {
     year: '2024 — Actual',
-    title: 'Desarrollador Full Stack',
-    subtitle: 'Proyectos independientes & educación',
+    title: 'Proyecto Calma',
+    subtitle: 'Aplicación de apoyo',
     description:
-      'Construcción de aplicaciones web con Next.js, Appwrite y TypeScript. Creación de contenido educativo y plataformas de aprendizaje.',
-  },
-  {
-    year: '2023 — 2024',
-    title: 'Proyectos full stack',
-    subtitle: 'Freelance / personal',
-    description:
-      'APIs REST, autenticación, bases de datos y frontends modernos. Enfoque en código limpio y experiencias de usuario claras.',
-  },
-  {
-    year: '2022 — 2023',
-    title: 'Formación intensiva',
-    subtitle: 'Autodidacta',
-    description:
-      'Aprendizaje profundo de JavaScript, TypeScript, React y el ecosistema web moderno construyendo proyectos reales.',
+      'Propuesta de aplicación enfocada en brindar apoyo y orientación al usuario mediante herramientas digitales. Incluye un chatbot en proceso de pruebas, diseñado para interactuar con los usuarios de forma responsable.',
   },
 ];
 
 const PROJECTS = [
   {
-    title: 'Santiago Platform',
+    title: '🧠 Calma',
     description:
-      'Plataforma de educación en programación con autenticación, cursos, progreso y un portafolio gamificado.',
-    tech: ['Next.js', 'TypeScript', 'Appwrite', 'Tailwind'],
-    repo: 'https://github.com/santiagoaguirre66415/santiago-platform',
-    demo: null as string | null,
-  },
-  {
-    title: 'Proyectos full stack',
-    description:
-      'Aplicaciones con auth, CRUD, APIs y UI responsive. Enfoque en arquitectura limpia y DX.',
-    tech: ['React', 'Node.js', 'SQL', 'Git'],
+      'Aplicación enfocada en crear una experiencia digital de apoyo y orientación para los usuarios. Incluye chatbot en proceso de pruebas.',
+    tech: ['TypeScript', 'Next.js', 'React', 'Appwrite'],
     repo: null,
     demo: null,
   },
   {
-    title: 'Contenido educativo',
+    title: '📱 Sistema de asistencia QR',
     description:
-      'Cursos y materiales para enseñar programación de forma práctica: aprender construyendo.',
-    tech: ['TypeScript', 'Next.js', 'Pedagogía'],
+      'Proyecto académico para gestionar asistencia mediante códigos QR con validación de horario y distancia.',
+    tech: ['JavaScript', 'React', 'Node.js', 'SQL', 'Git'],
+    repo: null,
+    demo: null,
+  },
+  {
+    title: '🎮 Portafolio Gamificado',
+    description:
+      'Mi propio portafolio interactivo. Incluye sistema de progreso, XP, logros y una presentación diferente a la de un CV tradicional.',
+    tech: ['TypeScript', 'React', 'Next.js', 'Appwrite', 'Tailwind CSS', 'Git'],
+    repo: 'https://github.com/santiagoaguirre66415/santiago-platform',
+    demo: 'https://sanas07a.dev',
+  },
+  {
+    title: '💻 Proyectos Full Stack',
+    description:
+      'Ejercicios y proyectos enfocados en programación, interfaces web, lógica, bases de datos y desarrollo de aplicaciones.',
+    tech: ['Python', 'Java', 'JavaScript', 'TypeScript', 'SQL', 'HTML5', 'CSS3'],
     repo: null,
     demo: null,
   },
@@ -88,55 +95,56 @@ const ACHIEVEMENTS = [
     id: 1,
     icon: '🚀',
     title: 'Primer contacto',
-    description: 'Visitaste el portafolio',
+    description: 'Exploraste el inicio de mi historia.',
     xp: 10,
   },
   {
     id: 2,
     icon: '📚',
     title: 'Estudiante curioso',
-    description: 'Desbloqueaste La Formación',
+    description: 'Descubriste mi formación y el camino que estoy construyendo.',
     xp: 20,
   },
   {
     id: 3,
-    icon: '💼',
-    title: 'Reclutador mode',
-    description: 'Revisaste la experiencia',
-    xp: 20,
+    icon: '💻',
+    title: 'Code Explorer',
+    description: 'Conociste las tecnologías con las que desarrollo mis proyectos.',
+    xp: 30,
   },
   {
     id: 4,
     icon: '⚡',
-    title: 'Stack explorer',
-    description: 'Viste las habilidades',
-    xp: 20,
+    title: 'Full Stack Mode',
+    description: 'Exploraste mi experiencia desarrollando frontend, backend y bases de datos.',
+    xp: 30,
   },
   {
     id: 5,
-    icon: '🏆',
-    title: 'Boss cleared',
-    description: 'Llegaste a los proyectos destacados',
+    icon: '🧠',
+    title: 'Project Builder',
+    description: 'Descubriste algunos de los proyectos que he construido durante mi formación.',
     xp: 30,
+  },
+  {
+    id: 6,
+    icon: '🏆',
+    title: 'Boss Cleared',
+    description: 'Llegaste hasta el final de mi portafolio.',
+    xp: 50,
   },
 ];
 
-/**
- * Home — Portafolio gamificado tipo hoja de vida.
- * Los niveles se desbloquean al hacer scroll (Intersection Observer).
- */
 export default function HomePage() {
   const [unlockedLevels, setUnlockedLevels] = useState<Set<number>>(
-    () => new Set([1]) // Nivel 1 siempre visible
+    () => new Set([1])
   );
   const [xp, setXp] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<number>>(
     () => new Set([1])
   );
-  const [showLevelUp, setShowLevelUp] = useState(false);
 
-  // XP visual = progreso de scroll (0-100)
   useEffect(() => {
     const onScroll = () => {
       const doc = document.documentElement;
@@ -151,7 +159,6 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Nivel actual según cuántos se desbloquearon
   const currentLevel = Math.max(...Array.from(unlockedLevels), 1);
 
   const unlockLevel = useCallback((level: number) => {
@@ -164,24 +171,16 @@ export default function HomePage() {
 
     setXp((prev) => prev + (LEVELS[level - 1]?.xpReward ?? 20));
 
-    // Logros por nivel
-    if (level >= 2) {
-      setUnlockedAchievements((a) => new Set(a).add(2));
-    }
-    if (level >= 3) {
-      setUnlockedAchievements((a) => new Set(a).add(3));
-    }
-    if (level >= 4) {
-      setUnlockedAchievements((a) => new Set(a).add(4));
-    }
-    if (level >= 5) {
-      setUnlockedAchievements((a) => new Set(a).add(5));
-    }
-
-    // Flash level-up
-    setShowLevelUp(true);
-    const t = setTimeout(() => setShowLevelUp(false), 800);
-    return () => clearTimeout(t);
+    setUnlockedAchievements((a) => {
+      const next = new Set(a);
+      if (level >= 1) next.add(1);
+      if (level >= 2) next.add(2);
+      if (level >= 3) next.add(3);
+      if (level >= 4) next.add(4);
+      if (level >= 5) next.add(5);
+      if (level >= 6) next.add(6);
+      return next;
+    });
   }, []);
 
   const isUnlocked = (level: number) => unlockedLevels.has(level);
@@ -190,7 +189,6 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 text-white">
       <Navbar />
 
-      {/* XP bar fija abajo */}
       <XPBar
         value={scrollProgress}
         level={currentLevel}
@@ -202,7 +200,7 @@ export default function HomePage() {
       />
 
       <main className="pb-24">
-        {/* ========== HERO — Nivel 1 siempre visible ========== */}
+        {/* HERO */}
         <section className="relative overflow-hidden px-4 pt-32 pb-16 sm:px-6 lg:px-8">
           <div
             className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-red-600/20 blur-3xl"
@@ -220,14 +218,13 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="mt-3 text-lg text-gray-300 sm:text-xl">
-              Desarrollador Full Stack & Educador
+              Desarrollador Full Stack en formación
             </p>
-            <p className="mt-2 text-sm text-gray-500">Colombia</p>
+            <p className="mt-2 text-sm text-gray-500">Manizales, Colombia 🇨🇴</p>
             <blockquote className="mx-auto mt-6 max-w-lg text-base italic text-rose-200/90">
-              &ldquo;Aprendo construyendo y enseño compartiendo&rdquo;
+              &ldquo;Aprendo construyendo, mejoro practicando y comparto lo que aprendo&rdquo;
             </blockquote>
 
-            {/* Avatar */}
             <div className="mx-auto mt-10 flex h-28 w-28 items-center justify-center rounded-full border-2 border-red-400/40 bg-gradient-to-br from-red-600/40 to-rose-500/30 text-3xl font-bold text-red-200 shadow-xl shadow-red-500/20">
               SA
             </div>
@@ -241,7 +238,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========== MAPA DE NIVELES ========== */}
+        {/* MAPA DE NIVELES */}
         <section className="px-4 py-8 sm:px-6 lg:px-8" aria-label="Progreso de niveles">
           <div className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {LEVELS.map((l) => (
@@ -256,112 +253,88 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========== NIVEL 1 — El Inicio (detalle) ========== */}
-        <RevealSection
-          id="nivel-1"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(1)}
-        >
-          <div
-            className={`mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl sm:p-10 ${
-              showLevelUp && currentLevel === 1 ? 'level-up-flash' : ''
-            }`}
-          >
-            <p className="text-xs font-medium uppercase tracking-widest text-red-400">
-              Nivel 1 — El Inicio
-            </p>
+        {/* NIVEL 1 */}
+        <RevealSection id="nivel-1" className="px-4 py-16 sm:px-6 lg:px-8" onUnlock={() => unlockLevel(1)}>
+          <div className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl sm:p-10">
+            <p className="text-xs font-medium uppercase tracking-widest text-red-400">Nivel 1 — El Inicio</p>
             <h2 className="mt-2 text-2xl font-bold sm:text-3xl">¿Quién soy?</h2>
             <p className="mt-4 leading-relaxed text-gray-300">
-              Soy Santiago Aguirre, desarrollador full stack y educador. Me apasiona
-              construir productos reales y compartir lo que aprendo de forma clara y
-              práctica. Esta página es mi hoja de vida interactiva: cada sección es un
-              nivel que desbloqueas al explorar.
+              Soy Santiago Aguirre, estudiante de Ingeniería Informática y Análisis
+              y Desarrollo de Software, apasionado por la programación, el desarrollo
+              web y la creación de soluciones digitales.
+            </p>
+            <p className="mt-4 leading-relaxed text-gray-300">
+              Me gusta aprender principalmente mediante la práctica: transformar una
+              idea en un proyecto funcional, enfrentar los problemas que aparecen
+              durante el desarrollo y buscar la mejor manera de resolverlos.
             </p>
             <ul className="mt-6 space-y-2 text-sm text-gray-400">
-              <li>
-                <span className="text-red-300">Título:</span> Desarrollador Full Stack &
-                Educador
-              </li>
-              <li>
-                <span className="text-red-300">Ubicación:</span> Colombia
-              </li>
-              <li>
-                <span className="text-red-300">Enfoque:</span> TypeScript, React, Next.js,
-                backend y enseñanza
-              </li>
+              <li><span className="text-red-300">Nombre:</span> Santiago Aguirre</li>
+              <li><span className="text-red-300">Ubicación:</span> Manizales, Colombia</li>
+              <li><span className="text-red-300">Perfil:</span> Desarrollador Full Stack en formación</li>
+              <li><span className="text-red-300">Formación:</span> Ingeniería Informática + Análisis y Desarrollo de Software</li>
+              <li><span className="text-red-300">Enfoque:</span> Desarrollo web, aplicaciones Full Stack y soluciones digitales</li>
             </ul>
           </div>
         </RevealSection>
 
-        {/* ========== NIVEL 2 — La Formación ========== */}
-        <RevealSection
-          id="nivel-2"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(2)}
-        >
+        {/* NIVEL 2 */}
+        <RevealSection id="nivel-2" className="px-4 py-16 sm:px-6 lg:px-8" onUnlock={() => unlockLevel(2)}>
           <div className="mx-auto max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-widest text-red-400">
-              Nivel 2 — La Formación
-            </p>
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Educación & certificaciones</h2>
-
+            <p className="text-xs font-medium uppercase tracking-widest text-red-400">Nivel 2 — La Formación</p>
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Educación & aprendizaje</h2>
             <div className="mt-8 space-y-4">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-white">Formación autodidacta intensiva</h3>
+                <h3 className="font-semibold text-white">Ingeniería Informática</h3>
                 <p className="mt-2 text-sm text-gray-400">
-                  Ruta práctica en JavaScript, TypeScript, React, Next.js, Node.js y bases
-                  de datos. Aprendizaje basado en proyectos reales, no solo tutoriales.
+                  Formación universitaria orientada al desarrollo de software,
+                  programación, resolución de problemas y fundamentos tecnológicos.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-white">Cursos & práctica continua</h3>
+                <h3 className="font-semibold text-white">Análisis y Desarrollo de Software</h3>
                 <p className="mt-2 text-sm text-gray-400">
-                  Cursos de desarrollo web, patrones de arquitectura y herramientas
-                  modernas (Git, SQL, Appwrite, Tailwind). Constante actualización del
-                  stack.
+                  Formación enfocada en el ciclo de desarrollo de software: análisis
+                  de requerimientos, diseño, programación, bases de datos, desarrollo
+                  web y construcción de soluciones tecnológicas.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-white">Enseñar para aprender</h3>
+                <h3 className="font-semibold text-white">Aprendizaje práctico</h3>
                 <p className="mt-2 text-sm text-gray-400">
-                  Crear material educativo y plataformas de cursos refuerza lo que sé y
-                  mejora cómo lo comunico.
+                  He trabajado con tecnologías como JavaScript, TypeScript, React,
+                  Next.js, Node.js, Python, SQL, Appwrite y Tailwind CSS, fortaleciendo
+                  progresivamente mis conocimientos a través de la práctica.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <h3 className="font-semibold text-white">Aprender construyendo</h3>
+                <p className="mt-2 text-sm text-gray-400">
+                  Cada proyecto representa una oportunidad para aprender una tecnología
+                  nueva, solucionar problemas y entender cómo diferentes herramientas
+                  pueden trabajar juntas dentro de una aplicación.
                 </p>
               </div>
             </div>
           </div>
         </RevealSection>
 
-        {/* ========== NIVEL 3 — La Experiencia ========== */}
-        <RevealSection
-          id="nivel-3"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(3)}
-        >
+        {/* NIVEL 3 */}
+        <RevealSection id="nivel-3" className="px-4 py-16 sm:px-6 lg:px-8" onUnlock={() => unlockLevel(3)}>
           <div className="mx-auto max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-widest text-red-400">
-              Nivel 3 — La Experiencia
-            </p>
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Trayectoria</h2>
+            <p className="text-xs font-medium uppercase tracking-widest text-red-400">Nivel 3 — La Experiencia</p>
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Proyectos & trayectoria</h2>
             <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
               <TimelineSection items={EXPERIENCE} />
             </div>
           </div>
         </RevealSection>
 
-        {/* ========== NIVEL 4 — Las Habilidades ========== */}
-        <RevealSection
-          id="nivel-4"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(4)}
-        >
+        {/* NIVEL 4 */}
+        <RevealSection id="nivel-4" className="px-4 py-16 sm:px-6 lg:px-8" onUnlock={() => unlockLevel(4)}>
           <div className="mx-auto max-w-5xl">
-            <p className="text-center text-xs font-medium uppercase tracking-widest text-red-400">
-              Nivel 4 — Las Habilidades
-            </p>
-            <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">
-              Stack & skills
-            </h2>
+            <p className="text-center text-xs font-medium uppercase tracking-widest text-red-400">Nivel 4 — Las Habilidades</p>
+            <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">Stack & skills</h2>
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {SKILLS.map((skill) => (
                 <SkillMeter key={skill.name} name={skill.name} level={skill.level} />
@@ -373,20 +346,11 @@ export default function HomePage() {
           </div>
         </RevealSection>
 
-        {/* ========== NIVEL 5 — Los Jefes Finales ========== */}
-        <RevealSection
-          id="nivel-5"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(5)}
-        >
+        {/* NIVEL 5 */}
+        <RevealSection id="nivel-5" className="px-4 py-16 sm:px-6 lg:px-8" onUnlock={() => unlockLevel(5)}>
           <div className="mx-auto max-w-5xl">
-            <p className="text-center text-xs font-medium uppercase tracking-widest text-red-400">
-              Nivel 5 — Los Jefes Finales
-            </p>
-            <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">
-              Proyectos destacados
-            </h2>
-
+            <p className="text-center text-xs font-medium uppercase tracking-widest text-red-400">Nivel 5 — Los Jefes Finales</p>
+            <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">Proyectos destacados</h2>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {PROJECTS.map((project) => (
                 <article
@@ -394,9 +358,7 @@ export default function HomePage() {
                   className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:border-red-400/40 hover:bg-white/10 hover:shadow-lg hover:shadow-red-500/10"
                 >
                   <h3 className="text-lg font-semibold text-white">{project.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-400">
-                    {project.description}
-                  </p>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-400">{project.description}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {project.tech.map((t) => (
                       <span
@@ -435,7 +397,7 @@ export default function HomePage() {
           </div>
         </RevealSection>
 
-        {/* ========== LOGROS ========== */}
+        {/* LOGROS */}
         <section className="px-4 py-16 sm:px-6 lg:px-8" aria-label="Logros">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-center text-2xl font-bold">Logros desbloqueados</h2>
@@ -457,34 +419,53 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ========== CTA ========== */}
+        {/* CTA FINAL */}
         <section className="px-4 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl rounded-3xl border border-red-400/20 bg-gradient-to-br from-red-600/20 to-rose-500/10 p-10 text-center backdrop-blur-xl sm:p-14">
-            <h2 className="text-3xl font-bold sm:text-4xl">¿Hablamos?</h2>
+            <h2 className="text-3xl font-bold sm:text-4xl">¿Construimos algo juntos?</h2>
             <p className="mx-auto mt-4 max-w-xl text-gray-300">
-              Si buscas un desarrollador que construye y enseña con claridad, escríbeme.
+              Estoy en constante aprendizaje y me interesa participar en nuevos
+              proyectos, colaborar con otros desarrolladores y seguir construyendo
+              soluciones reales.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 text-left">
               <a
-                href="mailto:santiagoo.aguilar.dev@gmail.com"
-                className="w-full rounded-xl bg-gradient-to-r from-red-600 to-rose-500 px-8 py-3.5 text-center text-base font-semibold text-white shadow-lg shadow-red-500/30 transition hover:from-red-500 hover:to-rose-400 sm:w-auto"
+                href="mailto:santiago.aguirre66415@ucaldas.edu.co"
+                className="w-full max-w-sm rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-medium text-gray-200 transition hover:bg-white/10"
               >
-                Contactar
+                📧 santiago.aguirre66415@ucaldas.edu.co
               </a>
-              <Link
-                href="/courses"
-                className="w-full rounded-xl border border-white/20 bg-white/5 px-8 py-3.5 text-center text-base font-semibold text-white backdrop-blur transition hover:bg-white/10 sm:w-auto"
+              <a
+                href="https://github.com/santiagoaguirre66415"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full max-w-sm rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-medium text-gray-200 transition hover:bg-white/10"
               >
-                Ver cursos
-              </Link>
+                💻 github.com/santiagoaguirre66415
+              </a>
+              <a
+                href="https://sanas07a.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full max-w-sm rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-medium text-gray-200 transition hover:bg-white/10"
+              >
+                🌐 sanas07a.dev
+              </a>
             </div>
+
+            <p className="mt-8 text-sm text-gray-400">
+              Si tienes una idea, un proyecto o simplemente quieres conectar para
+              hablar sobre tecnología y desarrollo de software, escríbeme.
+            </p>
           </div>
         </section>
       </main>
 
       <footer className="border-t border-white/10 px-4 py-8 pb-28 text-center text-sm text-gray-500">
-        <p>
-          © {new Date().getFullYear()} Santiago Aguirre · Portafolio gamificado
+        <p>© {new Date().getFullYear()} Santiago Aguirre · Portafolio Gamificado</p>
+        <p className="mt-2 text-xs text-gray-600">
+          Manizales, Colombia 🇨🇴 · Desarrollador Full Stack en formación
         </p>
       </footer>
     </div>
