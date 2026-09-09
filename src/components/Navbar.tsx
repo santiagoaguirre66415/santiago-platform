@@ -5,9 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { account } from '@/lib/appwrite';
 
-/**
- * Navbar glassmorphism — paleta roja/carmesí.
- */
 export default function Navbar() {
   const pathname = usePathname();
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
@@ -39,8 +36,8 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { href: '/', label: 'Inicio' },
-    { href: '/courses', label: 'Cursos' },
+    { href: '/', label: 'INICIO' },
+    { href: '/courses', label: 'CURSOS' },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -51,23 +48,25 @@ export default function Navbar() {
         className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         aria-label="Navegación principal"
       >
-        <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-xl shadow-lg shadow-red-500/5">
+        <div className="mt-4 flex items-center justify-between border border-white/10 bg-[#0b0d10]/90 px-4 py-3 backdrop-blur-xl">
+          {/* LOGO */}
           <Link
             href="/"
-            className="text-xl font-bold tracking-tight text-white transition hover:text-red-300"
+            className="font-mono text-sm font-bold tracking-[0.2em] text-white transition hover:text-red-500"
           >
-            SANAS07A<span className="text-red-400">.DEV</span>
+            SANAS07A<span className="text-red-500">.DEV</span>
           </Link>
 
+          {/* LINKS DESKTOP */}
           <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                className={`px-4 py-2 font-mono text-[10px] tracking-[0.2em] transition ${
                   isActive(link.href)
-                    ? 'bg-white/15 text-white'
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                    ? 'border border-red-600/40 bg-red-600/10 text-red-500'
+                    : 'text-white/40 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -75,52 +74,59 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* AUTH DESKTOP */}
           <div className="hidden items-center gap-3 md:flex">
             {loading ? (
-              <div className="h-9 w-24 animate-pulse rounded-lg bg-white/10" />
+              <div className="h-8 w-20 animate-pulse bg-white/10" />
             ) : user ? (
               <>
                 <Link
                   href="/dashboard"
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-white/10 hover:text-white"
+                  className="px-4 py-2 font-mono text-[10px] tracking-[0.2em] text-white/40 transition hover:bg-white/5 hover:text-white"
                 >
-                  Mi Progreso
+                  MI PROGRESO
                 </Link>
                 <button
-                  type="button"
                   onClick={handleLogout}
-                  className="rounded-lg border border-red-400/30 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
+                  className="border border-red-500/30 bg-red-600/10 px-4 py-2 font-mono text-[10px] tracking-[0.2em] text-red-300 transition hover:bg-red-600/20"
                 >
-                  Salir
+                  SALIR
                 </button>
               </>
             ) : (
               <>
                 <Link
                   href="/login"
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
+                  className="px-4 py-2 font-mono text-[10px] tracking-[0.2em] text-white/40 transition hover:bg-white/5 hover:text-white"
                 >
-                  Iniciar sesión
+                  LOGIN
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-lg bg-gradient-to-r from-red-600 to-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-red-500/25 transition hover:from-red-500 hover:to-rose-400"
+                  className="border border-red-600 bg-red-600 px-4 py-2 font-mono text-[10px] tracking-[0.2em] text-white transition hover:bg-red-500"
                 >
-                  Registrarse
+                  REGISTRO
                 </Link>
               </>
             )}
           </div>
 
+          {/* BOTÓN MOBILE */}
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-lg p-2 text-gray-300 hover:bg-white/10 hover:text-white md:hidden"
+            className="inline-flex items-center justify-center border border-white/10 p-2 text-white/60 transition hover:bg-white/5 hover:text-white md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
             aria-label="Abrir menú"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+            >
               {mobileOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -130,10 +136,11 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* MENÚ MOBILE */}
         {mobileOpen && (
           <div
             id="mobile-menu"
-            className="mt-2 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl md:hidden"
+            className="mt-2 border border-white/10 bg-[#0b0d10]/95 p-4 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
@@ -141,34 +148,35 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`rounded-lg px-4 py-3 text-sm font-medium transition ${
+                  className={`px-4 py-3 font-mono text-[10px] tracking-[0.25em] transition ${
                     isActive(link.href)
-                      ? 'bg-white/15 text-white'
-                      : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                      ? 'border border-red-600/40 bg-red-600/10 text-red-500'
+                      : 'text-white/40 hover:bg-white/5 hover:text-white'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
+
               <div className="my-2 border-t border-white/10" />
+
               {user ? (
                 <>
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-lg px-4 py-3 text-sm font-medium text-gray-200 hover:bg-white/10"
+                    className="px-4 py-3 font-mono text-[10px] tracking-[0.25em] text-white/40 hover:bg-white/5 hover:text-white"
                   >
-                    Mi Progreso
+                    MI PROGRESO
                   </Link>
                   <button
-                    type="button"
                     onClick={() => {
                       setMobileOpen(false);
                       handleLogout();
                     }}
-                    className="rounded-lg px-4 py-3 text-left text-sm font-medium text-red-200 hover:bg-red-500/20"
+                    className="border border-red-500/30 bg-red-600/10 px-4 py-3 text-left font-mono text-[10px] tracking-[0.25em] text-red-300 transition hover:bg-red-600/20"
                   >
-                    Cerrar sesión
+                    CERRAR SESIÓN
                   </button>
                 </>
               ) : (
@@ -176,16 +184,16 @@ export default function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-white/10"
+                    className="px-4 py-3 font-mono text-[10px] tracking-[0.25em] text-white/40 hover:bg-white/5 hover:text-white"
                   >
-                    Iniciar sesión
+                    LOGIN
                   </Link>
                   <Link
                     href="/register"
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-lg bg-gradient-to-r from-red-600 to-rose-500 px-4 py-3 text-center text-sm font-semibold text-white"
+                    className="border border-red-600 bg-red-600 px-4 py-3 text-center font-mono text-[10px] tracking-[0.25em] text-white transition hover:bg-red-500"
                   >
-                    Registrarse
+                    REGISTRO
                   </Link>
                 </>
               )}

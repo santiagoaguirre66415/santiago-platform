@@ -39,104 +39,146 @@ export default function LoginPage() {
 
   if (checking) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 text-white">
-        <p className="text-gray-400">Cargando...</p>
+      <main className="flex min-h-screen items-center justify-center bg-[#08090b] text-white">
+        <div className="text-center">
+          <div className="mx-auto mb-6 h-12 w-12 animate-spin rounded-full border-2 border-red-600/30 border-t-red-600" />
+          <p className="font-mono text-xs tracking-[0.3em] text-white/40">
+            CARGANDO...
+          </p>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 px-4 text-white">
-      <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-white/10 bg-white/10 p-8 backdrop-blur-lg shadow-xl shadow-red-500/5">
-          <div className="mb-8 text-center">
-            <Link
-              href="/"
-              className="text-xl font-bold tracking-tight transition hover:text-red-300"
-            >
-              Santiago<span className="text-red-400">.dev</span>
-            </Link>
-            <h1 className="mt-4 text-3xl font-bold">Iniciar sesión</h1>
-            <p className="mt-2 text-sm text-gray-400">
-              Accede a tu progreso y cursos
-            </p>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08090b] px-4 text-white">
+      {/* FONDO */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
+        <div className="absolute left-1/2 top-[-200px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-red-600/10 blur-[120px]" />
+      </div>
+
+      {/* CONTENIDO */}
+      <div className="relative z-10 w-full max-w-md">
+        {/* LOGO */}
+        <div className="mb-10 text-center">
+          <Link
+            href="/"
+            className="inline-block font-mono text-[10px] tracking-[0.35em] text-red-500"
+          >
+            SANAS07A.DEV
+          </Link>
+
+          <h1 className="mt-4 text-4xl font-black tracking-[-0.05em]">
+            INICIAR
+            <br />
+            <span className="text-white/20">SESIÓN</span>
+          </h1>
+
+          <p className="mt-3 text-sm text-white/35">
+            Accede a tu progreso y cursos
+          </p>
+        </div>
+
+        {/* FORMULARIO */}
+        <div className="border border-white/10 bg-[#0b0d10]/90 backdrop-blur-xl">
+          <div className="border-b border-white/10 px-6 py-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-red-600" />
+              <span className="font-mono text-[9px] tracking-[0.3em] text-white/40">
+                ACCESO
+              </span>
+            </div>
           </div>
 
-          {error && (
-            <div
-              className="mb-4 rounded-lg border border-red-400/30 bg-red-500/20 p-3 text-sm text-red-200"
-              role="alert"
-            >
-              {error}
+          <div className="p-6">
+            {error && (
+              <div
+                className="mb-5 border border-red-500/30 bg-red-600/10 p-4 text-sm text-red-300"
+                role="alert"
+              >
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="mb-2 block font-mono text-[9px] tracking-[0.25em] text-white/40"
+                >
+                  EMAIL
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  className="w-full border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition focus:border-red-600/50 focus:bg-white/[0.05]"
+                  placeholder="tu@email.com"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="mb-2 block font-mono text-[9px] tracking-[0.25em] text-white/40"
+                >
+                  CONTRASEÑA
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="w-full border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition focus:border-red-600/50 focus:bg-white/[0.05]"
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="group flex w-full items-center justify-center gap-3 border border-red-600 bg-red-600 px-6 py-3 text-xs font-bold tracking-[0.2em] transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loading ? 'INICIANDO...' : 'INICIAR SESIÓN'}
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </button>
+            </form>
+
+            <div className="mt-6 space-y-3 text-center">
+              <Link
+                href="/forgot-password"
+                className="block font-mono text-[9px] tracking-[0.2em] text-white/30 transition hover:text-red-500"
+              >
+                ¿OLVIDASTE TU CONTRASEÑA?
+              </Link>
+
+              <p className="text-sm text-white/35">
+                ¿No tienes cuenta?{' '}
+                <Link
+                  href="/register"
+                  className="font-semibold text-red-500 transition hover:text-red-400"
+                >
+                  REGÍSTRATE GRATIS
+                </Link>
+              </p>
             </div>
-          )}
+          </div>
+        </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="mb-2 block text-sm font-medium">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 transition focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
-                placeholder="tu@email.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="mb-2 block text-sm font-medium">
-                Contraseña
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 transition focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
-                placeholder="Tu contraseña"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-lg bg-gradient-to-r from-red-600 to-rose-500 py-3 font-semibold text-white shadow-lg shadow-red-500/25 transition hover:from-red-500 hover:to-rose-400 disabled:opacity-50"
-            >
-              {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
-            </button>
-          </form>
-
-          <p className="mt-4 text-center text-sm">
-            <Link href="/forgot-password" className="text-gray-400 hover:text-red-300">
-              ¿Olvidaste tu contraseña?
-            </Link>
-          </p>
-
-          <p className="mt-4 text-center text-sm text-gray-300">
-            ¿No tienes cuenta?{' '}
-            <Link
-              href="/register"
-              className="font-medium text-red-400 transition hover:text-red-300"
-            >
-              Regístrate gratis
-            </Link>
-          </p>
-
-          <p className="mt-4 text-center">
-            <Link
-              href="/"
-              className="text-sm text-gray-500 transition hover:text-gray-300"
-            >
-              ← Volver al inicio
-            </Link>
-          </p>
+        {/* VOLVER */}
+        <div className="mt-8 text-center">
+          <Link
+            href="/"
+            className="font-mono text-[9px] tracking-[0.25em] text-white/25 transition hover:text-white/50"
+          >
+            ← VOLVER AL INICIO
+          </Link>
         </div>
       </div>
     </main>

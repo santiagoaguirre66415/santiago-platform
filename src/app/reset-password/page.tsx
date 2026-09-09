@@ -3,11 +3,12 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { account } from '@/lib/appwrite';
 
-function ResetForm() {
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
-  const token = searchParams.get('token') ?? '';
-  const email = searchParams.get('email') ?? '';
+  const userId = searchParams.get('userId') ?? '';
+  const secret = searchParams.get('secret') ?? '';
 
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -25,29 +26,20 @@ function ResetForm() {
       setError('Mínimo 8 caracteres');
       return;
     }
-    if (!token || !email) {
-      setError('Enlace inválido. Solicita uno nuevo.');
+    if (!userId || !secret) {
+      setError('Enlace inválido o expirado. Solicita uno nuevo.');
       return;
     }
 
     setLoading(true);
     setError('');
-
     try {
-      const res = await fetch('/api/auth/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, email, password }),
-      });
-      const data = (await res.json()) as { error?: string };
-
-      if (!res.ok) {
-        setError(data.error || 'No se pudo actualizar');
-        return;
-      }
+      await account.updateRecovery(userId, secret, password);
       setDone(true);
-    } catch {
-      setError('Error de red. Intenta de nuevo.');
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : 'No se pudo actualizar la contraseña';
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -55,13 +47,15 @@ function ResetForm() {
 
   if (done) {
     return (
-      <div className="text-center">
-        <p className="text-emerald-300">Contraseña actualizada correctamente.</p>
+      <div className="border border-emerald-500/30 bg-emerald-600/10 p-6 text-center">
+        <p className="text-sm text-emerald-300">
+          Contraseña actualizada correctamente.
+        </p>
         <Link
           href="/login"
-          className="mt-4 inline-block font-medium text-red-400 hover:text-red-300"
+          className="mt-4 inline-block font-mono text-[9px] tracking-[0.25em] text-red-500 transition hover:text-red-400"
         >
-          Iniciar sesión →
+          INICIAR SESIÓN →
         </Link>
       </div>
     );
@@ -71,16 +65,20 @@ function ResetForm() {
     <>
       {error && (
         <div
-          className="mb-4 rounded-lg border border-red-400/30 bg-red-500/20 p-3 text-sm text-red-200"
+          className="mb-5 border border-red-500/30 bg-red-600/10 p-4 text-sm text-red-300"
           role="alert"
         >
           {error}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="space-y-4">
+
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="password" className="mb-2 block text-sm font-medium">
-            Nueva contraseña
+          <label
+            htmlFor="password"
+            className="mb-2 block font-mono text-[9px] tracking-[0.25em] text-white/40"
+          >
+            NUEVA CONTRASEÑA
           </label>
           <input
             id="password"
@@ -90,12 +88,17 @@ function ResetForm() {
             required
             minLength={8}
             autoComplete="new-password"
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
+            className="w-full border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition focus:border-red-600/50 focus:bg-white/[0.05]"
+            placeholder="Mínimo 8 caracteres"
           />
         </div>
+
         <div>
-          <label htmlFor="confirm" className="mb-2 block text-sm font-medium">
-            Confirmar contraseña
+          <label
+            htmlFor="confirm"
+            className="mb-2 block font-mono text-[9px] tracking-[0.25em] text-white/40"
+          >
+            CONFIRMAR CONTRASEÑA
           </label>
           <input
             id="confirm"
@@ -105,15 +108,18 @@ function ResetForm() {
             required
             minLength={8}
             autoComplete="new-password"
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
+            className="w-full border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition focus:border-red-600/50 focus:bg-white/[0.05]"
+            placeholder="Repite la contraseña"
           />
         </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-gradient-to-r from-red-600 to-rose-500 py-3 font-semibold text-white shadow-lg shadow-red-500/25 hover:from-red-500 hover:to-rose-400 disabled:opacity-50"
+          className="group flex w-full items-center justify-center gap-3 border border-red-600 bg-red-600 px-6 py-3 text-xs font-bold tracking-[0.2em] transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading ? 'Guardando...' : 'Guardar contraseña'}
+          {loading ? 'GUARDANDO...' : 'GUARDAR CONTRASEÑA'}
+          <span className="transition-transform group-hover:translate-x-1">→</span>
         </button>
       </form>
     </>
@@ -122,17 +128,66 @@ function ResetForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 px-4 text-white">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/10 p-8 backdrop-blur-lg">
-        <h1 className="mb-6 text-center text-3xl font-bold">Nueva contraseña</h1>
-        <Suspense fallback={<p className="text-center text-gray-400">Cargando...</p>}>
-          <ResetForm />
-        </Suspense>
-        <p className="mt-6 text-center text-sm">
-          <Link href="/login" className="text-red-400 hover:text-red-300">
-            ← Volver a iniciar sesión
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08090b] px-4 text-white">
+      {/* FONDO */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
+        <div className="absolute left-1/2 top-[-200px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-red-600/10 blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md">
+        {/* LOGO */}
+        <div className="mb-10 text-center">
+          <Link
+            href="/"
+            className="inline-block font-mono text-[10px] tracking-[0.35em] text-red-500"
+          >
+            SANAS07A.DEV
           </Link>
-        </p>
+
+          <h1 className="mt-4 text-4xl font-black tracking-[-0.05em]">
+            NUEVA
+            <br />
+            <span className="text-white/20">CONTRASEÑA</span>
+          </h1>
+        </div>
+
+        {/* FORMULARIO */}
+        <div className="border border-white/10 bg-[#0b0d10]/90 backdrop-blur-xl">
+          <div className="border-b border-white/10 px-6 py-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-red-600" />
+              <span className="font-mono text-[9px] tracking-[0.3em] text-white/40">
+                RESTABLECER
+              </span>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <Suspense
+              fallback={
+                <div className="text-center">
+                  <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-red-600/30 border-t-red-600" />
+                  <p className="font-mono text-xs tracking-[0.3em] text-white/40">
+                    CARGANDO...
+                  </p>
+                </div>
+              }
+            >
+              <ResetPasswordForm />
+            </Suspense>
+          </div>
+        </div>
+
+        {/* VOLVER */}
+        <div className="mt-8 text-center">
+          <Link
+            href="/login"
+            className="font-mono text-[9px] tracking-[0.25em] text-white/25 transition hover:text-white/50"
+          >
+            ← VOLVER A INICIAR SESIÓN
+          </Link>
+        </div>
       </div>
     </main>
   );
