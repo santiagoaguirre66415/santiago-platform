@@ -324,38 +324,89 @@ export default function HomePage() {
           </div>
         </RevealSection>
 
-        {/* NIVEL 4 */}
+                {/* NIVEL 4 */}
         <RevealSection id="nivel-4" className="px-4 py-16 sm:px-6 lg:px-8" onUnlock={() => unlockLevel(4)}>
           <div className="mx-auto max-w-5xl">
             <p className="text-center text-xs font-medium uppercase tracking-widest text-red-400">Nivel 4 — Las Habilidades</p>
             <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">⚔️ Stack & skills</h2>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {SKILLS.map((skill) => (
-                <SkillMeter key={skill.name} name={skill.name} level={skill.level} />
-              ))}
-            </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-red-300">🗄️ Bases de Datos</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
+            <p className="mt-4 text-center text-sm text-gray-400">
+              Mi stack está en constante evolución. Algunas tecnologías tienen mayor experiencia práctica.
+            </p>
+
+            <div className="mt-10 space-y-6">
+              {/* Frontend */}
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-lg font-semibold text-red-300">💻 Frontend Web</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Tailwind CSS'].map((tech) => (
+                    <span key={tech} className="rounded-full bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 border border-red-400/20 transition hover:bg-red-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Backend */}
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-lg font-semibold text-red-300">⚙️ Backend & Programación</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {['Java', 'Python', 'JavaScript', 'TypeScript', 'Node.js', 'PHP'].map((tech) => (
+                    <span key={tech} className="rounded-full bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 border border-red-400/20 transition hover:bg-red-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile */}
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-lg font-semibold text-red-300">📱 Desarrollo Mobile</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {['Flutter', 'Dart'].map((tech) => (
+                    <span key={tech} className="rounded-full bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 border border-red-400/20 transition hover:bg-red-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bases de Datos */}
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-lg font-semibold text-red-300">🗄️ Bases de Datos</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
                   {['MySQL', 'PostgreSQL', 'SQL', 'MongoDB'].map((tech) => (
-                    <span key={tech} className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-gray-300">
+                    <span key={tech} className="rounded-full bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 border border-red-400/20 transition hover:bg-red-500/30">
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-red-300">☁️ Backend & Servicios</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
+
+              {/* Servicios */}
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-lg font-semibold text-red-300">☁️ Backend & Servicios</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
                   {['Appwrite', 'Firebase'].map((tech) => (
-                    <span key={tech} className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-gray-300">
+                    <span key={tech} className="rounded-full bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 border border-red-400/20 transition hover:bg-red-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* DevOps */}
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+                <h3 className="text-lg font-semibold text-red-300">🐳 Herramientas & DevOps</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {['Git', 'Docker'].map((tech) => (
+                    <span key={tech} className="rounded-full bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 border border-red-400/20 transition hover:bg-red-500/30">
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
             </div>
+
             <p className="mt-8 text-center text-sm text-gray-500">
               Idiomas: Español (nativo) · Inglés (técnico / lectura)
             </p>
