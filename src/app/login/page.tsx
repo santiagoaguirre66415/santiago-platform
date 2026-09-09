@@ -2,10 +2,11 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { account } from '@/lib/appwrite';
 
 function LoginForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/dashboard';
 
@@ -21,27 +22,23 @@ function LoginForm() {
 
     try {
       await account.createEmailPasswordSession(email, password);
-      window.location.href = redirect;
+      router.replace(redirect);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : 'Error al iniciar sesión';
       setError(message);
-    } finally {
       setLoading(false);
     }
   };
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#08090b] px-4 text-white">
-      {/* FONDO */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
         <div className="absolute left-1/2 top-[-200px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-red-600/10 blur-[120px]" />
       </div>
 
-      {/* CONTENIDO */}
       <div className="relative z-10 w-full max-w-md">
-        {/* LOGO */}
         <div className="mb-10 text-center">
           <Link
             href="/"
@@ -61,7 +58,6 @@ function LoginForm() {
           </p>
         </div>
 
-        {/* FORMULARIO */}
         <div className="border border-white/10 bg-[#0b0d10]/90 backdrop-blur-xl">
           <div className="border-b border-white/10 px-6 py-4">
             <div className="flex items-center gap-2">
@@ -152,7 +148,6 @@ function LoginForm() {
           </div>
         </div>
 
-        {/* VOLVER */}
         <div className="mt-8 text-center">
           <Link
             href="/"
@@ -167,16 +162,17 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
+  const router = useRouter();
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     account
       .get()
       .then(() => {
-        window.location.href = '/dashboard';
+        router.replace('/dashboard');
       })
       .catch(() => setChecking(false));
-  }, []);
+  }, [router]);
 
   if (checking) {
     return (
