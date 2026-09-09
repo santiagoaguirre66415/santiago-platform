@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,9 +38,12 @@ export default function RootLayout({
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
+      <head>
+        <meta name="google-site-verification" content="wgEL8aLbIn7x8bv2NgJxmu9Zt5vkXDJnPTf3tt6gLoM" />
+      </head>
       <body className="min-h-full flex flex-col bg-slate-950 text-white">
-  {children}
-	</body>
+        {children}
+      </body>
     </html>
   );
 }
