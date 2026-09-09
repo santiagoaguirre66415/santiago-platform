@@ -1,14 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ID } from 'appwrite';
 import { account, databases } from '@/lib/appwrite';
 
-export default function Register() {
+export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    account
+      .get()
+      .then(() => {
+        window.location.href = '/dashboard';
+      })
+      .catch(() => setChecking(false));
+  }, []);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,21 +28,14 @@ export default function Register() {
     setError('');
 
     try {
-      // 1. Crear cuenta en Appwrite Auth
-      const user = await account.create(
-        'unique()',
-        email,
-        password,
-        name
-      );
+      const user = await account.create(ID.unique(), email, password, name);
 
-      // 2. Crear documento en la tabla users
       await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!,
-        'unique()',
+        user.$id,
         {
-          name: name,
+          name,
           bio: '',
           avatar_url: null,
           role: 'student',
@@ -39,60 +44,97 @@ export default function Register() {
         }
       );
 
-      alert('✅ Cuenta creada exitosamente! Ahora inicia sesión.');
-      window.location.href = '/login';
-    } catch (err: any) {
-      setError(err.message || 'Error al crear cuenta');
+      await account.createEmailPasswordSession(email, password);
+      window.location.href = '/dashboard';
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : 'Error al crear la cuenta';
+      setError(message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
+  if (checking) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 text-white">
+        <p className="text-gray-400">Cargando...</p>
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white flex items-center justify-center px-4">
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 px-4 text-white">
       <div className="w-full max-w-md">
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8">
-          <h1 className="text-3xl font-bold text-center mb-8">Crear Cuenta</h1>
-          
+        <div className="rounded-2xl border border-white/10 bg-white/10 p-8 backdrop-blur-lg shadow-xl shadow-red-500/5">
+          <div className="mb-8 text-center">
+            <Link
+              href="/"
+              className="text-xl font-bold tracking-tight transition hover:text-red-300"
+            >
+              Santiago<span className="text-red-400">.dev</span>
+            </Link>
+            <h1 className="mt-4 text-3xl font-bold">Crear cuenta</h1>
+            <p className="mt-2 text-sm text-gray-400">
+              Únete y empieza a aprender
+            </p>
+          </div>
+
           {error && (
-            <div className="bg-red-500/20 border border-red-400/30 text-red-200 p-3 rounded-lg mb-4 text-sm">
+            <div
+              className="mb-4 rounded-lg border border-red-400/30 bg-red-500/20 p-3 text-sm text-red-200"
+              role="alert"
+            >
               {error}
             </div>
           )}
 
           <form onSubmit={handleRegister} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Nombre</label>
+              <label htmlFor="name" className="mb-2 block text-sm font-medium">
+                Nombre
+              </label>
               <input
+                id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-purple-400 transition"
+                autoComplete="name"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 transition focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
                 placeholder="Tu nombre"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label htmlFor="email" className="mb-2 block text-sm font-medium">
+                Email
+              </label>
               <input
+                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-purple-400 transition"
+                autoComplete="email"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 transition focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
                 placeholder="tu@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Contraseña</label>
+              <label htmlFor="password" className="mb-2 block text-sm font-medium">
+                Contraseña
+              </label>
               <input
+                id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-purple-400 transition"
+                autoComplete="new-password"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 transition focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400/50"
                 placeholder="Mínimo 8 caracteres"
               />
             </div>
@@ -100,17 +142,29 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition disabled:opacity-50"
+              className="w-full rounded-lg bg-gradient-to-r from-red-600 to-rose-500 py-3 font-semibold text-white shadow-lg shadow-red-500/25 transition hover:from-red-500 hover:to-rose-400 disabled:opacity-50"
             >
-              {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
+              {loading ? 'Creando cuenta...' : 'Crear cuenta'}
             </button>
           </form>
 
-          <p className="text-center mt-6 text-sm text-gray-300">
+          <p className="mt-6 text-center text-sm text-gray-300">
             ¿Ya tienes cuenta?{' '}
-            <a href="/login" className="text-purple-400 hover:text-purple-300">
+            <Link
+              href="/login"
+              className="font-medium text-red-400 transition hover:text-red-300"
+            >
               Inicia sesión
-            </a>
+            </Link>
+          </p>
+
+          <p className="mt-4 text-center">
+            <Link
+              href="/"
+              className="text-sm text-gray-500 transition hover:text-gray-300"
+            >
+              ← Volver al inicio
+            </Link>
           </p>
         </div>
       </div>
