@@ -3,52 +3,51 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import XPBar from '@/components/XPBar';
-import LevelBadge from '@/components/LevelBadge';
 import RevealSection from '@/components/RevealSection';
 import TimelineSection from '@/components/TimelineSection';
 import AchievementCard from '@/components/AchievementCard';
 
-const STORAGE_KEY = 'santiago-portfolio-progress-v5';
+const STORAGE_KEY = 'santiago-portfolio-progress-v6';
 
-const LEVELS = [
+const NIVELES = [
   {
-    level: 1,
-    title: 'ORIGIN',
-    subtitle: 'El comienzo',
-    xpReward: 20,
-    reward: 'FIRST STEP',
+    nivel: 1,
+    titulo: 'ORIGEN',
+    subtitulo: 'El comienzo',
+    xp: 20,
+    recompensa: 'PRIMER PASO',
   },
   {
-    level: 2,
-    title: 'EDUCATION',
-    subtitle: 'La formación',
-    xpReward: 20,
-    reward: 'KNOWLEDGE SEEKER',
+    nivel: 2,
+    titulo: 'FORMACIÓN',
+    subtitulo: 'Mis estudios',
+    xp: 20,
+    recompensa: 'BUSCADOR DE CONOCIMIENTO',
   },
   {
-    level: 3,
-    title: 'EXPERIENCE',
-    subtitle: 'Experiencia práctica',
-    xpReward: 20,
-    reward: 'PROBLEM SOLVER',
+    nivel: 3,
+    titulo: 'EXPERIENCIA',
+    subtitulo: 'Experiencia práctica',
+    xp: 20,
+    recompensa: 'RESOLUTOR DE PROBLEMAS',
   },
   {
-    level: 4,
-    title: 'STACK',
-    subtitle: 'Tecnologías',
-    xpReward: 20,
-    reward: 'FULL STACK MODE',
+    nivel: 4,
+    titulo: 'TECNOLOGÍAS',
+    subtitulo: 'Mi conjunto de herramientas',
+    xp: 20,
+    recompensa: 'DESARROLLADOR FULL STACK',
   },
   {
-    level: 5,
-    title: 'PROJECTS',
-    subtitle: 'Proyectos',
-    xpReward: 20,
-    reward: 'PROJECT BUILDER',
+    nivel: 5,
+    titulo: 'PROYECTOS',
+    subtitulo: 'Lo que he construido',
+    xp: 20,
+    recompensa: 'CONSTRUCTOR DE PROYECTOS',
   },
 ] as const;
 
-const EXPERIENCE = [
+const EXPERIENCIA = [
   {
     year: '2025 — ACTUAL',
     title: 'Ingeniería Informática',
@@ -61,14 +60,14 @@ const EXPERIENCE = [
     title: 'Análisis y Desarrollo de Software',
     company: 'Formación tecnológica',
     description:
-      'Desarrollo de aplicaciones y fortalecimiento de conocimientos en programación, bases de datos, desarrollo web y metodologías de software.',
+      'Formación orientada al desarrollo de aplicaciones, programación, bases de datos, desarrollo web y construcción de soluciones de software.',
   },
   {
     year: '2025 — 2026',
     title: 'Calma',
     company: 'Proyecto personal — Finalizado',
     description:
-      'Aplicación enfocada en acompañamiento y bienestar, desarrollada como proyecto tecnológico con una experiencia de interacción basada en chatbot.',
+      'Aplicación enfocada en acompañamiento y bienestar, desarrollada como proyecto tecnológico con una experiencia de interacción mediante chatbot.',
   },
   {
     year: '2025 — ACTUAL',
@@ -79,166 +78,174 @@ const EXPERIENCE = [
   },
 ];
 
-const TECHNOLOGIES = [
+const TECNOLOGIAS = [
   {
-    category: 'FRONTEND',
-    items: [
-      { name: 'HTML5', code: 'HTML' },
-      { name: 'CSS3', code: 'CSS' },
-      { name: 'JavaScript', code: 'JS' },
-      { name: 'TypeScript', code: 'TS' },
-      { name: 'React', code: 'RE' },
-      { name: 'Next.js', code: 'NX' },
-      { name: 'Tailwind CSS', code: 'TW' },
+    categoria: 'DESARROLLO WEB',
+    elementos: [
+      { nombre: 'HTML5', codigo: 'HTML' },
+      { nombre: 'CSS3', codigo: 'CSS' },
+      { nombre: 'JavaScript', codigo: 'JS' },
+      { nombre: 'TypeScript', codigo: 'TS' },
+      { nombre: 'React', codigo: 'RE' },
+      { nombre: 'Next.js', codigo: 'NX' },
+      { nombre: 'Tailwind CSS', codigo: 'TW' },
     ],
   },
   {
-    category: 'BACKEND',
-    items: [
-      { name: 'Java', code: 'JV' },
-      { name: 'Python', code: 'PY' },
-      { name: 'Node.js', code: 'ND' },
-      { name: 'PHP', code: 'PHP' },
+    categoria: 'PROGRAMACIÓN Y SERVIDOR',
+    elementos: [
+      { nombre: 'Java', codigo: 'JV' },
+      { nombre: 'Python', codigo: 'PY' },
+      { nombre: 'Node.js', codigo: 'ND' },
+      { nombre: 'PHP', codigo: 'PHP' },
     ],
   },
   {
-    category: 'MOBILE',
-    items: [
-      { name: 'Flutter', code: 'FL' },
-      { name: 'Dart', code: 'DT' },
+    categoria: 'DESARROLLO MÓVIL',
+    elementos: [
+      { nombre: 'Flutter', codigo: 'FL' },
+      { nombre: 'Dart', codigo: 'DT' },
     ],
   },
   {
-    category: 'DATABASE',
-    items: [
-      { name: 'MySQL', code: 'MY' },
-      { name: 'PostgreSQL', code: 'PG' },
-      { name: 'MongoDB', code: 'MG' },
-      { name: 'SQL', code: 'SQL' },
+    categoria: 'BASES DE DATOS',
+    elementos: [
+      { nombre: 'MySQL', codigo: 'MY' },
+      { nombre: 'PostgreSQL', codigo: 'PG' },
+      { nombre: 'MongoDB', codigo: 'MG' },
+      { nombre: 'SQL', codigo: 'SQL' },
     ],
   },
   {
-    category: 'SERVICES & TOOLS',
-    items: [
-      { name: 'Appwrite', code: 'AW' },
-      { name: 'Firebase', code: 'FB' },
-      { name: 'Docker', code: 'DK' },
-      { name: 'Git', code: 'GT' },
+    categoria: 'SERVICIOS Y HERRAMIENTAS',
+    elementos: [
+      { nombre: 'Appwrite', codigo: 'AW' },
+      { nombre: 'Firebase', codigo: 'FB' },
+      { nombre: 'Docker', codigo: 'DK' },
+      { nombre: 'Git', codigo: 'GT' },
     ],
   },
 ];
 
-const PROJECTS = [
+const PROYECTOS = [
   {
-    number: '01',
-    title: 'CALMA',
-    type: 'PROYECTO FINALIZADO',
-    description:
+    numero: '01',
+    titulo: 'CALMA',
+    estado: 'PROYECTO FINALIZADO',
+    descripcion:
       'Aplicación enfocada en acompañamiento y bienestar con una experiencia de interacción mediante chatbot.',
-    stack: ['TypeScript', 'React', 'Next.js', 'Appwrite'],
+    tecnologias: ['TypeScript', 'React', 'Next.js', 'Appwrite'],
     visual: 'calma',
   },
   {
-    number: '02',
-    title: 'QR ATTENDANCE',
-    type: 'PROYECTO EN DESARROLLO',
-    description:
-      'Sistema de asistencia mediante QR con validación de horario y distancia para controlar registros de forma más precisa.',
-    stack: ['JavaScript', 'React', 'Node.js', 'SQL'],
+    numero: '02',
+    titulo: 'SISTEMA DE ASISTENCIA QR',
+    estado: 'PROYECTO EN DESARROLLO',
+    descripcion:
+      'Sistema de asistencia mediante códigos QR con validación de horario y distancia para realizar registros de forma más precisa.',
+    tecnologias: ['JavaScript', 'React', 'Node.js', 'SQL'],
     visual: 'qr',
   },
   {
-    number: '03',
-    title: 'SANTIAGO.DEV',
-    type: 'PORTFOLIO PERSONAL',
-    description:
-      'Portafolio web gamificado diseñado para mostrar mi evolución, tecnologías y proyectos.',
-    stack: ['TypeScript', 'Next.js', 'Tailwind', 'Appwrite'],
+    numero: '03',
+    titulo: 'PORTAFOLIO PERSONAL',
+    estado: 'PROYECTO PERSONAL',
+    descripcion:
+      'Portafolio web con una experiencia interactiva que muestra mi formación, tecnologías, proyectos y evolución como desarrollador.',
+    tecnologias: ['TypeScript', 'Next.js', 'Tailwind CSS', 'Appwrite'],
     visual: 'portfolio',
   },
   {
-    number: '04',
-    title: 'CODE LAB',
-    type: 'FORMACIÓN',
-    description:
-      'Conjunto de ejercicios y proyectos desarrollados durante mi proceso de formación en programación.',
-    stack: ['Python', 'Java', 'Flutter', 'SQL'],
-    visual: 'code',
+    numero: '04',
+    titulo: 'PROYECTOS DE FORMACIÓN',
+    estado: 'PROCESO DE APRENDIZAJE',
+    descripcion:
+      'Conjunto de ejercicios y proyectos desarrollados durante mi proceso de formación en programación y desarrollo de software.',
+    tecnologias: ['Python', 'Java', 'Flutter', 'SQL'],
+    visual: 'codigo',
   },
 ];
 
-const ACHIEVEMENTS = [
+const LOGROS = [
   {
     id: '01',
-    title: 'FIRST STEP',
-    description: 'Completaste el primer nivel de tu recorrido.',
+    titulo: 'PRIMER PASO',
+    descripcion: 'Completaste el primer nivel de tu recorrido.',
     xp: 10,
   },
   {
     id: '02',
-    title: 'KNOWLEDGE SEEKER',
-    description: 'Tu formación comenzó a tomar forma.',
+    titulo: 'BUSCADOR DE CONOCIMIENTO',
+    descripcion: 'Tu proceso de formación comenzó a tomar forma.',
     xp: 20,
   },
   {
     id: '03',
-    title: 'CODE EXPLORER',
-    description: 'Exploraste diferentes lenguajes y tecnologías.',
+    titulo: 'EXPLORADOR DEL CÓDIGO',
+    descripcion: 'Exploraste diferentes lenguajes y tecnologías.',
     xp: 30,
   },
   {
     id: '04',
-    title: 'PROBLEM SOLVER',
-    description: 'Convertiste problemas académicos en soluciones funcionales.',
+    titulo: 'RESOLUTOR DE PROBLEMAS',
+    descripcion:
+      'Convertiste problemas académicos en soluciones funcionales.',
     xp: 30,
   },
   {
     id: '05',
-    title: 'FULL STACK MODE',
-    description: 'Comenzaste a trabajar en diferentes capas del desarrollo.',
+    titulo: 'DESARROLLADOR FULL STACK',
+    descripcion:
+      'Comenzaste a trabajar en diferentes áreas del desarrollo de software.',
     xp: 40,
   },
   {
     id: '06',
-    title: 'PROJECT BUILDER',
-    description: 'Construiste proyectos reales durante tu formación.',
+    titulo: 'CONSTRUCTOR DE PROYECTOS',
+    descripcion:
+      'Construiste proyectos reales durante tu proceso de formación.',
     xp: 40,
   },
   {
     id: '07',
-    title: 'BOSS CLEARED',
-    description: 'Completaste el recorrido principal del portfolio.',
+    titulo: 'RECORRIDO COMPLETADO',
+    descripcion:
+      'Completaste todos los niveles principales del portafolio.',
     xp: 50,
   },
 ];
 
-function ProjectVisual({ type }: { type: string }) {
-  if (type === 'calma') {
+function VisualProyecto({ tipo }: { tipo: string }) {
+  if (tipo === 'calma') {
     return (
-      <div className="project-screen">
-        <div className="mock-top">
-          <span className="mock-dot" />
-          <span className="mock-dot" />
-          <span className="mock-dot" />
-          <span className="mock-url">calma.app</span>
+      <div className="pantalla-proyecto">
+        <div className="barra-navegador">
+          <span className="punto-navegador" />
+          <span className="punto-navegador" />
+          <span className="punto-navegador" />
+          <span className="direccion-navegador">calma</span>
         </div>
 
-        <div className="mock-content calma-visual">
-          <div className="mock-sidebar">
-            <div className="mock-logo">C</div>
+        <div className="contenido-calma">
+          <div className="menu-calma">
+            <div className="logo-calma">C</div>
+
             <span />
             <span />
             <span />
             <span />
           </div>
 
-          <div className="mock-main">
-            <div className="mock-label">WELCOME BACK</div>
-            <div className="mock-title">Calma</div>
-            <div className="mock-line long" />
-            <div className="mock-line medium" />
+          <div className="principal-calma">
+            <div className="etiqueta-mockup">BIENVENIDO</div>
 
-            <div className="mock-cards">
+            <div className="titulo-mockup">Calma</div>
+
+            <div className="linea-mockup grande" />
+
+            <div className="linea-mockup mediana" />
+
+            <div className="tarjetas-mockup">
               <div />
               <div />
               <div />
@@ -249,19 +256,21 @@ function ProjectVisual({ type }: { type: string }) {
     );
   }
 
-  if (type === 'qr') {
+  if (tipo === 'qr') {
     return (
-      <div className="project-screen">
-        <div className="mock-top">
-          <span className="mock-dot" />
-          <span className="mock-dot" />
-          <span className="mock-dot" />
-          <span className="mock-url">attendance.system</span>
+      <div className="pantalla-proyecto">
+        <div className="barra-navegador">
+          <span className="punto-navegador" />
+          <span className="punto-navegador" />
+          <span className="punto-navegador" />
+          <span className="direccion-navegador">
+            sistema-asistencia
+          </span>
         </div>
 
-        <div className="mock-content qr-visual">
-          <div className="qr-box">
-            <div className="qr-pattern">
+        <div className="contenido-qr">
+          <div className="contenedor-qr">
+            <div className="codigo-qr">
               <i />
               <i />
               <i />
@@ -272,21 +281,25 @@ function ProjectVisual({ type }: { type: string }) {
               <i />
               <i />
             </div>
-            <small>SCAN QR</small>
+
+            <small>ESCANEAR CÓDIGO</small>
           </div>
 
-          <div className="qr-info">
-            <div className="mock-label">ATTENDANCE</div>
-            <div className="mock-title">Control de asistencia</div>
+          <div className="informacion-qr">
+            <div className="etiqueta-mockup">ASISTENCIA</div>
 
-            <div className="attendance-row">
+            <div className="titulo-mockup">
+              Control de asistencia
+            </div>
+
+            <div className="fila-asistencia">
               <span>Horario</span>
               <b>08:00 — 10:00</b>
             </div>
 
-            <div className="attendance-row">
+            <div className="fila-asistencia">
               <span>Distancia</span>
-              <b>VALIDATED</b>
+              <b>VALIDADA</b>
             </div>
           </div>
         </div>
@@ -294,28 +307,31 @@ function ProjectVisual({ type }: { type: string }) {
     );
   }
 
-  if (type === 'portfolio') {
+  if (tipo === 'portfolio') {
     return (
-      <div className="project-screen">
-        <div className="mock-top">
-          <span className="mock-dot" />
-          <span className="mock-dot" />
-          <span className="mock-dot" />
-          <span className="mock-url">sanas07a.dev</span>
+      <div className="pantalla-proyecto">
+        <div className="barra-navegador">
+          <span className="punto-navegador" />
+          <span className="punto-navegador" />
+          <span className="punto-navegador" />
+          <span className="direccion-navegador">
+            sanas07a.dev
+          </span>
         </div>
 
-        <div className="portfolio-visual">
-          <div className="portfolio-number">05</div>
-          <div className="portfolio-title">
+        <div className="visual-portafolio">
+          <div className="numero-portafolio">05</div>
+
+          <div className="titulo-portafolio">
             SANTIAGO
             <br />
             AGUIRRE
           </div>
 
-          <div className="portfolio-line" />
+          <div className="linea-portafolio" />
 
-          <div className="portfolio-stats">
-            <span>FULL STACK</span>
+          <div className="datos-portafolio">
+            <span>DESARROLLO FULL STACK</span>
             <span>2026</span>
           </div>
         </div>
@@ -324,36 +340,43 @@ function ProjectVisual({ type }: { type: string }) {
   }
 
   return (
-    <div className="project-screen">
-      <div className="mock-top">
-        <span className="mock-dot" />
-        <span className="mock-dot" />
-        <span className="mock-dot" />
-        <span className="mock-url">code.lab</span>
+    <div className="pantalla-proyecto">
+      <div className="barra-navegador">
+        <span className="punto-navegador" />
+        <span className="punto-navegador" />
+        <span className="punto-navegador" />
+        <span className="direccion-navegador">
+          proyectos-formacion
+        </span>
       </div>
 
-      <div className="code-visual">
-        <div className="code-line">
+      <div className="visual-codigo">
+        <div>
           <span>01</span>
-          <b>class</b> Developer
+          <b>clase</b> Desarrollador
         </div>
-        <div className="code-line">
+
+        <div>
           <span>02</span>
-          &nbsp;&nbsp;skills = [
+          &nbsp;&nbsp;tecnologias = [
         </div>
-        <div className="code-line">
+
+        <div>
           <span>03</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;"Java",
+          &nbsp;&nbsp;&nbsp;&nbsp;&quot;Java&quot;,
         </div>
-        <div className="code-line">
+
+        <div>
           <span>04</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;"Python",
+          &nbsp;&nbsp;&nbsp;&nbsp;&quot;Python&quot;,
         </div>
-        <div className="code-line">
+
+        <div>
           <span>05</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;"React",
+          &nbsp;&nbsp;&nbsp;&nbsp;&quot;React&quot;,
         </div>
-        <div className="code-line">
+
+        <div>
           <span>06</span>
           &nbsp;&nbsp;]
         </div>
@@ -364,28 +387,34 @@ function ProjectVisual({ type }: { type: string }) {
 
 export default function Home() {
   const [xp, setXp] = useState(0);
-  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
-  const [unlockedAchievements, setUnlockedAchievements] = useState<number[]>([]);
-  const [toast, setToast] = useState<string | null>(null);
+  const [nivelesDesbloqueados, setNivelesDesbloqueados] =
+    useState<number[]>([1]);
+
+  const [logrosDesbloqueados, setLogrosDesbloqueados] =
+    useState<number[]>([]);
+
+  const [notificacion, setNotificacion] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const guardado = localStorage.getItem(STORAGE_KEY);
 
-      if (!saved) return;
+      if (!guardado) return;
 
-      const data = JSON.parse(saved);
+      const datos = JSON.parse(guardado);
 
-      if (typeof data.xp === 'number') {
-        setXp(data.xp);
+      if (typeof datos.xp === 'number') {
+        setXp(datos.xp);
       }
 
-      if (Array.isArray(data.unlockedLevels)) {
-        setUnlockedLevels(data.unlockedLevels);
+      if (Array.isArray(datos.nivelesDesbloqueados)) {
+        setNivelesDesbloqueados(datos.nivelesDesbloqueados);
       }
 
-      if (Array.isArray(data.unlockedAchievements)) {
-        setUnlockedAchievements(data.unlockedAchievements);
+      if (Array.isArray(datos.logrosDesbloqueados)) {
+        setLogrosDesbloqueados(datos.logrosDesbloqueados);
       }
     } catch {
       console.warn('No se pudo recuperar el progreso.');
@@ -397,70 +426,85 @@ export default function Home() {
       STORAGE_KEY,
       JSON.stringify({
         xp,
-        unlockedLevels,
-        unlockedAchievements,
+        nivelesDesbloqueados,
+        logrosDesbloqueados,
       })
     );
-  }, [xp, unlockedLevels, unlockedAchievements]);
+  }, [xp, nivelesDesbloqueados, logrosDesbloqueados]);
 
-  const currentLevel = useMemo(() => {
+  const nivelActual = useMemo(() => {
     return Math.min(
-      Math.max(Math.max(...unlockedLevels, 1), 1),
-      LEVELS.length
+      Math.max(Math.max(...nivelesDesbloqueados, 1), 1),
+      NIVELES.length
     );
-  }, [unlockedLevels]);
+  }, [nivelesDesbloqueados]);
 
-  const unlockLevel = useCallback((level: number) => {
-    setUnlockedLevels((previous) => {
-      if (previous.includes(level)) return previous;
-
-      const previousLevel = level - 1;
-
-      if (previousLevel > 0 && !previous.includes(previousLevel)) {
-        return previous;
+  const desbloquearNivel = useCallback((nivel: number) => {
+    setNivelesDesbloqueados((anteriores) => {
+      if (anteriores.includes(nivel)) {
+        return anteriores;
       }
 
-      return [...previous, level];
+      const nivelAnterior = nivel - 1;
+
+      if (
+        nivelAnterior > 0 &&
+        !anteriores.includes(nivelAnterior)
+      ) {
+        return anteriores;
+      }
+
+      return [...anteriores, nivel];
     });
 
-    setXp((previous) => previous + LEVELS[level - 1].xpReward);
+    setXp((actual) => actual + NIVELES[nivel - 1].xp);
 
-    setToast(`LEVEL ${level} UNLOCKED`);
+    setNotificacion(`NIVEL ${String(nivel).padStart(2, '0')} DESBLOQUEADO`);
 
     setTimeout(() => {
-      setToast(null);
+      setNotificacion(null);
     }, 2500);
   }, []);
 
-  const unlockAchievement = useCallback((achievement: number) => {
-    setUnlockedAchievements((previous) => {
-      if (previous.includes(achievement)) return previous;
+  const desbloquearLogro = useCallback((logro: number) => {
+    setLogrosDesbloqueados((anteriores) => {
+      if (anteriores.includes(logro)) {
+        return anteriores;
+      }
 
-      const reward = ACHIEVEMENTS[achievement - 1]?.xp ?? 0;
+      const recompensa = LOGROS[logro - 1]?.xp ?? 0;
 
-      setXp((current) => current + reward);
+      setXp((actual) => actual + recompensa);
 
-      setToast(`ACHIEVEMENT ${String(achievement).padStart(2, '0')}`);
+      setNotificacion(
+        `LOGRO ${String(logro).padStart(2, '0')} DESBLOQUEADO`
+      );
 
       setTimeout(() => {
-        setToast(null);
+        setNotificacion(null);
       }, 2500);
 
-      return [...previous, achievement];
+      return [...anteriores, logro];
     });
   }, []);
 
-  const resetProgress = () => {
+  const reiniciarProgreso = () => {
     setXp(0);
-    setUnlockedLevels([1]);
-    setUnlockedAchievements([]);
+    setNivelesDesbloqueados([1]);
+    setLogrosDesbloqueados([]);
+
     localStorage.removeItem(STORAGE_KEY);
-    setToast('PROGRESS RESET');
+
+    setNotificacion('PROGRESO REINICIADO');
+
+    setTimeout(() => {
+      setNotificacion(null);
+    }, 2500);
   };
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#08090b] text-white">
-      {/* GLOBAL BACKGROUND */}
+      {/* FONDO */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
 
@@ -471,41 +515,41 @@ export default function Home() {
 
       <Navbar />
 
-      {/* HUD */}
+      {/* PANEL DE PROGRESO */}
       <div className="fixed bottom-6 left-6 z-50 hidden w-[250px] md:block">
         <div className="border border-white/10 bg-[#0b0d10]/90 p-4 backdrop-blur-xl">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-[10px] font-semibold tracking-[0.25em] text-white/40">
-              SYSTEM PROGRESS
+              PROGRESO
             </span>
 
             <span className="font-mono text-xs text-red-500">
-              LVL {String(currentLevel).padStart(2, '0')}
+              NIVEL {String(nivelActual).padStart(2, '0')}
             </span>
           </div>
 
           <XPBar
             value={xp}
-            level={currentLevel}
+            level={nivelActual}
             label={`${xp} XP`}
           />
         </div>
       </div>
 
-      {/* TOAST */}
-      {toast && (
+      {/* NOTIFICACIÓN */}
+      {notificacion && (
         <div className="fixed right-6 top-24 z-[100] border border-red-500/30 bg-[#0d0f12]/95 px-5 py-4 shadow-2xl backdrop-blur-xl">
           <div className="mb-1 text-[9px] tracking-[0.3em] text-red-500">
-            SYSTEM
+            SISTEMA
           </div>
 
           <div className="text-sm font-semibold tracking-wider">
-            {toast}
+            {notificacion}
           </div>
         </div>
       )}
 
-      {/* HERO */}
+      {/* PORTADA */}
       <section className="relative z-10 flex min-h-screen items-center px-6 pb-20 pt-32 md:px-12 lg:px-20">
         <div className="mx-auto grid w-full max-w-7xl gap-16 lg:grid-cols-[1.25fr_.75fr] lg:items-center">
           <div>
@@ -513,7 +557,7 @@ export default function Home() {
               <div className="h-px w-10 bg-red-600" />
 
               <span className="font-mono text-[10px] font-semibold tracking-[0.35em] text-red-500">
-                PORTFOLIO / 2026
+                PORTAFOLIO / 2026
               </span>
             </div>
 
@@ -526,19 +570,19 @@ export default function Home() {
             <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center">
               <div className="border-l border-red-600 pl-4">
                 <p className="text-sm font-semibold tracking-[0.18em] text-white">
-                  FULL STACK DEVELOPER
+                  DESARROLLADOR FULL STACK
                 </p>
 
                 <p className="mt-1 text-xs tracking-[0.2em] text-white/35">
-                  IN TRAINING
+                  EN FORMACIÓN
                 </p>
               </div>
 
               <div className="hidden h-8 w-px bg-white/10 sm:block" />
 
               <p className="max-w-md text-sm leading-6 text-white/45">
-                Construyo interfaces, exploro nuevas tecnologías y convierto
-                ideas en proyectos funcionales.
+                Construyo interfaces, exploro nuevas tecnologías
+                y convierto ideas en proyectos funcionales.
               </p>
             </div>
 
@@ -563,7 +607,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* HERO VISUAL */}
+          {/* ELEMENTO VISUAL */}
           <div className="relative hidden lg:block">
             <div className="relative aspect-square border border-white/10 bg-[#0c0e11]/70 p-8">
               <div className="absolute left-0 top-0 h-16 w-px bg-red-600" />
@@ -583,7 +627,7 @@ export default function Home() {
               </div>
 
               <div className="absolute left-8 top-8 font-mono text-[9px] tracking-[0.25em] text-white/25">
-                MANIZALES / CO
+                MANIZALES / COLOMBIA
               </div>
 
               <div className="absolute bottom-8 right-8 font-mono text-[9px] tracking-[0.25em] text-white/25">
@@ -595,11 +639,11 @@ export default function Home() {
 
             <div className="absolute -bottom-5 -left-5 border border-white/10 bg-[#0b0d10] px-5 py-4">
               <span className="block text-[9px] tracking-[0.25em] text-white/30">
-                CURRENT STATUS
+                ESTADO ACTUAL
               </span>
 
               <span className="mt-1 block text-xs font-semibold tracking-widest text-red-500">
-                BUILDING
+                CONSTRUYENDO
               </span>
             </div>
           </div>
@@ -607,70 +651,73 @@ export default function Home() {
 
         <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex">
           <span className="font-mono text-[8px] tracking-[0.4em] text-white/25">
-            SCROLL TO EXPLORE
+            DESPLÁZATE PARA EXPLORAR
           </span>
 
           <div className="h-12 w-px bg-gradient-to-b from-red-600 to-transparent" />
         </div>
       </section>
 
-      {/* LEVEL MAP */}
+      {/* MAPA DE NIVELES */}
       <section className="relative z-10 border-y border-white/10 bg-[#0a0c0f]/80 px-6 py-10 backdrop-blur-xl md:px-12">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex items-end justify-between">
             <div>
               <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
-                NAVIGATION
+                NAVEGACIÓN
               </span>
 
               <h2 className="mt-2 text-xl font-bold tracking-tight">
-                THE JOURNEY
+                MI RECORRIDO
               </h2>
             </div>
 
             <span className="font-mono text-[10px] text-white/25">
-              {String(currentLevel).padStart(2, '0')} / 05
+              {String(nivelActual).padStart(2, '0')} / 05
             </span>
           </div>
 
           <div className="grid grid-cols-5 gap-2">
-            {LEVELS.map((level) => {
-              const unlocked = unlockedLevels.includes(level.level);
-              const active = currentLevel === level.level;
+            {NIVELES.map((nivel) => {
+              const desbloqueado = nivelesDesbloqueados.includes(
+                nivel.nivel
+              );
+
+              const activo = nivelActual === nivel.nivel;
 
               return (
                 <div
-                  key={level.level}
+                  key={nivel.nivel}
                   className={`group relative border p-4 transition-all ${
-                    unlocked
+                    desbloqueado
                       ? 'border-white/10 bg-white/[0.025]'
                       : 'border-white/[0.05] bg-black/20 opacity-40'
-                  } ${active ? 'border-red-600/60' : ''}`}
+                  } ${activo ? 'border-red-600/60' : ''}`}
                 >
-                  {active && (
+                  {activo && (
                     <div className="absolute left-0 top-0 h-px w-full bg-red-600" />
                   )}
 
                   <div className="flex items-center justify-between">
                     <span
                       className={`font-mono text-lg font-bold ${
-                        active ? 'text-red-500' : 'text-white/40'
+                        activo ? 'text-red-500' : 'text-white/40'
                       }`}
                     >
-                      0{level.level}
+                      0{nivel.nivel}
                     </span>
 
                     <span className="text-[9px] tracking-widest text-white/20">
-                      {unlocked ? 'OPEN' : 'LOCKED'}
+                      {desbloqueado ? 'ABIERTO' : 'BLOQUEADO'}
                     </span>
                   </div>
 
                   <div className="mt-5 text-[10px] font-bold tracking-[0.15em] text-white/70">
-                    {level.title}
+                    {nivel.titulo}
                   </div>
 
                   <div className="mt-1 text-[9px] text-white/25">
-                    {level.subtitle}
+                    {nivel.subtitulo}
                   </div>
                 </div>
               );
@@ -679,11 +726,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* LEVEL 01 */}
+      {/* NIVEL 01 */}
       <RevealSection
         id="nivel-1"
         className="relative z-10"
-        onUnlock={() => unlockLevel(1)}
+        onUnlock={() => desbloquearNivel(1)}
       >
         <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
           <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
@@ -693,7 +740,7 @@ export default function Home() {
               </div>
 
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
-                ORIGIN
+                ORIGEN
               </div>
 
               <h2 className="mt-2 text-3xl font-bold">
@@ -703,30 +750,32 @@ export default function Home() {
 
             <div className="max-w-3xl">
               <p className="text-2xl font-medium leading-relaxed text-white/85 md:text-4xl md:leading-tight">
-                Soy Santiago Aguirre, desarrollador Full Stack en formación
-                desde Manizales, Colombia.
+                Soy Santiago Aguirre, desarrollador Full Stack en
+                formación desde Manizales, Colombia.
               </p>
 
               <p className="mt-8 max-w-2xl text-base leading-8 text-white/40">
-                Actualmente estoy construyendo mi camino en el desarrollo de
-                software mediante formación académica, proyectos personales y
-                experimentación constante con nuevas tecnologías.
+                Actualmente estoy construyendo mi camino en el
+                desarrollo de software mediante formación académica,
+                proyectos personales y experimentación constante con
+                nuevas tecnologías.
               </p>
 
               <div className="mt-12 grid grid-cols-2 gap-px border border-white/10 bg-white/10 sm:grid-cols-4">
                 {[
-                  ['2025', 'START'],
-                  ['CO', 'LOCATION'],
-                  ['01', 'PROFILE'],
-                  ['∞', 'LEARNING'],
-                ].map(([value, label]) => (
+                  ['2025', 'INICIO'],
+                  ['CO', 'UBICACIÓN'],
+                  ['01', 'PERFIL'],
+                  ['∞', 'APRENDIZAJE'],
+                ].map(([valor, etiqueta]) => (
                   <div
-                    key={label}
+                    key={etiqueta}
                     className="bg-[#0b0d10] p-5"
                   >
-                    <div className="text-xl font-bold">{value}</div>
+                    <div className="text-xl font-bold">{valor}</div>
+
                     <div className="mt-1 text-[8px] tracking-[0.25em] text-white/25">
-                      {label}
+                      {etiqueta}
                     </div>
                   </div>
                 ))}
@@ -736,11 +785,11 @@ export default function Home() {
         </section>
       </RevealSection>
 
-      {/* LEVEL 02 */}
+      {/* NIVEL 02 */}
       <RevealSection
         id="nivel-2"
         className="relative z-10 border-t border-white/10"
-        onUnlock={() => unlockLevel(2)}
+        onUnlock={() => desbloquearNivel(2)}
       >
         <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
           <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
@@ -750,21 +799,21 @@ export default function Home() {
               </div>
 
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
-                EDUCATION
+                FORMACIÓN
               </div>
 
               <h2 className="mt-2 text-3xl font-bold">
-                La formación
+                Mis estudios
               </h2>
             </div>
 
             <div>
-              <TimelineSection items={EXPERIENCE.slice(0, 2)} />
+              <TimelineSection items={EXPERIENCIA.slice(0, 2)} />
 
               <div className="mt-16 grid gap-4 sm:grid-cols-2">
                 <div className="border border-white/10 bg-white/[0.02] p-7">
                   <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
-                    UNIVERSITY
+                    UNIVERSIDAD
                   </span>
 
                   <h3 className="mt-5 text-xl font-bold">
@@ -778,11 +827,11 @@ export default function Home() {
 
                 <div className="border border-white/10 bg-white/[0.02] p-7">
                   <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
-                    SOFTWARE
+                    DESARROLLO
                   </span>
 
                   <h3 className="mt-5 text-xl font-bold">
-                    Análisis y Desarrollo
+                    Análisis y Desarrollo de Software
                   </h3>
 
                   <p className="mt-3 text-sm leading-6 text-white/35">
@@ -795,11 +844,11 @@ export default function Home() {
         </section>
       </RevealSection>
 
-      {/* LEVEL 03 */}
+      {/* NIVEL 03 */}
       <RevealSection
         id="nivel-3"
         className="relative z-10 border-t border-white/10"
-        onUnlock={() => unlockLevel(3)}
+        onUnlock={() => desbloquearNivel(3)}
       >
         <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
           <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
@@ -809,7 +858,7 @@ export default function Home() {
               </div>
 
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
-                EXPERIENCE
+                EXPERIENCIA
               </div>
 
               <h2 className="mt-2 text-3xl font-bold">
@@ -820,28 +869,28 @@ export default function Home() {
             <div>
               <div className="mb-10 border border-red-600/20 bg-red-600/[0.03] p-6">
                 <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
-                  CURRENT STAGE
+                  ETAPA ACTUAL
                 </span>
 
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-white/50">
-                  Actualmente no cuento con experiencia laboral profesional.
-                  Mi experiencia se ha desarrollado principalmente mediante
-                  formación académica, proyectos personales y proyectos de
-                  desarrollo.
+                  Actualmente no cuento con experiencia laboral
+                  profesional. Mi experiencia se ha desarrollado
+                  principalmente mediante formación académica,
+                  proyectos personales y proyectos de desarrollo.
                 </p>
               </div>
 
-              <TimelineSection items={EXPERIENCE.slice(2)} />
+              <TimelineSection items={EXPERIENCIA.slice(2)} />
             </div>
           </div>
         </section>
       </RevealSection>
 
-      {/* LEVEL 04 */}
+      {/* NIVEL 04 */}
       <RevealSection
         id="nivel-4"
         className="relative z-10 border-t border-white/10"
-        onUnlock={() => unlockLevel(4)}
+        onUnlock={() => desbloquearNivel(4)}
       >
         <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
           <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
@@ -851,42 +900,42 @@ export default function Home() {
               </div>
 
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
-                STACK
+                TECNOLOGÍAS
               </div>
 
               <h2 className="mt-2 text-3xl font-bold">
-                Tecnologías
+                Mi conjunto de herramientas
               </h2>
 
               <p className="mt-6 text-sm leading-7 text-white/30">
-                Tecnologías que forman parte de mi proceso de aprendizaje y
-                desarrollo.
+                Tecnologías que forman parte de mi proceso de
+                aprendizaje y desarrollo.
               </p>
             </div>
 
             <div className="space-y-12">
-              {TECHNOLOGIES.map((group) => (
-                <div key={group.category}>
+              {TECNOLOGIAS.map((grupo) => (
+                <div key={grupo.categoria}>
                   <div className="mb-5 flex items-center gap-4">
                     <span className="font-mono text-[9px] tracking-[0.3em] text-white/25">
-                      {group.category}
+                      {grupo.categoria}
                     </span>
 
                     <div className="h-px flex-1 bg-white/[0.06]" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-                    {group.items.map((technology) => (
+                    {grupo.elementos.map((tecnologia) => (
                       <div
-                        key={technology.name}
+                        key={tecnologia.nombre}
                         className="group flex items-center gap-4 border border-white/10 bg-white/[0.02] p-4 transition-all hover:-translate-y-1 hover:border-red-600/40 hover:bg-white/[0.04]"
                       >
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/10 bg-[#101216] font-mono text-[9px] font-bold text-white/60 transition-colors group-hover:border-red-600/40 group-hover:text-red-500">
-                          {technology.code}
+                          {tecnologia.codigo}
                         </div>
 
                         <span className="text-xs font-medium text-white/65">
-                          {technology.name}
+                          {tecnologia.nombre}
                         </span>
                       </div>
                     ))}
@@ -898,11 +947,11 @@ export default function Home() {
         </section>
       </RevealSection>
 
-      {/* LEVEL 05 */}
+      {/* NIVEL 05 */}
       <RevealSection
         id="nivel-5"
         className="relative z-10 border-t border-white/10"
-        onUnlock={() => unlockLevel(5)}
+        onUnlock={() => desbloquearNivel(5)}
       >
         <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
           <div className="mb-16">
@@ -911,43 +960,43 @@ export default function Home() {
             </div>
 
             <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
-              SELECTED WORK
+              PROYECTOS DESTACADOS
             </div>
 
             <div className="mt-2 flex flex-col justify-between gap-5 md:flex-row md:items-end">
               <h2 className="text-4xl font-bold tracking-tight">
-                Proyectos
+                Lo que he construido
               </h2>
 
               <p className="max-w-md text-sm leading-6 text-white/30">
-                Una selección de proyectos desarrollados durante mi proceso
-                de formación.
+                Una selección de proyectos desarrollados durante mi
+                proceso de formación.
               </p>
             </div>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            {PROJECTS.map((project) => (
+            {PROYECTOS.map((proyecto) => (
               <article
-                key={project.number}
+                key={proyecto.numero}
                 className="group overflow-hidden border border-white/10 bg-[#0b0d10] transition-all duration-500 hover:-translate-y-1 hover:border-white/20"
               >
                 <div className="relative overflow-hidden border-b border-white/10">
-                  <ProjectVisual type={project.visual} />
+                  <VisualProyecto tipo={proyecto.visual} />
 
                   <div className="absolute left-5 top-5 border border-white/10 bg-[#08090b]/80 px-3 py-2 font-mono text-[9px] tracking-[0.2em] text-white/40 backdrop-blur">
-                    {project.number}
+                    {proyecto.numero}
                   </div>
                 </div>
 
                 <div className="p-7">
                   <div className="font-mono text-[8px] tracking-[0.3em] text-red-500">
-                    {project.type}
+                    {proyecto.estado}
                   </div>
 
                   <div className="mt-3 flex items-start justify-between gap-5">
                     <h3 className="text-2xl font-bold tracking-tight">
-                      {project.title}
+                      {proyecto.titulo}
                     </h3>
 
                     <span className="text-xl text-white/20 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-red-500">
@@ -956,16 +1005,16 @@ export default function Home() {
                   </div>
 
                   <p className="mt-4 text-sm leading-7 text-white/35">
-                    {project.description}
+                    {proyecto.descripcion}
                   </p>
 
                   <div className="mt-7 flex flex-wrap gap-2">
-                    {project.stack.map((item) => (
+                    {proyecto.tecnologias.map((tecnologia) => (
                       <span
-                        key={item}
+                        key={tecnologia}
                         className="border border-white/10 px-3 py-1.5 font-mono text-[8px] tracking-wider text-white/30"
                       >
-                        {item}
+                        {tecnologia}
                       </span>
                     ))}
                   </div>
@@ -976,41 +1025,45 @@ export default function Home() {
         </section>
       </RevealSection>
 
-      {/* ACHIEVEMENTS */}
+      {/* LOGROS */}
       <section className="relative z-10 border-t border-white/10 bg-[#090a0c]">
         <div className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
           <div className="mb-14 flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
               <span className="font-mono text-[9px] tracking-[0.35em] text-red-500">
-                ACHIEVEMENTS
+                LOGROS
               </span>
 
               <h2 className="mt-3 text-4xl font-bold tracking-tight">
-                Milestones
+                Progreso conseguido
               </h2>
             </div>
 
             <button
-              onClick={resetProgress}
+              onClick={reiniciarProgreso}
               className="self-start border border-white/10 px-4 py-2 font-mono text-[8px] tracking-[0.2em] text-white/25 transition-colors hover:border-red-600/40 hover:text-red-500"
             >
-              RESET PROGRESS
+              REINICIAR PROGRESO
             </button>
           </div>
 
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {ACHIEVEMENTS.map((achievement, index) => (
+            {LOGROS.map((logro, indice) => (
               <div
-                key={achievement.id}
-                onMouseEnter={() => unlockAchievement(index + 1)}
+                key={logro.id}
+                onMouseEnter={() =>
+                  desbloquearLogro(indice + 1)
+                }
                 className="cursor-default"
               >
                 <AchievementCard
-                  icon={achievement.id}
-                  title={achievement.title}
-                  description={achievement.description}
-                  unlocked={unlockedAchievements.includes(index + 1)}
-                  xp={achievement.xp}
+                  icon={logro.id}
+                  title={logro.titulo}
+                  description={logro.descripcion}
+                  unlocked={logrosDesbloqueados.includes(
+                    indice + 1
+                  )}
+                  xp={logro.xp}
                 />
               </div>
             ))}
@@ -1018,19 +1071,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NEXT */}
+      {/* PRÓXIMOS OBJETIVOS */}
       <section className="relative z-10 border-t border-white/10 px-6 py-32 md:px-12 lg:px-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:items-end">
             <div>
               <span className="font-mono text-[9px] tracking-[0.35em] text-red-500">
-                NEXT OBJECTIVES
+                PRÓXIMOS OBJETIVOS
               </span>
 
               <h2 className="mt-5 max-w-xl text-5xl font-black tracking-[-0.05em] md:text-7xl">
-                ALWAYS
+                SIEMPRE
                 <br />
-                <span className="text-white/20">BUILDING.</span>
+                <span className="text-white/20">
+                  CONSTRUYENDO.
+                </span>
               </h2>
             </div>
 
@@ -1040,17 +1095,17 @@ export default function Home() {
                 'Construir proyectos más completos',
                 'Mejorar arquitectura y bases de datos',
                 'Continuar explorando nuevas tecnologías',
-              ].map((goal, index) => (
+              ].map((objetivo, indice) => (
                 <div
-                  key={goal}
+                  key={objetivo}
                   className="flex items-center gap-5 bg-[#0b0d10] p-5"
                 >
                   <span className="font-mono text-[9px] text-red-500">
-                    0{index + 1}
+                    0{indice + 1}
                   </span>
 
                   <span className="text-sm text-white/55">
-                    {goal}
+                    {objetivo}
                   </span>
                 </div>
               ))}
@@ -1059,25 +1114,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CONTACTO */}
       <section className="relative z-10 overflow-hidden border-t border-white/10 bg-[#0b0d10]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(220,38,38,.12),transparent_50%)]" />
 
         <div className="relative mx-auto max-w-5xl px-6 py-32 text-center">
           <span className="font-mono text-[9px] tracking-[0.4em] text-red-500">
-            END OF CURRENT RUN
+            FIN DEL RECORRIDO ACTUAL
           </span>
 
           <h2 className="mx-auto mt-7 max-w-4xl text-5xl font-black tracking-[-0.06em] md:text-8xl">
-            LET&apos;S BUILD
+            CONSTRUYAMOS
             <br />
-            <span className="text-white/20">SOMETHING.</span>
+            <span className="text-white/20">
+              ALGO JUNTOS.
+            </span>
           </h2>
 
           <p className="mx-auto mt-8 max-w-xl text-sm leading-7 text-white/35">
-            ¿Tienes una idea, proyecto o simplemente quieres hablar de
-            tecnología? Estoy abierto a nuevas oportunidades para aprender y
-            construir.
+            ¿Tienes una idea, proyecto o simplemente quieres hablar
+            de tecnología? Estoy abierto a nuevas oportunidades para
+            aprender y construir.
           </p>
 
           <div className="mt-10 flex justify-center gap-3">
@@ -1100,12 +1157,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* PIE DE PÁGINA */}
       <footer className="relative z-10 border-t border-white/10 px-6 py-8 md:px-12">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-[9px] tracking-[0.2em] text-white/20 md:flex-row">
           <span>SANTIAGO AGUIRRE</span>
 
-          <span>FULL STACK DEVELOPER IN TRAINING</span>
+          <span>DESARROLLADOR FULL STACK EN FORMACIÓN</span>
 
           <span>MANIZALES / COLOMBIA</span>
         </div>
@@ -1125,14 +1182,14 @@ export default function Home() {
           color: white;
         }
 
-        .project-screen {
+        .pantalla-proyecto {
           position: relative;
           aspect-ratio: 16 / 9;
           overflow: hidden;
           background: #101216;
         }
 
-        .mock-top {
+        .barra-navegador {
           height: 34px;
           display: flex;
           align-items: center;
@@ -1142,14 +1199,14 @@ export default function Home() {
           background: #0b0d10;
         }
 
-        .mock-dot {
+        .punto-navegador {
           width: 5px;
           height: 5px;
           border-radius: 50%;
           background: rgba(255, 255, 255, 0.2);
         }
 
-        .mock-url {
+        .direccion-navegador {
           margin-left: 8px;
           font-family: monospace;
           font-size: 7px;
@@ -1157,18 +1214,18 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.18);
         }
 
-        .mock-content {
+        .contenido-calma {
           height: calc(100% - 34px);
           display: flex;
         }
 
-        .mock-sidebar {
+        .menu-calma {
           width: 18%;
           border-right: 1px solid rgba(255, 255, 255, 0.06);
           padding: 15px 10px;
         }
 
-        .mock-logo {
+        .logo-calma {
           width: 20px;
           height: 20px;
           display: flex;
@@ -1180,26 +1237,26 @@ export default function Home() {
           font-weight: bold;
         }
 
-        .mock-sidebar span {
+        .menu-calma span {
           display: block;
           height: 3px;
           margin-top: 15px;
           background: rgba(255, 255, 255, 0.08);
         }
 
-        .mock-main {
+        .principal-calma {
           flex: 1;
           padding: 30px;
         }
 
-        .mock-label {
+        .etiqueta-mockup {
           font-family: monospace;
           font-size: 7px;
           letter-spacing: 0.25em;
           color: rgba(220, 38, 38, 0.7);
         }
 
-        .mock-title {
+        .titulo-mockup {
           margin-top: 8px;
           font-size: 27px;
           font-weight: 800;
@@ -1207,48 +1264,50 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.8);
         }
 
-        .mock-line {
+        .linea-mockup {
           height: 4px;
           margin-top: 10px;
           background: rgba(255, 255, 255, 0.07);
         }
 
-        .mock-line.long {
+        .linea-mockup.grande {
           width: 80%;
         }
 
-        .mock-line.medium {
+        .linea-mockup.mediana {
           width: 55%;
         }
 
-        .mock-cards {
+        .tarjetas-mockup {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 7px;
           margin-top: 25px;
         }
 
-        .mock-cards div {
+        .tarjetas-mockup div {
           height: 55px;
           border: 1px solid rgba(255, 255, 255, 0.07);
           background: rgba(255, 255, 255, 0.025);
         }
 
-        .qr-visual {
+        .contenido-qr {
+          height: calc(100% - 34px);
+          display: flex;
           align-items: center;
           justify-content: center;
           gap: 8%;
           padding: 30px;
         }
 
-        .qr-box {
+        .contenedor-qr {
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 10px;
         }
 
-        .qr-pattern {
+        .codigo-qr {
           width: 115px;
           height: 115px;
           padding: 12px;
@@ -1259,29 +1318,29 @@ export default function Home() {
           background: white;
         }
 
-        .qr-pattern i {
+        .codigo-qr i {
           display: block;
           background: #08090b;
         }
 
-        .qr-pattern i:nth-child(2),
-        .qr-pattern i:nth-child(4),
-        .qr-pattern i:nth-child(8) {
+        .codigo-qr i:nth-child(2),
+        .codigo-qr i:nth-child(4),
+        .codigo-qr i:nth-child(8) {
           background: white;
         }
 
-        .qr-box small {
+        .contenedor-qr small {
           font-family: monospace;
           font-size: 7px;
           letter-spacing: 0.25em;
           color: rgba(255, 255, 255, 0.25);
         }
 
-        .qr-info {
+        .informacion-qr {
           max-width: 240px;
         }
 
-        .attendance-row {
+        .fila-asistencia {
           display: flex;
           justify-content: space-between;
           gap: 15px;
@@ -1293,13 +1352,13 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.25);
         }
 
-        .attendance-row b {
+        .fila-asistencia b {
           color: rgba(220, 38, 38, 0.8);
         }
 
-        .portfolio-visual {
+        .visual-portafolio {
           position: relative;
-          height: 100%;
+          height: calc(100% - 34px);
           padding: 35px;
           background:
             radial-gradient(
@@ -1310,14 +1369,14 @@ export default function Home() {
             #0b0d10;
         }
 
-        .portfolio-number {
+        .numero-portafolio {
           font-family: monospace;
           font-size: 9px;
           color: rgba(220, 38, 38, 0.8);
           letter-spacing: 0.2em;
         }
 
-        .portfolio-title {
+        .titulo-portafolio {
           margin-top: 18px;
           font-size: clamp(30px, 4vw, 55px);
           font-weight: 900;
@@ -1325,7 +1384,7 @@ export default function Home() {
           letter-spacing: -0.07em;
         }
 
-        .portfolio-line {
+        .linea-portafolio {
           position: absolute;
           left: 35px;
           right: 35px;
@@ -1334,7 +1393,7 @@ export default function Home() {
           background: rgba(255, 255, 255, 0.1);
         }
 
-        .portfolio-stats {
+        .datos-portafolio {
           position: absolute;
           bottom: 25px;
           left: 35px;
@@ -1347,7 +1406,8 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.25);
         }
 
-        .code-visual {
+        .visual-codigo {
+          height: calc(100% - 34px);
           padding: 30px;
           font-family: monospace;
           font-size: 9px;
@@ -1355,14 +1415,40 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.35);
         }
 
-        .code-line span {
+        .visual-codigo span {
           display: inline-block;
           width: 28px;
           color: rgba(255, 255, 255, 0.12);
         }
 
-        .code-line b {
+        .visual-codigo b {
           color: rgba(220, 38, 38, 0.8);
+        }
+
+        @media (max-width: 640px) {
+          .contenido-qr {
+            gap: 15px;
+            padding: 15px;
+          }
+
+          .codigo-qr {
+            width: 80px;
+            height: 80px;
+            padding: 8px;
+          }
+
+          .titulo-mockup {
+            font-size: 20px;
+          }
+
+          .principal-calma {
+            padding: 20px;
+          }
+
+          .visual-codigo {
+            font-size: 7px;
+            padding: 20px;
+          }
         }
       `}</style>
     </main>
