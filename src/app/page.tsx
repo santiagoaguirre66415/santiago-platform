@@ -8,1212 +8,1363 @@ import RevealSection from '@/components/RevealSection';
 import TimelineSection from '@/components/TimelineSection';
 import AchievementCard from '@/components/AchievementCard';
 
-const STORAGE_KEY = 'santiago-portfolio-progress-v4';
+const STORAGE_KEY = 'santiago-portfolio-progress-v5';
 
 const LEVELS = [
   {
     level: 1,
-    title: 'El Inicio',
+    title: 'ORIGIN',
+    subtitle: 'El comienzo',
     xpReward: 20,
-    reward: 'First Step',
+    reward: 'FIRST STEP',
   },
   {
     level: 2,
-    title: 'La Formación',
+    title: 'EDUCATION',
+    subtitle: 'La formación',
     xpReward: 20,
-    reward: 'Knowledge Seeker',
+    reward: 'KNOWLEDGE SEEKER',
   },
   {
     level: 3,
-    title: 'Experiencia Práctica',
+    title: 'EXPERIENCE',
+    subtitle: 'Experiencia práctica',
     xpReward: 20,
-    reward: 'Problem Solver',
+    reward: 'PROBLEM SOLVER',
   },
   {
     level: 4,
-    title: 'Las Habilidades',
+    title: 'STACK',
+    subtitle: 'Tecnologías',
     xpReward: 20,
-    reward: 'Full Stack Mode',
+    reward: 'FULL STACK MODE',
   },
   {
     level: 5,
-    title: 'Los Jefes Finales',
+    title: 'PROJECTS',
+    subtitle: 'Proyectos',
     xpReward: 20,
-    reward: 'Boss Cleared',
+    reward: 'PROJECT BUILDER',
   },
 ] as const;
 
 const EXPERIENCE = [
   {
-    year: '2025 — Actual',
+    year: '2025 — ACTUAL',
     title: 'Ingeniería Informática',
-    subtitle: 'Formación universitaria',
+    company: 'Formación universitaria',
     description:
-      'Formación universitaria enfocada en informática, programación, desarrollo de software, bases de datos, lógica y resolución de problemas.',
+      'Formación enfocada en programación, desarrollo de software, estructuras de datos y creación de soluciones tecnológicas.',
   },
   {
-    year: '2025 — Actual',
+    year: '2025 — ACTUAL',
     title: 'Análisis y Desarrollo de Software',
-    subtitle: 'Formación tecnológica',
+    company: 'Formación tecnológica',
     description:
-      'Formación orientada al diseño, desarrollo y construcción de soluciones de software.',
+      'Desarrollo de aplicaciones y fortalecimiento de conocimientos en programación, bases de datos, desarrollo web y metodologías de software.',
   },
   {
     year: '2025 — 2026',
-    title: 'Proyecto Calma',
-    subtitle: 'Proyecto personal — Finalizado',
+    title: 'Calma',
+    company: 'Proyecto personal — Finalizado',
     description:
-      'Aplicación de acompañamiento digital con chatbot. Incluye interfaces web, integración de servicios y manejo de información.',
+      'Aplicación enfocada en acompañamiento y bienestar, desarrollada como proyecto tecnológico con una experiencia de interacción basada en chatbot.',
   },
   {
-    year: '2025 — Actual',
+    year: '2025 — ACTUAL',
     title: 'Sistema de Asistencia QR',
-    subtitle: 'Proyecto académico — En desarrollo',
+    company: 'Proyecto académico — En desarrollo',
     description:
-      'Sistema de asistencia mediante códigos QR con validación de horario y distancia.',
+      'Sistema de asistencia mediante códigos QR con validación por horario y distancia, registro de asistencias y control de información.',
+  },
+];
+
+const TECHNOLOGIES = [
+  {
+    category: 'FRONTEND',
+    items: [
+      { name: 'HTML5', code: 'HTML' },
+      { name: 'CSS3', code: 'CSS' },
+      { name: 'JavaScript', code: 'JS' },
+      { name: 'TypeScript', code: 'TS' },
+      { name: 'React', code: 'RE' },
+      { name: 'Next.js', code: 'NX' },
+      { name: 'Tailwind CSS', code: 'TW' },
+    ],
+  },
+  {
+    category: 'BACKEND',
+    items: [
+      { name: 'Java', code: 'JV' },
+      { name: 'Python', code: 'PY' },
+      { name: 'Node.js', code: 'ND' },
+      { name: 'PHP', code: 'PHP' },
+    ],
+  },
+  {
+    category: 'MOBILE',
+    items: [
+      { name: 'Flutter', code: 'FL' },
+      { name: 'Dart', code: 'DT' },
+    ],
+  },
+  {
+    category: 'DATABASE',
+    items: [
+      { name: 'MySQL', code: 'MY' },
+      { name: 'PostgreSQL', code: 'PG' },
+      { name: 'MongoDB', code: 'MG' },
+      { name: 'SQL', code: 'SQL' },
+    ],
+  },
+  {
+    category: 'SERVICES & TOOLS',
+    items: [
+      { name: 'Appwrite', code: 'AW' },
+      { name: 'Firebase', code: 'FB' },
+      { name: 'Docker', code: 'DK' },
+      { name: 'Git', code: 'GT' },
+    ],
   },
 ];
 
 const PROJECTS = [
   {
-    title: '🧠 Calma',
+    number: '01',
+    title: 'CALMA',
+    type: 'PROYECTO FINALIZADO',
     description:
-      'Aplicación de acompañamiento digital con chatbot. Incluye interfaces web, integración de servicios y manejo de información.',
-    tech: ['TypeScript', 'React', 'Next.js', 'Appwrite'],
-    status: '✅ Finalizado',
-    repo: null as string | null,
-    demo: null as string | null,
+      'Aplicación enfocada en acompañamiento y bienestar con una experiencia de interacción mediante chatbot.',
+    stack: ['TypeScript', 'React', 'Next.js', 'Appwrite'],
+    visual: 'calma',
   },
   {
-    title: '📱 Sistema de Asistencia QR',
+    number: '02',
+    title: 'QR ATTENDANCE',
+    type: 'PROYECTO EN DESARROLLO',
     description:
-      'Sistema de asistencia con códigos QR, validación de horario y distancia.',
-    tech: ['JavaScript', 'React', 'Node.js', 'SQL', 'Git'],
-    status: '🚧 En desarrollo',
-    repo: null as string | null,
-    demo: null as string | null,
+      'Sistema de asistencia mediante QR con validación de horario y distancia para controlar registros de forma más precisa.',
+    stack: ['JavaScript', 'React', 'Node.js', 'SQL'],
+    visual: 'qr',
   },
   {
-    title: '🎮 Portafolio Gamificado',
+    number: '03',
+    title: 'SANTIAGO.DEV',
+    type: 'PORTFOLIO PERSONAL',
     description:
-      'Portafolio interactivo con sistema de niveles, XP y logros.',
-    tech: [
-      'TypeScript',
-      'React',
-      'Next.js',
-      'Tailwind CSS',
-      'Appwrite',
-      'Git',
-    ],
-    status: '🚧 Evolución continua',
-    repo: 'https://github.com/santiagoaguirre66415/santiago-platform',
-    demo: 'https://sanas07a.dev',
+      'Portafolio web gamificado diseñado para mostrar mi evolución, tecnologías y proyectos.',
+    stack: ['TypeScript', 'Next.js', 'Tailwind', 'Appwrite'],
+    visual: 'portfolio',
   },
   {
-    title: '💻 Otros Proyectos',
+    number: '04',
+    title: 'CODE LAB',
+    type: 'FORMACIÓN',
     description:
-      'Ejercicios y proyectos realizados durante mi formación utilizando diferentes lenguajes, frameworks y herramientas.',
-    tech: [
-      'Python',
-      'Java',
-      'Flutter',
-      'SQL',
-      'HTML5',
-      'CSS3',
-    ],
-    status: '📚 Formación',
-    repo: null as string | null,
-    demo: null as string | null,
+      'Conjunto de ejercicios y proyectos desarrollados durante mi proceso de formación en programación.',
+    stack: ['Python', 'Java', 'Flutter', 'SQL'],
+    visual: 'code',
   },
 ];
 
 const ACHIEVEMENTS = [
   {
-    id: 1,
-    icon: '🥉',
-    title: 'First Step',
-    description: 'Comenzar mi camino en el desarrollo de software.',
+    id: '01',
+    title: 'FIRST STEP',
+    description: 'Completaste el primer nivel de tu recorrido.',
     xp: 10,
   },
   {
-    id: 2,
-    icon: '📚',
-    title: 'Knowledge Seeker',
-    description: 'Aprender nuevas tecnologías y conceptos.',
+    id: '02',
+    title: 'KNOWLEDGE SEEKER',
+    description: 'Tu formación comenzó a tomar forma.',
     xp: 20,
   },
   {
-    id: 3,
-    icon: '💻',
-    title: 'Code Explorer',
-    description: 'Explorar y experimentar con diferentes tecnologías.',
+    id: '03',
+    title: 'CODE EXPLORER',
+    description: 'Exploraste diferentes lenguajes y tecnologías.',
     xp: 30,
   },
   {
-    id: 4,
-    icon: '🧩',
-    title: 'Problem Solver',
-    description:
-      'Encontrar soluciones a problemas durante el desarrollo.',
+    id: '04',
+    title: 'PROBLEM SOLVER',
+    description: 'Convertiste problemas académicos en soluciones funcionales.',
     xp: 30,
   },
   {
-    id: 5,
-    icon: '⚡',
-    title: 'Full Stack Mode',
-    description:
-      'Explorar tecnologías tanto de frontend como de backend.',
+    id: '05',
+    title: 'FULL STACK MODE',
+    description: 'Comenzaste a trabajar en diferentes capas del desarrollo.',
     xp: 40,
   },
   {
-    id: 6,
-    icon: '🛠️',
-    title: 'Project Builder',
-    description:
-      'Convertir ideas en proyectos funcionales.',
+    id: '06',
+    title: 'PROJECT BUILDER',
+    description: 'Construiste proyectos reales durante tu formación.',
     xp: 40,
   },
   {
-    id: 7,
-    icon: '👑',
-    title: 'Boss Cleared',
-    description:
-      'Finalizar proyectos y superar nuevos desafíos.',
+    id: '07',
+    title: 'BOSS CLEARED',
+    description: 'Completaste el recorrido principal del portfolio.',
     xp: 50,
   },
 ];
 
-interface SavedProgress {
-  unlockedLevels: number[];
-  unlockedAchievements: number[];
-}
+function ProjectVisual({ type }: { type: string }) {
+  if (type === 'calma') {
+    return (
+      <div className="project-screen">
+        <div className="mock-top">
+          <span className="mock-dot" />
+          <span className="mock-dot" />
+          <span className="mock-dot" />
+          <span className="mock-url">calma.app</span>
+        </div>
 
-const DEFAULT_PROGRESS: SavedProgress = {
-  unlockedLevels: [1],
-  unlockedAchievements: [1],
-};
+        <div className="mock-content calma-visual">
+          <div className="mock-sidebar">
+            <div className="mock-logo">C</div>
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
 
-function loadProgress(): SavedProgress {
-  if (typeof window === 'undefined') {
-    return DEFAULT_PROGRESS;
+          <div className="mock-main">
+            <div className="mock-label">WELCOME BACK</div>
+            <div className="mock-title">Calma</div>
+            <div className="mock-line long" />
+            <div className="mock-line medium" />
+
+            <div className="mock-cards">
+              <div />
+              <div />
+              <div />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+  if (type === 'qr') {
+    return (
+      <div className="project-screen">
+        <div className="mock-top">
+          <span className="mock-dot" />
+          <span className="mock-dot" />
+          <span className="mock-dot" />
+          <span className="mock-url">attendance.system</span>
+        </div>
 
-    if (!raw) {
-      return DEFAULT_PROGRESS;
-    }
+        <div className="mock-content qr-visual">
+          <div className="qr-box">
+            <div className="qr-pattern">
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+            <small>SCAN QR</small>
+          </div>
 
-    const parsed = JSON.parse(raw) as Partial<SavedProgress>;
+          <div className="qr-info">
+            <div className="mock-label">ATTENDANCE</div>
+            <div className="mock-title">Control de asistencia</div>
 
-    const levels = Array.isArray(parsed.unlockedLevels)
-      ? parsed.unlockedLevels.filter(
-          (level): level is number =>
-            typeof level === 'number' &&
-            level >= 1 &&
-            level <= LEVELS.length
-        )
-      : [];
+            <div className="attendance-row">
+              <span>Horario</span>
+              <b>08:00 — 10:00</b>
+            </div>
 
-    const achievements = Array.isArray(parsed.unlockedAchievements)
-      ? parsed.unlockedAchievements.filter(
-          (achievement): achievement is number =>
-            typeof achievement === 'number' &&
-            achievement >= 1 &&
-            achievement <= ACHIEVEMENTS.length
-        )
-      : [];
-
-    return {
-      unlockedLevels: Array.from(
-        new Set([1, ...levels])
-      ).sort((a, b) => a - b),
-
-      unlockedAchievements: Array.from(
-        new Set([1, ...achievements])
-      ).sort((a, b) => a - b),
-    };
-  } catch {
-    return DEFAULT_PROGRESS;
+            <div className="attendance-row">
+              <span>Distancia</span>
+              <b>VALIDATED</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
-}
 
-function saveProgress(data: SavedProgress) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {
-    // Ignorar errores de almacenamiento local.
+  if (type === 'portfolio') {
+    return (
+      <div className="project-screen">
+        <div className="mock-top">
+          <span className="mock-dot" />
+          <span className="mock-dot" />
+          <span className="mock-dot" />
+          <span className="mock-url">sanas07a.dev</span>
+        </div>
+
+        <div className="portfolio-visual">
+          <div className="portfolio-number">05</div>
+          <div className="portfolio-title">
+            SANTIAGO
+            <br />
+            AGUIRRE
+          </div>
+
+          <div className="portfolio-line" />
+
+          <div className="portfolio-stats">
+            <span>FULL STACK</span>
+            <span>2026</span>
+          </div>
+        </div>
+      </div>
+    );
   }
-}
-
-export default function HomePage() {
-  const [hydrated, setHydrated] = useState(false);
-
-  const [unlockedLevels, setUnlockedLevels] = useState<Set<number>>(
-    () => new Set([1])
-  );
-
-  const [unlockedAchievements, setUnlockedAchievements] =
-    useState<Set<number>>(() => new Set([1]));
-
-  const [toast, setToast] = useState<string | null>(null);
-
-  /*
-   * Cargar progreso guardado.
-   */
-  useEffect(() => {
-    const saved = loadProgress();
-
-    setUnlockedLevels(new Set(saved.unlockedLevels));
-    setUnlockedAchievements(
-      new Set(saved.unlockedAchievements)
-    );
-
-    setHydrated(true);
-  }, []);
-
-  /*
-   * Guardar progreso automáticamente.
-   */
-  useEffect(() => {
-    if (!hydrated) return;
-
-    saveProgress({
-      unlockedLevels: Array.from(unlockedLevels).sort(
-        (a, b) => a - b
-      ),
-      unlockedAchievements: Array.from(
-        unlockedAchievements
-      ).sort((a, b) => a - b),
-    });
-  }, [
-    unlockedLevels,
-    unlockedAchievements,
-    hydrated,
-  ]);
-
-  /*
-   * Nivel máximo alcanzado.
-   */
-  const currentLevel = useMemo(() => {
-    return Math.max(
-      ...Array.from(unlockedLevels),
-      1
-    );
-  }, [unlockedLevels]);
-
-  /*
-   * XP de niveles.
-   */
-  const levelXP = useMemo(() => {
-    return Array.from(unlockedLevels).reduce(
-      (total, level) => {
-        const levelInfo = LEVELS[level - 1];
-
-        return total + (levelInfo?.xpReward ?? 0);
-      },
-      0
-    );
-  }, [unlockedLevels]);
-
-  /*
-   * XP de logros.
-   */
-  const achievementXP = useMemo(() => {
-    return Array.from(unlockedAchievements).reduce(
-      (total, achievementId) => {
-        const achievement = ACHIEVEMENTS.find(
-          (item) => item.id === achievementId
-        );
-
-        return total + (achievement?.xp ?? 0);
-      },
-      0
-    );
-  }, [unlockedAchievements]);
-
-  /*
-   * XP total.
-   */
-  const xp = levelXP + achievementXP;
-
-  /*
-   * El portafolio se considera completado
-   * cuando los cinco niveles fueron desbloqueados.
-   */
-  const isCompleted =
-    unlockedLevels.size >= LEVELS.length;
-
-  /*
-   * Verificar si un nivel está desbloqueado.
-   */
-  const isUnlocked = useCallback(
-    (level: number) => {
-      return unlockedLevels.has(level);
-    },
-    [unlockedLevels]
-  );
-
-  /*
-   * Mostrar notificación.
-   */
-  const showToast = useCallback(
-    (message: string) => {
-      setToast(message);
-
-      window.setTimeout(() => {
-        setToast(null);
-      }, 3000);
-    },
-    []
-  );
-
-  /*
-   * Desbloquear nivel.
-   *
-   * Los niveles se desbloquean de manera progresiva:
-   *
-   * Nivel 1 → Nivel 2 → Nivel 3 → Nivel 4 → Nivel 5
-   */
-  const unlockLevel = useCallback(
-    (level: number) => {
-      if (level < 1 || level > LEVELS.length) {
-        return;
-      }
-
-      setUnlockedLevels((previous) => {
-        /*
-         * El nivel 1 siempre está disponible.
-         */
-        if (level === 1) {
-          if (previous.has(1)) {
-            return previous;
-          }
-
-          const next = new Set(previous);
-          next.add(1);
-
-          return next;
-        }
-
-        /*
-         * No permitir desbloquear un nivel
-         * si el anterior todavía no fue alcanzado.
-         */
-        if (!previous.has(level - 1)) {
-          return previous;
-        }
-
-        /*
-         * Evitar repetir la recompensa.
-         */
-        if (previous.has(level)) {
-          return previous;
-        }
-
-        const next = new Set(previous);
-        next.add(level);
-
-        return next;
-      });
-
-      /*
-       * Los logros se relacionan con el progreso.
-       *
-       * Nivel 1 → First Step
-       * Nivel 2 → Knowledge Seeker + Code Explorer
-       * Nivel 3 → Problem Solver
-       * Nivel 4 → Full Stack Mode
-       * Nivel 5 → Project Builder + Boss Cleared
-       */
-      setUnlockedAchievements((previous) => {
-        const next = new Set(previous);
-
-        if (level >= 1) {
-          next.add(1);
-        }
-
-        if (level >= 2) {
-          next.add(2);
-          next.add(3);
-        }
-
-        if (level >= 3) {
-          next.add(4);
-        }
-
-        if (level >= 4) {
-          next.add(5);
-        }
-
-        if (level >= 5) {
-          next.add(6);
-          next.add(7);
-        }
-
-        return next;
-      });
-
-      const levelInfo = LEVELS[level - 1];
-
-      /*
-       * Solo mostrar la recompensa si el nivel
-       * realmente estaba bloqueado.
-       */
-      if (
-        levelInfo &&
-        level > 1 &&
-        !unlockedLevels.has(level)
-      ) {
-        showToast(
-          `🏅 Nivel ${level} desbloqueado: ${levelInfo.reward} · +${levelInfo.xpReward} XP`
-        );
-      }
-    },
-    [showToast, unlockedLevels]
-  );
-
-  /*
-   * Reiniciar completamente el progreso.
-   */
-  const resetProgress = useCallback(() => {
-    setUnlockedLevels(new Set([1]));
-    setUnlockedAchievements(new Set([1]));
-
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // Ignorar errores.
-    }
-
-    showToast('🔄 Progreso reiniciado. ¡Volvamos a jugar!');
-
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [showToast]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-red-950 to-slate-950 text-white">
+    <div className="project-screen">
+      <div className="mock-top">
+        <span className="mock-dot" />
+        <span className="mock-dot" />
+        <span className="mock-dot" />
+        <span className="mock-url">code.lab</span>
+      </div>
+
+      <div className="code-visual">
+        <div className="code-line">
+          <span>01</span>
+          <b>class</b> Developer
+        </div>
+        <div className="code-line">
+          <span>02</span>
+          &nbsp;&nbsp;skills = [
+        </div>
+        <div className="code-line">
+          <span>03</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;"Java",
+        </div>
+        <div className="code-line">
+          <span>04</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;"Python",
+        </div>
+        <div className="code-line">
+          <span>05</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;"React",
+        </div>
+        <div className="code-line">
+          <span>06</span>
+          &nbsp;&nbsp;]
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Home() {
+  const [xp, setXp] = useState(0);
+  const [unlockedLevels, setUnlockedLevels] = useState<number[]>([1]);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<number[]>([]);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+
+      if (!saved) return;
+
+      const data = JSON.parse(saved);
+
+      if (typeof data.xp === 'number') {
+        setXp(data.xp);
+      }
+
+      if (Array.isArray(data.unlockedLevels)) {
+        setUnlockedLevels(data.unlockedLevels);
+      }
+
+      if (Array.isArray(data.unlockedAchievements)) {
+        setUnlockedAchievements(data.unlockedAchievements);
+      }
+    } catch {
+      console.warn('No se pudo recuperar el progreso.');
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        xp,
+        unlockedLevels,
+        unlockedAchievements,
+      })
+    );
+  }, [xp, unlockedLevels, unlockedAchievements]);
+
+  const currentLevel = useMemo(() => {
+    return Math.min(
+      Math.max(Math.max(...unlockedLevels, 1), 1),
+      LEVELS.length
+    );
+  }, [unlockedLevels]);
+
+  const unlockLevel = useCallback((level: number) => {
+    setUnlockedLevels((previous) => {
+      if (previous.includes(level)) return previous;
+
+      const previousLevel = level - 1;
+
+      if (previousLevel > 0 && !previous.includes(previousLevel)) {
+        return previous;
+      }
+
+      return [...previous, level];
+    });
+
+    setXp((previous) => previous + LEVELS[level - 1].xpReward);
+
+    setToast(`LEVEL ${level} UNLOCKED`);
+
+    setTimeout(() => {
+      setToast(null);
+    }, 2500);
+  }, []);
+
+  const unlockAchievement = useCallback((achievement: number) => {
+    setUnlockedAchievements((previous) => {
+      if (previous.includes(achievement)) return previous;
+
+      const reward = ACHIEVEMENTS[achievement - 1]?.xp ?? 0;
+
+      setXp((current) => current + reward);
+
+      setToast(`ACHIEVEMENT ${String(achievement).padStart(2, '0')}`);
+
+      setTimeout(() => {
+        setToast(null);
+      }, 2500);
+
+      return [...previous, achievement];
+    });
+  }, []);
+
+  const resetProgress = () => {
+    setXp(0);
+    setUnlockedLevels([1]);
+    setUnlockedAchievements([]);
+    localStorage.removeItem(STORAGE_KEY);
+    setToast('PROGRESS RESET');
+  };
+
+  return (
+    <main className="min-h-screen overflow-hidden bg-[#08090b] text-white">
+      {/* GLOBAL BACKGROUND */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
+
+        <div className="absolute left-1/2 top-[-300px] h-[650px] w-[650px] -translate-x-1/2 rounded-full bg-red-600/10 blur-[140px]" />
+
+        <div className="absolute bottom-[15%] right-[-250px] h-[500px] w-[500px] rounded-full bg-red-900/10 blur-[130px]" />
+      </div>
+
       <Navbar />
 
-      {/* Toast de progreso */}
+      {/* HUD */}
+      <div className="fixed bottom-6 left-6 z-50 hidden w-[250px] md:block">
+        <div className="border border-white/10 bg-[#0b0d10]/90 p-4 backdrop-blur-xl">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-[10px] font-semibold tracking-[0.25em] text-white/40">
+              SYSTEM PROGRESS
+            </span>
+
+            <span className="font-mono text-xs text-red-500">
+              LVL {String(currentLevel).padStart(2, '0')}
+            </span>
+          </div>
+
+          <XPBar
+            value={xp}
+            level={currentLevel}
+            label={`${xp} XP`}
+          />
+        </div>
+      </div>
+
+      {/* TOAST */}
       {toast && (
-        <div
-          className="fixed left-1/2 top-24 z-[60] w-[min(90vw,24rem)] -translate-x-1/2 rounded-2xl border border-red-400/40 bg-slate-950/95 p-4 shadow-xl shadow-red-500/30 backdrop-blur-xl"
-          role="status"
-          aria-live="polite"
-        >
-          <p className="text-center text-sm font-medium text-white">
+        <div className="fixed right-6 top-24 z-[100] border border-red-500/30 bg-[#0d0f12]/95 px-5 py-4 shadow-2xl backdrop-blur-xl">
+          <div className="mb-1 text-[9px] tracking-[0.3em] text-red-500">
+            SYSTEM
+          </div>
+
+          <div className="text-sm font-semibold tracking-wider">
             {toast}
-          </p>
+          </div>
         </div>
       )}
 
-      {/* Barra de XP */}
-      <XPBar
-        value={xp}
-        level={currentLevel}
-        label={
-          isCompleted
-            ? '🏆 ¡Portafolio completado!'
-            : `Nivel ${currentLevel}: ${
-                LEVELS[currentLevel - 1]?.title ?? ''
-              }`
-        }
-      />
+      {/* HERO */}
+      <section className="relative z-10 flex min-h-screen items-center px-6 pb-20 pt-32 md:px-12 lg:px-20">
+        <div className="mx-auto grid w-full max-w-7xl gap-16 lg:grid-cols-[1.25fr_.75fr] lg:items-center">
+          <div>
+            <div className="mb-8 flex items-center gap-4">
+              <div className="h-px w-10 bg-red-600" />
 
-      <main className="pb-24">
-
-        {/* =========================================================
-            HERO
-        ========================================================= */}
-        <section className="relative overflow-hidden px-4 pb-16 pt-32 sm:px-6 lg:px-8">
-          <div
-            className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-red-600/20 blur-3xl"
-            aria-hidden="true"
-          />
-
-          <div className="relative mx-auto max-w-4xl text-center">
-            <p className="mb-3 text-sm font-medium uppercase tracking-widest text-red-400">
-              🎮 Portafolio Gamificado
-            </p>
-
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Santiago{' '}
-              <span className="bg-gradient-to-r from-red-400 to-rose-400 bg-clip-text text-transparent">
-                Aguirre
+              <span className="font-mono text-[10px] font-semibold tracking-[0.35em] text-red-500">
+                PORTFOLIO / 2026
               </span>
+            </div>
+
+            <h1 className="max-w-5xl text-[clamp(4rem,11vw,9.5rem)] font-black leading-[0.8] tracking-[-0.07em]">
+              SANTIAGO
+              <br />
+              <span className="text-white/20">AGUIRRE</span>
             </h1>
 
-            <p className="mt-3 text-lg text-gray-300 sm:text-xl">
-              Desarrollador Full Stack en formación
-            </p>
+            <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center">
+              <div className="border-l border-red-600 pl-4">
+                <p className="text-sm font-semibold tracking-[0.18em] text-white">
+                  FULL STACK DEVELOPER
+                </p>
 
-            <p className="mt-2 text-sm text-gray-500">
-              📍 Manizales, Colombia 🇨🇴
-            </p>
+                <p className="mt-1 text-xs tracking-[0.2em] text-white/35">
+                  IN TRAINING
+                </p>
+              </div>
 
-            <blockquote className="mx-auto mt-6 max-w-lg text-base italic text-rose-200/90">
-              &ldquo;Aprendo construyendo, mejoro practicando y sigo avanzando&rdquo;
-            </blockquote>
+              <div className="hidden h-8 w-px bg-white/10 sm:block" />
 
-            <div className="mx-auto mt-10 flex h-28 w-28 items-center justify-center rounded-full border-2 border-red-400/40 bg-gradient-to-br from-red-600/40 to-rose-500/30 text-3xl font-bold text-red-200 shadow-xl shadow-red-500/20">
-              SA
-            </div>
-
-            <p className="mt-8 text-sm text-gray-400">
-              Desplázate hacia abajo para desbloquear cada nivel de mi historia
-            </p>
-
-            <div
-              className="mt-4 animate-bounce text-red-400"
-              aria-hidden="true"
-            >
-              ↓
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================
-            MAPA DE NIVELES
-        ========================================================= */}
-        <section
-          className="px-4 py-8 sm:px-6 lg:px-8"
-          aria-label="Progreso de niveles"
-        >
-          <div className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {LEVELS.map((level) => (
-              <LevelBadge
-                key={level.level}
-                level={level.level}
-                title={level.title}
-                unlocked={isUnlocked(level.level)}
-                active={currentLevel === level.level}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* =========================================================
-            NIVEL 1
-        ========================================================= */}
-        <RevealSection
-          id="nivel-1"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(1)}
-        >
-          <div className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl sm:p-10">
-            <p className="text-xs font-medium uppercase tracking-widest text-green-400">
-              Nivel 1 — El Inicio
-            </p>
-
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">
-              👋 ¡Hola, soy Santiago!
-            </h2>
-
-            <p className="mt-4 leading-relaxed text-gray-300">
-              Soy <strong>Santiago Aguirre</strong>, estudiante de{' '}
-              <strong>Ingeniería Informática</strong> y{' '}
-              <strong>Análisis y Desarrollo de Software</strong>,
-              interesado en la programación, el desarrollo web y la
-              creación de soluciones digitales.
-            </p>
-
-            <p className="mt-4 leading-relaxed text-gray-300">
-              Comencé mi formación universitaria en{' '}
-              <strong>2025</strong> y desde entonces he ido
-              construyendo mi camino en el desarrollo de software
-              mediante proyectos académicos, personales y
-              experimentación con diferentes tecnologías.
-            </p>
-
-            <p className="mt-4 leading-relaxed text-gray-300">
-              Me gusta aprender <strong>haciendo</strong>: convertir
-              una idea en un proyecto funcional, encontrar soluciones
-              a los problemas que aparecen durante el desarrollo y
-              seguir mejorando el resultado.
-            </p>
-
-            <div className="mt-6 rounded-2xl border border-red-400/30 bg-red-500/10 p-6">
-              <h3 className="font-semibold text-red-300">
-                🎯 Mi objetivo
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-300">
-                Seguir fortaleciendo mis conocimientos en desarrollo
-                de software, adquirir experiencia práctica mediante
-                nuevos proyectos y crecer como desarrollador.
+              <p className="max-w-md text-sm leading-6 text-white/45">
+                Construyo interfaces, exploro nuevas tecnologías y convierto
+                ideas en proyectos funcionales.
               </p>
             </div>
 
-            <div className="mt-6">
-              <h3 className="font-semibold text-red-300">
-                🕹️ Mi filosofía
-              </h3>
+            <div className="mt-12 flex flex-wrap gap-3">
+              <a
+                href="#nivel-5"
+                className="group flex items-center gap-3 border border-red-600 bg-red-600 px-6 py-3 text-xs font-bold tracking-[0.18em] transition-all hover:bg-red-500"
+              >
+                VER PROYECTOS
 
-              <p className="mt-2 text-sm text-gray-300">
-                <strong>
-                  Idea → Código → Prueba → Error → Mejora → Proyecto
-                </strong>
-              </p>
+                <span className="transition-transform group-hover:translate-x-1">
+                  →
+                </span>
+              </a>
 
-              <p className="mt-2 text-sm text-gray-400">
-                Cada proyecto representa una oportunidad para aprender
-                algo nuevo.
-              </p>
+              <a
+                href="mailto:santiago.aguirre66415@ucaldas.edu.co"
+                className="border border-white/10 px-6 py-3 text-xs font-bold tracking-[0.18em] text-white/70 transition-all hover:border-white/30 hover:text-white"
+              >
+                CONTACTO
+              </a>
             </div>
           </div>
-        </RevealSection>
 
-        {/* =========================================================
-            NIVEL 2
-        ========================================================= */}
-        <RevealSection
-          id="nivel-2"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(2)}
-        >
-          <div className="mx-auto max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-widest text-blue-400">
-              Nivel 2 — La Formación
-            </p>
+          {/* HERO VISUAL */}
+          <div className="relative hidden lg:block">
+            <div className="relative aspect-square border border-white/10 bg-[#0c0e11]/70 p-8">
+              <div className="absolute left-0 top-0 h-16 w-px bg-red-600" />
+              <div className="absolute left-0 top-0 h-px w-16 bg-red-600" />
 
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">
-              🎓 Mi camino académico
-            </h2>
+              <div className="absolute bottom-0 right-0 h-16 w-px bg-red-600" />
+              <div className="absolute bottom-0 right-0 h-px w-16 bg-red-600" />
 
-            <div className="mt-8 space-y-4">
+              <div className="absolute inset-12 border border-white/[0.06]" />
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-white">
-                  Ingeniería Informática
-                </h3>
+              <div className="absolute left-1/2 top-1/2 flex h-48 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-white/10">
+                <div className="absolute inset-3 border border-red-600/30" />
 
-                <p className="mt-1 text-sm text-gray-500">
-                  2025 — Actualidad
-                </p>
-
-                <p className="mt-2 text-sm text-gray-400">
-                  Formación universitaria enfocada en informática,
-                  programación, desarrollo de software, bases de
-                  datos, lógica y resolución de problemas.
-                </p>
+                <span className="text-7xl font-black tracking-[-0.08em] text-white/90">
+                  SA
+                </span>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-white">
-                  Análisis y Desarrollo de Software
-                </h3>
-
-                <p className="mt-1 text-sm text-gray-500">
-                  Formación tecnológica
-                </p>
-
-                <p className="mt-2 text-sm text-gray-400">
-                  Formación orientada al diseño, desarrollo y
-                  construcción de soluciones de software.
-                </p>
+              <div className="absolute left-8 top-8 font-mono text-[9px] tracking-[0.25em] text-white/25">
+                MANIZALES / CO
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <h3 className="font-semibold text-white">
-                  📚 Lo que he aprendido construyendo
-                </h3>
-
-                <p className="mt-2 text-sm text-gray-400">
-                  Mi formación no se limita solamente a la teoría.
-                  He aplicado conocimientos en proyectos utilizando
-                  diferentes tecnologías:
-                </p>
-
-                <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                  {[
-                    'HTML5',
-                    'CSS3',
-                    'JavaScript',
-                    'TypeScript',
-                    'React',
-                    'Next.js',
-                    'Tailwind CSS',
-                    'Node.js',
-                    'Python',
-                    'Java',
-                    'PHP',
-                    'Flutter',
-                    'Dart',
-                    'SQL',
-                    'MySQL',
-                    'PostgreSQL',
-                    'MongoDB',
-                    'Appwrite',
-                    'Firebase',
-                    'Docker',
-                    'Git',
-                  ].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs font-medium text-gray-300 transition hover:border-red-400/30 hover:bg-red-500/10 hover:text-red-200"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </RevealSection>
-
-        {/* =========================================================
-            NIVEL 3
-        ========================================================= */}
-        <RevealSection
-          id="nivel-3"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(3)}
-        >
-          <div className="mx-auto max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-widest text-yellow-400">
-              Nivel 3 — Experiencia Práctica
-            </p>
-
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">
-              💻 Construyendo experiencia
-            </h2>
-
-            <p className="mt-4 text-gray-300">
-              Actualmente{' '}
-              <strong>
-                no cuento con experiencia laboral profesional
-              </strong>
-              , pero he desarrollado diferentes proyectos académicos
-              y personales que me han permitido adquirir experiencia
-              práctica en programación y desarrollo de software.
-            </p>
-
-            <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-              <TimelineSection items={EXPERIENCE} />
-            </div>
-          </div>
-        </RevealSection>
-
-        {/* =========================================================
-            NIVEL 4
-        ========================================================= */}
-        <RevealSection
-          id="nivel-4"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(4)}
-        >
-          <div className="mx-auto max-w-5xl">
-            <p className="text-center text-xs font-medium uppercase tracking-widest text-red-400">
-              Nivel 4 — Las Habilidades
-            </p>
-
-            <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">
-              ⚔️ Stack & skills
-            </h2>
-
-            <p className="mt-4 text-center text-sm text-gray-400">
-              Mi stack está en constante evolución. Cada proyecto me
-              permite profundizar en diferentes tecnologías y ampliar
-              mi experiencia práctica.
-            </p>
-
-            <div className="mt-10 space-y-6">
-
-              {/* Frontend */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                <h3 className="text-lg font-semibold text-red-300">
-                  💻 Frontend Web
-                </h3>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {[
-                    'HTML5',
-                    'CSS3',
-                    'JavaScript',
-                    'TypeScript',
-                    'React',
-                    'Next.js',
-                    'Tailwind CSS',
-                  ].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-red-400/20 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+              <div className="absolute bottom-8 right-8 font-mono text-[9px] tracking-[0.25em] text-white/25">
+                05 / 05
               </div>
 
-              {/* Backend */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                <h3 className="text-lg font-semibold text-red-300">
-                  ⚙️ Backend & Programación
-                </h3>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {[
-                    'Java',
-                    'Python',
-                    'JavaScript',
-                    'TypeScript',
-                    'Node.js',
-                    'PHP',
-                  ].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-red-400/20 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                <h3 className="text-lg font-semibold text-red-300">
-                  📱 Desarrollo Mobile
-                </h3>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {['Flutter', 'Dart'].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-red-400/20 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bases de datos */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                <h3 className="text-lg font-semibold text-red-300">
-                  🗄️ Bases de Datos
-                </h3>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {[
-                    'MySQL',
-                    'PostgreSQL',
-                    'SQL',
-                    'MongoDB',
-                  ].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-red-400/20 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Servicios */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                <h3 className="text-lg font-semibold text-red-300">
-                  ☁️ Backend & Servicios
-                </h3>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {['Appwrite', 'Firebase'].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-red-400/20 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* DevOps */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                <h3 className="text-lg font-semibold text-red-300">
-                  🐳 Herramientas & DevOps
-                </h3>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {['Git', 'Docker'].map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-red-400/20 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <div className="absolute left-1/2 top-8 h-2 w-2 -translate-x-1/2 rounded-full bg-red-600 shadow-[0_0_20px_rgba(220,38,38,.8)]" />
             </div>
 
-            <p className="mt-8 text-center text-sm text-gray-500">
-              Idiomas: Español (nativo) · Inglés (técnico / lectura)
-            </p>
+            <div className="absolute -bottom-5 -left-5 border border-white/10 bg-[#0b0d10] px-5 py-4">
+              <span className="block text-[9px] tracking-[0.25em] text-white/30">
+                CURRENT STATUS
+              </span>
+
+              <span className="mt-1 block text-xs font-semibold tracking-widest text-red-500">
+                BUILDING
+              </span>
+            </div>
           </div>
-        </RevealSection>
+        </div>
 
-        {/* =========================================================
-            NIVEL 5
-        ========================================================= */}
-        <RevealSection
-          id="nivel-5"
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          onUnlock={() => unlockLevel(5)}
-        >
-          <div className="mx-auto max-w-5xl">
-            <p className="text-center text-xs font-medium uppercase tracking-widest text-rose-400">
-              Nivel 5 — Los Jefes Finales
-            </p>
+        <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex">
+          <span className="font-mono text-[8px] tracking-[0.4em] text-white/25">
+            SCROLL TO EXPLORE
+          </span>
 
-            <h2 className="mt-2 text-center text-2xl font-bold sm:text-3xl">
-              🏆 Proyectos destacados
-            </h2>
+          <div className="h-12 w-px bg-gradient-to-b from-red-600 to-transparent" />
+        </div>
+      </section>
 
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {PROJECTS.map((project) => (
-                <article
-                  key={project.title}
-                  className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-red-400/40 hover:bg-white/10 hover:shadow-xl hover:shadow-red-500/10"
+      {/* LEVEL MAP */}
+      <section className="relative z-10 border-y border-white/10 bg-[#0a0c0f]/80 px-6 py-10 backdrop-blur-xl md:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
+                NAVIGATION
+              </span>
+
+              <h2 className="mt-2 text-xl font-bold tracking-tight">
+                THE JOURNEY
+              </h2>
+            </div>
+
+            <span className="font-mono text-[10px] text-white/25">
+              {String(currentLevel).padStart(2, '0')} / 05
+            </span>
+          </div>
+
+          <div className="grid grid-cols-5 gap-2">
+            {LEVELS.map((level) => {
+              const unlocked = unlockedLevels.includes(level.level);
+              const active = currentLevel === level.level;
+
+              return (
+                <div
+                  key={level.level}
+                  className={`group relative border p-4 transition-all ${
+                    unlocked
+                      ? 'border-white/10 bg-white/[0.025]'
+                      : 'border-white/[0.05] bg-black/20 opacity-40'
+                  } ${active ? 'border-red-600/60' : ''}`}
                 >
-                  <h3 className="text-lg font-semibold text-white">
-                    {project.title}
+                  {active && (
+                    <div className="absolute left-0 top-0 h-px w-full bg-red-600" />
+                  )}
+
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={`font-mono text-lg font-bold ${
+                        active ? 'text-red-500' : 'text-white/40'
+                      }`}
+                    >
+                      0{level.level}
+                    </span>
+
+                    <span className="text-[9px] tracking-widest text-white/20">
+                      {unlocked ? 'OPEN' : 'LOCKED'}
+                    </span>
+                  </div>
+
+                  <div className="mt-5 text-[10px] font-bold tracking-[0.15em] text-white/70">
+                    {level.title}
+                  </div>
+
+                  <div className="mt-1 text-[9px] text-white/25">
+                    {level.subtitle}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* LEVEL 01 */}
+      <RevealSection
+        id="nivel-1"
+        className="relative z-10"
+        onUnlock={() => unlockLevel(1)}
+      >
+        <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
+          <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
+            <div>
+              <div className="font-mono text-7xl font-black tracking-[-0.08em] text-white/[0.06]">
+                01
+              </div>
+
+              <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
+                ORIGIN
+              </div>
+
+              <h2 className="mt-2 text-3xl font-bold">
+                El comienzo
+              </h2>
+            </div>
+
+            <div className="max-w-3xl">
+              <p className="text-2xl font-medium leading-relaxed text-white/85 md:text-4xl md:leading-tight">
+                Soy Santiago Aguirre, desarrollador Full Stack en formación
+                desde Manizales, Colombia.
+              </p>
+
+              <p className="mt-8 max-w-2xl text-base leading-8 text-white/40">
+                Actualmente estoy construyendo mi camino en el desarrollo de
+                software mediante formación académica, proyectos personales y
+                experimentación constante con nuevas tecnologías.
+              </p>
+
+              <div className="mt-12 grid grid-cols-2 gap-px border border-white/10 bg-white/10 sm:grid-cols-4">
+                {[
+                  ['2025', 'START'],
+                  ['CO', 'LOCATION'],
+                  ['01', 'PROFILE'],
+                  ['∞', 'LEARNING'],
+                ].map(([value, label]) => (
+                  <div
+                    key={label}
+                    className="bg-[#0b0d10] p-5"
+                  >
+                    <div className="text-xl font-bold">{value}</div>
+                    <div className="mt-1 text-[8px] tracking-[0.25em] text-white/25">
+                      {label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      </RevealSection>
+
+      {/* LEVEL 02 */}
+      <RevealSection
+        id="nivel-2"
+        className="relative z-10 border-t border-white/10"
+        onUnlock={() => unlockLevel(2)}
+      >
+        <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
+          <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
+            <div>
+              <div className="font-mono text-7xl font-black tracking-[-0.08em] text-white/[0.06]">
+                02
+              </div>
+
+              <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
+                EDUCATION
+              </div>
+
+              <h2 className="mt-2 text-3xl font-bold">
+                La formación
+              </h2>
+            </div>
+
+            <div>
+              <TimelineSection items={EXPERIENCE.slice(0, 2)} />
+
+              <div className="mt-16 grid gap-4 sm:grid-cols-2">
+                <div className="border border-white/10 bg-white/[0.02] p-7">
+                  <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
+                    UNIVERSITY
+                  </span>
+
+                  <h3 className="mt-5 text-xl font-bold">
+                    Ingeniería Informática
                   </h3>
 
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-400">
+                  <p className="mt-3 text-sm leading-6 text-white/35">
+                    Formación universitaria iniciada en 2025.
+                  </p>
+                </div>
+
+                <div className="border border-white/10 bg-white/[0.02] p-7">
+                  <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
+                    SOFTWARE
+                  </span>
+
+                  <h3 className="mt-5 text-xl font-bold">
+                    Análisis y Desarrollo
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-6 text-white/35">
+                    Formación orientada al desarrollo de software.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </RevealSection>
+
+      {/* LEVEL 03 */}
+      <RevealSection
+        id="nivel-3"
+        className="relative z-10 border-t border-white/10"
+        onUnlock={() => unlockLevel(3)}
+      >
+        <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
+          <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
+            <div>
+              <div className="font-mono text-7xl font-black tracking-[-0.08em] text-white/[0.06]">
+                03
+              </div>
+
+              <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
+                EXPERIENCE
+              </div>
+
+              <h2 className="mt-2 text-3xl font-bold">
+                Experiencia práctica
+              </h2>
+            </div>
+
+            <div>
+              <div className="mb-10 border border-red-600/20 bg-red-600/[0.03] p-6">
+                <span className="font-mono text-[9px] tracking-[0.3em] text-red-500">
+                  CURRENT STAGE
+                </span>
+
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-white/50">
+                  Actualmente no cuento con experiencia laboral profesional.
+                  Mi experiencia se ha desarrollado principalmente mediante
+                  formación académica, proyectos personales y proyectos de
+                  desarrollo.
+                </p>
+              </div>
+
+              <TimelineSection items={EXPERIENCE.slice(2)} />
+            </div>
+          </div>
+        </section>
+      </RevealSection>
+
+      {/* LEVEL 04 */}
+      <RevealSection
+        id="nivel-4"
+        className="relative z-10 border-t border-white/10"
+        onUnlock={() => unlockLevel(4)}
+      >
+        <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
+          <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
+            <div>
+              <div className="font-mono text-7xl font-black tracking-[-0.08em] text-white/[0.06]">
+                04
+              </div>
+
+              <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
+                STACK
+              </div>
+
+              <h2 className="mt-2 text-3xl font-bold">
+                Tecnologías
+              </h2>
+
+              <p className="mt-6 text-sm leading-7 text-white/30">
+                Tecnologías que forman parte de mi proceso de aprendizaje y
+                desarrollo.
+              </p>
+            </div>
+
+            <div className="space-y-12">
+              {TECHNOLOGIES.map((group) => (
+                <div key={group.category}>
+                  <div className="mb-5 flex items-center gap-4">
+                    <span className="font-mono text-[9px] tracking-[0.3em] text-white/25">
+                      {group.category}
+                    </span>
+
+                    <div className="h-px flex-1 bg-white/[0.06]" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                    {group.items.map((technology) => (
+                      <div
+                        key={technology.name}
+                        className="group flex items-center gap-4 border border-white/10 bg-white/[0.02] p-4 transition-all hover:-translate-y-1 hover:border-red-600/40 hover:bg-white/[0.04]"
+                      >
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/10 bg-[#101216] font-mono text-[9px] font-bold text-white/60 transition-colors group-hover:border-red-600/40 group-hover:text-red-500">
+                          {technology.code}
+                        </div>
+
+                        <span className="text-xs font-medium text-white/65">
+                          {technology.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </RevealSection>
+
+      {/* LEVEL 05 */}
+      <RevealSection
+        id="nivel-5"
+        className="relative z-10 border-t border-white/10"
+        onUnlock={() => unlockLevel(5)}
+      >
+        <section className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
+          <div className="mb-16">
+            <div className="font-mono text-7xl font-black tracking-[-0.08em] text-white/[0.06]">
+              05
+            </div>
+
+            <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">
+              SELECTED WORK
+            </div>
+
+            <div className="mt-2 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+              <h2 className="text-4xl font-bold tracking-tight">
+                Proyectos
+              </h2>
+
+              <p className="max-w-md text-sm leading-6 text-white/30">
+                Una selección de proyectos desarrollados durante mi proceso
+                de formación.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {PROJECTS.map((project) => (
+              <article
+                key={project.number}
+                className="group overflow-hidden border border-white/10 bg-[#0b0d10] transition-all duration-500 hover:-translate-y-1 hover:border-white/20"
+              >
+                <div className="relative overflow-hidden border-b border-white/10">
+                  <ProjectVisual type={project.visual} />
+
+                  <div className="absolute left-5 top-5 border border-white/10 bg-[#08090b]/80 px-3 py-2 font-mono text-[9px] tracking-[0.2em] text-white/40 backdrop-blur">
+                    {project.number}
+                  </div>
+                </div>
+
+                <div className="p-7">
+                  <div className="font-mono text-[8px] tracking-[0.3em] text-red-500">
+                    {project.type}
+                  </div>
+
+                  <div className="mt-3 flex items-start justify-between gap-5">
+                    <h3 className="text-2xl font-bold tracking-tight">
+                      {project.title}
+                    </h3>
+
+                    <span className="text-xl text-white/20 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-red-500">
+                      ↗
+                    </span>
+                  </div>
+
+                  <p className="mt-4 text-sm leading-7 text-white/35">
                     {project.description}
                   </p>
 
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
+                  <div className="mt-7 flex flex-wrap gap-2">
+                    {project.stack.map((item) => (
                       <span
-                        key={tech}
-                        className="rounded-full bg-red-500/20 px-2.5 py-0.5 text-xs font-medium text-red-300"
+                        key={item}
+                        className="border border-white/10 px-3 py-1.5 font-mono text-[8px] tracking-wider text-white/30"
                       >
-                        {tech}
+                        {item}
                       </span>
                     ))}
                   </div>
-
-                  <div className="mt-4 flex items-center justify-between gap-4">
-                    <span className="text-xs text-gray-500">
-                      {project.status}
-                    </span>
-
-                    {(project.repo || project.demo) && (
-                      <div className="flex gap-3 text-sm">
-                        {project.repo && (
-                          <a
-                            href={project.repo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-medium text-red-400 transition hover:text-red-300"
-                          >
-                            Repo →
-                          </a>
-                        )}
-
-                        {project.demo && (
-                          <a
-                            href={project.demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-medium text-rose-400 transition hover:text-rose-300"
-                          >
-                            Demo →
-                          </a>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
+                </div>
+              </article>
+            ))}
           </div>
-        </RevealSection>
+        </section>
+      </RevealSection>
 
-        {/* =========================================================
-            LOGROS
-        ========================================================= */}
-        <section
-          className="px-4 py-16 sm:px-6 lg:px-8"
-          aria-label="Logros"
-        >
-          <div className="mx-auto max-w-5xl">
-            <h2 className="text-center text-2xl font-bold">
-              🏅 Logros desbloqueados
-            </h2>
+      {/* ACHIEVEMENTS */}
+      <section className="relative z-10 border-t border-white/10 bg-[#090a0c]">
+        <div className="mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-20">
+          <div className="mb-14 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+            <div>
+              <span className="font-mono text-[9px] tracking-[0.35em] text-red-500">
+                ACHIEVEMENTS
+              </span>
 
-            <p className="mt-2 text-center text-sm text-gray-400">
-              Se activan al explorar cada nivel
-            </p>
+              <h2 className="mt-3 text-4xl font-bold tracking-tight">
+                Milestones
+              </h2>
+            </div>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {ACHIEVEMENTS.map((achievement) => (
+            <button
+              onClick={resetProgress}
+              className="self-start border border-white/10 px-4 py-2 font-mono text-[8px] tracking-[0.2em] text-white/25 transition-colors hover:border-red-600/40 hover:text-red-500"
+            >
+              RESET PROGRESS
+            </button>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {ACHIEVEMENTS.map((achievement, index) => (
+              <div
+                key={achievement.id}
+                onMouseEnter={() => unlockAchievement(index + 1)}
+                className="cursor-default"
+              >
                 <AchievementCard
-                  key={achievement.id}
-                  icon={achievement.icon}
+                  icon={achievement.id}
                   title={achievement.title}
                   description={achievement.description}
-                  unlocked={unlockedAchievements.has(
-                    achievement.id
-                  )}
+                  unlocked={unlockedAchievements.includes(index + 1)}
                   xp={achievement.xp}
                 />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* NEXT */}
+      <section className="relative z-10 border-t border-white/10 px-6 py-32 md:px-12 lg:px-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:items-end">
+            <div>
+              <span className="font-mono text-[9px] tracking-[0.35em] text-red-500">
+                NEXT OBJECTIVES
+              </span>
+
+              <h2 className="mt-5 max-w-xl text-5xl font-black tracking-[-0.05em] md:text-7xl">
+                ALWAYS
+                <br />
+                <span className="text-white/20">BUILDING.</span>
+              </h2>
+            </div>
+
+            <div className="grid gap-px border border-white/10 bg-white/10">
+              {[
+                'Profundizar en desarrollo Full Stack',
+                'Construir proyectos más completos',
+                'Mejorar arquitectura y bases de datos',
+                'Continuar explorando nuevas tecnologías',
+              ].map((goal, index) => (
+                <div
+                  key={goal}
+                  className="flex items-center gap-5 bg-[#0b0d10] p-5"
+                >
+                  <span className="font-mono text-[9px] text-red-500">
+                    0{index + 1}
+                  </span>
+
+                  <span className="text-sm text-white/55">
+                    {goal}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* =========================================================
-            PRÓXIMOS NIVELES
-        ========================================================= */}
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl">
-            <h2 className="text-center text-2xl font-bold sm:text-3xl">
-              🚀 Mis próximos niveles
-            </h2>
+      {/* CTA */}
+      <section className="relative z-10 overflow-hidden border-t border-white/10 bg-[#0b0d10]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(220,38,38,.12),transparent_50%)]" />
 
-            <p className="mt-4 text-center text-gray-300">
-              El camino todavía continúa.
-            </p>
+        <div className="relative mx-auto max-w-5xl px-6 py-32 text-center">
+          <span className="font-mono text-[9px] tracking-[0.4em] text-red-500">
+            END OF CURRENT RUN
+          </span>
 
-            <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-              <h3 className="font-semibold text-red-300">
-                🎯 Próximos objetivos
-              </h3>
+          <h2 className="mx-auto mt-7 max-w-4xl text-5xl font-black tracking-[-0.06em] md:text-8xl">
+            LET&apos;S BUILD
+            <br />
+            <span className="text-white/20">SOMETHING.</span>
+          </h2>
 
-              <ul className="mt-4 space-y-2 text-sm text-gray-300">
-                <li>
-                  • Seguir fortaleciendo mis conocimientos de
-                  desarrollo Full Stack.
-                </li>
-                <li>
-                  • Mejorar mis proyectos actuales.
-                </li>
-                <li>
-                  • Aprender nuevas tecnologías.
-                </li>
-                <li>
-                  • Profundizar en bases de datos.
-                </li>
-                <li>
-                  • Mejorar mis conocimientos de arquitectura de
-                  software.
-                </li>
-                <li>
-                  • Crear proyectos cada vez más completos.
-                </li>
-                <li>
-                  • Adquirir experiencia profesional.
-                </li>
-                <li>
-                  • Seguir construyendo un perfil sólido como
-                  desarrollador.
-                </li>
-              </ul>
+          <p className="mx-auto mt-8 max-w-xl text-sm leading-7 text-white/35">
+            ¿Tienes una idea, proyecto o simplemente quieres hablar de
+            tecnología? Estoy abierto a nuevas oportunidades para aprender y
+            construir.
+          </p>
 
-              <blockquote className="mt-6 text-center italic text-rose-200/90">
-                &ldquo;Todavía estoy construyendo mi camino, pero cada
-                proyecto me acerca un nivel más a donde quiero llegar.&rdquo;
-              </blockquote>
-            </div>
+          <div className="mt-10 flex justify-center gap-3">
+            <a
+              href="mailto:santiago.aguirre66415@ucaldas.edu.co"
+              className="border border-red-600 bg-red-600 px-7 py-3 text-xs font-bold tracking-[0.2em] transition hover:bg-red-500"
+            >
+              ESCRIBIRME
+            </a>
+
+            <a
+              href="https://github.com/santiagoaguirre66415"
+              target="_blank"
+              rel="noreferrer"
+              className="border border-white/10 px-7 py-3 text-xs font-bold tracking-[0.2em] text-white/60 transition hover:border-white/30 hover:text-white"
+            >
+              GITHUB
+            </a>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* =========================================================
-            CTA FINAL
-        ========================================================= */}
-        <section className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl rounded-3xl border border-red-400/20 bg-gradient-to-br from-red-600/20 to-rose-500/10 p-10 text-center backdrop-blur-xl sm:p-14">
-            <h2 className="text-3xl font-bold sm:text-4xl">
-              🎮 GAME OVER... ¿O APENAS COMIENZA?
-            </h2>
+      {/* FOOTER */}
+      <footer className="relative z-10 border-t border-white/10 px-6 py-8 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-[9px] tracking-[0.2em] text-white/20 md:flex-row">
+          <span>SANTIAGO AGUIRRE</span>
 
-            <p className="mt-2 text-2xl font-bold text-red-300">
-              ¿Construimos algo juntos?
-            </p>
+          <span>FULL STACK DEVELOPER IN TRAINING</span>
 
-            <p className="mx-auto mt-4 max-w-xl text-gray-300">
-              Si tienes una idea, un proyecto o simplemente quieres
-              conocer más sobre mi trabajo, puedes encontrarme en:
-            </p>
-
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 text-left">
-
-              <a
-                href="mailto:santiago.aguirre66415@ucaldas.edu.co"
-                className="w-full max-w-sm rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-medium text-gray-200 transition hover:bg-white/10"
-              >
-                📧 santiago.aguirre66415@ucaldas.edu.co
-              </a>
-
-              <a
-                href="https://github.com/santiagoaguirre66415"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full max-w-sm rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-medium text-gray-200 transition hover:bg-white/10"
-              >
-                💻 github.com/santiagoaguirre66415
-              </a>
-
-              <a
-                href="https://sanas07a.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full max-w-sm rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-medium text-gray-200 transition hover:bg-white/10"
-              >
-                🌐 sanas07a.dev
-              </a>
-            </div>
-
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-
-              <button
-                onClick={resetProgress}
-                type="button"
-                className="rounded-xl bg-gradient-to-r from-red-600 to-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/25 transition hover:from-red-500 hover:to-rose-400"
-              >
-                VOLVER A JUGAR
-              </button>
-
-              <a
-                href="#nivel-5"
-                className="rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                VER PROYECTOS
-              </a>
-
-              <a
-                href="mailto:santiago.aguirre66415@ucaldas.edu.co"
-                className="rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                CONTACTAR
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* =========================================================
-          FOOTER
-      ========================================================= */}
-      <footer className="border-t border-white/10 px-4 py-8 pb-28 text-center text-sm text-gray-500">
-        <p>
-          © {new Date().getFullYear()} Santiago Aguirre ·
-          Portafolio Gamificado
-        </p>
-
-        <p className="mt-2 text-xs text-gray-600">
-          Cada proyecto es un nuevo nivel.
-        </p>
+          <span>MANIZALES / COLOMBIA</span>
+        </div>
       </footer>
-    </div>
+
+      <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          background: #08090b;
+        }
+
+        ::selection {
+          background: #dc2626;
+          color: white;
+        }
+
+        .project-screen {
+          position: relative;
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          background: #101216;
+        }
+
+        .mock-top {
+          height: 34px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 0 14px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          background: #0b0d10;
+        }
+
+        .mock-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .mock-url {
+          margin-left: 8px;
+          font-family: monospace;
+          font-size: 7px;
+          letter-spacing: 0.12em;
+          color: rgba(255, 255, 255, 0.18);
+        }
+
+        .mock-content {
+          height: calc(100% - 34px);
+          display: flex;
+        }
+
+        .mock-sidebar {
+          width: 18%;
+          border-right: 1px solid rgba(255, 255, 255, 0.06);
+          padding: 15px 10px;
+        }
+
+        .mock-logo {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(220, 38, 38, 0.5);
+          color: #dc2626;
+          font-size: 8px;
+          font-weight: bold;
+        }
+
+        .mock-sidebar span {
+          display: block;
+          height: 3px;
+          margin-top: 15px;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .mock-main {
+          flex: 1;
+          padding: 30px;
+        }
+
+        .mock-label {
+          font-family: monospace;
+          font-size: 7px;
+          letter-spacing: 0.25em;
+          color: rgba(220, 38, 38, 0.7);
+        }
+
+        .mock-title {
+          margin-top: 8px;
+          font-size: 27px;
+          font-weight: 800;
+          letter-spacing: -0.05em;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .mock-line {
+          height: 4px;
+          margin-top: 10px;
+          background: rgba(255, 255, 255, 0.07);
+        }
+
+        .mock-line.long {
+          width: 80%;
+        }
+
+        .mock-line.medium {
+          width: 55%;
+        }
+
+        .mock-cards {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 7px;
+          margin-top: 25px;
+        }
+
+        .mock-cards div {
+          height: 55px;
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          background: rgba(255, 255, 255, 0.025);
+        }
+
+        .qr-visual {
+          align-items: center;
+          justify-content: center;
+          gap: 8%;
+          padding: 30px;
+        }
+
+        .qr-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .qr-pattern {
+          width: 115px;
+          height: 115px;
+          padding: 12px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          background: white;
+        }
+
+        .qr-pattern i {
+          display: block;
+          background: #08090b;
+        }
+
+        .qr-pattern i:nth-child(2),
+        .qr-pattern i:nth-child(4),
+        .qr-pattern i:nth-child(8) {
+          background: white;
+        }
+
+        .qr-box small {
+          font-family: monospace;
+          font-size: 7px;
+          letter-spacing: 0.25em;
+          color: rgba(255, 255, 255, 0.25);
+        }
+
+        .qr-info {
+          max-width: 240px;
+        }
+
+        .attendance-row {
+          display: flex;
+          justify-content: space-between;
+          gap: 15px;
+          margin-top: 12px;
+          padding-top: 10px;
+          border-top: 1px solid rgba(255, 255, 255, 0.07);
+          font-family: monospace;
+          font-size: 7px;
+          color: rgba(255, 255, 255, 0.25);
+        }
+
+        .attendance-row b {
+          color: rgba(220, 38, 38, 0.8);
+        }
+
+        .portfolio-visual {
+          position: relative;
+          height: 100%;
+          padding: 35px;
+          background:
+            radial-gradient(
+              circle at 80% 20%,
+              rgba(220, 38, 38, 0.18),
+              transparent 35%
+            ),
+            #0b0d10;
+        }
+
+        .portfolio-number {
+          font-family: monospace;
+          font-size: 9px;
+          color: rgba(220, 38, 38, 0.8);
+          letter-spacing: 0.2em;
+        }
+
+        .portfolio-title {
+          margin-top: 18px;
+          font-size: clamp(30px, 4vw, 55px);
+          font-weight: 900;
+          line-height: 0.82;
+          letter-spacing: -0.07em;
+        }
+
+        .portfolio-line {
+          position: absolute;
+          left: 35px;
+          right: 35px;
+          bottom: 50px;
+          height: 1px;
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .portfolio-stats {
+          position: absolute;
+          bottom: 25px;
+          left: 35px;
+          right: 35px;
+          display: flex;
+          justify-content: space-between;
+          font-family: monospace;
+          font-size: 7px;
+          letter-spacing: 0.2em;
+          color: rgba(255, 255, 255, 0.25);
+        }
+
+        .code-visual {
+          padding: 30px;
+          font-family: monospace;
+          font-size: 9px;
+          line-height: 2;
+          color: rgba(255, 255, 255, 0.35);
+        }
+
+        .code-line span {
+          display: inline-block;
+          width: 28px;
+          color: rgba(255, 255, 255, 0.12);
+        }
+
+        .code-line b {
+          color: rgba(220, 38, 38, 0.8);
+        }
+      `}</style>
+    </main>
   );
 }
