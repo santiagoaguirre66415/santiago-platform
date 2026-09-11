@@ -4,10 +4,12 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 
 type Theme = 'dark' | 'light';
 type FontSize = 'sm' | 'md' | 'lg' | 'xl';
+type Zoom = 'normal' | 'lg' | 'xl' | 'xxl';
 
 interface AccessibilityState {
   theme: Theme;
   fontSize: FontSize;
+  zoom: Zoom;
   highContrast: boolean;
   reduceMotion: boolean;
   highlightLinks: boolean;
@@ -16,6 +18,7 @@ interface AccessibilityState {
 interface AccessibilityContextType extends AccessibilityState {
   setTheme: (theme: Theme) => void;
   setFontSize: (size: FontSize) => void;
+  setZoom: (zoom: Zoom) => void;
   toggleHighContrast: () => void;
   toggleReduceMotion: () => void;
   toggleHighlightLinks: () => void;
@@ -25,6 +28,7 @@ interface AccessibilityContextType extends AccessibilityState {
 const DEFAULT_STATE: AccessibilityState = {
   theme: 'dark',
   fontSize: 'md',
+  zoom: 'normal',
   highContrast: false,
   reduceMotion: false,
   highlightLinks: false,
@@ -61,25 +65,18 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
 
     const root = document.documentElement;
 
-    // Tema
     root.classList.toggle('light', state.theme === 'light');
     root.classList.toggle('dark', state.theme === 'dark');
-
-    // Tamaño de fuente
     root.setAttribute('data-font-size', state.fontSize);
-
-    // Alto contraste
+    root.setAttribute('data-zoom', state.zoom);
     root.classList.toggle('high-contrast', state.highContrast);
-
-    // Reducir animaciones
     root.classList.toggle('reduce-motion', state.reduceMotion);
-
-    // Resaltar enlaces
     root.classList.toggle('highlight-links', state.highlightLinks);
   }, [state, hydrated]);
 
   const setTheme = (theme: Theme) => setState((s) => ({ ...s, theme }));
   const setFontSize = (fontSize: FontSize) => setState((s) => ({ ...s, fontSize }));
+  const setZoom = (zoom: Zoom) => setState((s) => ({ ...s, zoom }));
   const toggleHighContrast = () => setState((s) => ({ ...s, highContrast: !s.highContrast }));
   const toggleReduceMotion = () => setState((s) => ({ ...s, reduceMotion: !s.reduceMotion }));
   const toggleHighlightLinks = () =>
@@ -93,6 +90,7 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
         ...state,
         setTheme,
         setFontSize,
+        setZoom,
         toggleHighContrast,
         toggleReduceMotion,
         toggleHighlightLinks,

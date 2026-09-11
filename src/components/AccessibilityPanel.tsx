@@ -8,11 +8,13 @@ export default function AccessibilityPanel() {
   const {
     theme,
     fontSize,
+    zoom,
     highContrast,
     reduceMotion,
     highlightLinks,
     setTheme,
     setFontSize,
+    setZoom,
     toggleHighContrast,
     toggleReduceMotion,
     toggleHighlightLinks,
@@ -46,6 +48,7 @@ export default function AccessibilityPanel() {
         <div
           role="dialog"
           aria-label="Panel de accesibilidad"
+          aria-modal="false"
           className="a11y-panel fixed bottom-24 right-4 z-[999] w-[calc(100vw-2rem)] max-w-sm overflow-hidden border border-white/10 bg-[#0b0d10] shadow-2xl md:right-6 md:w-80"
         >
           {/* HEADER */}
@@ -120,6 +123,29 @@ export default function AccessibilityPanel() {
               </div>
             </div>
 
+            {/* LUPA / ZOOM */}
+            <div className="mb-5">
+              <span className="mb-2 block font-mono text-[9px] tracking-[0.25em] text-white/40">
+                🔍 LUPA / ZOOM
+              </span>
+              <div className="grid grid-cols-4 gap-2">
+                {(['normal', 'lg', 'xl', 'xxl'] as const).map((z) => (
+                  <button
+                    key={z}
+                    onClick={() => setZoom(z)}
+                    aria-pressed={zoom === z}
+                    className={`border py-2 text-xs font-bold transition ${
+                      zoom === z
+                        ? 'border-red-600 bg-red-600/20 text-white'
+                        : 'border-white/10 text-white/60 hover:bg-white/5'
+                    }`}
+                  >
+                    {z === 'normal' ? '100%' : z === 'lg' ? '110%' : z === 'xl' ? '125%' : '150%'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* OPCIONES */}
             <div className="space-y-2">
               <ToggleRow
@@ -147,7 +173,7 @@ export default function AccessibilityPanel() {
               onClick={reset}
               className="mt-5 w-full border border-white/10 py-2 font-mono text-[9px] tracking-[0.25em] text-white/50 transition hover:border-red-600/40 hover:text-red-500"
             >
-              RESTABLECER
+              RESTABLECER TODO
             </button>
           </div>
         </div>
