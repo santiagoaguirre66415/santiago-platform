@@ -26,7 +26,7 @@ export default function AccessibilityPanel() {
         onClick={() => setOpen(!open)}
         aria-label="Abrir panel de accesibilidad"
         aria-expanded={open}
-        className="fixed bottom-6 right-6 z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-red-600 bg-red-600 text-white shadow-lg shadow-red-500/30 transition hover:bg-red-500 md:h-14 md:w-14"
+        className="a11y-btn fixed bottom-6 right-6 z-[999] flex h-12 w-12 items-center justify-center rounded-full border-2 border-red-600 bg-red-600 text-white shadow-lg shadow-red-500/30 transition hover:bg-red-500 md:h-14 md:w-14"
       >
         <svg
           className="h-5 w-5 md:h-6 md:w-6"
@@ -46,7 +46,7 @@ export default function AccessibilityPanel() {
         <div
           role="dialog"
           aria-label="Panel de accesibilidad"
-          className="fixed bottom-24 right-4 z-[70] w-[calc(100vw-2rem)] max-w-sm overflow-hidden border border-white/10 bg-[#0b0d10] shadow-2xl md:right-6 md:w-80"
+          className="a11y-panel fixed bottom-24 right-4 z-[999] w-[calc(100vw-2rem)] max-w-sm overflow-hidden border border-white/10 bg-[#0b0d10] shadow-2xl md:right-6 md:w-80"
         >
           {/* HEADER */}
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
