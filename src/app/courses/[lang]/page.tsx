@@ -2,8 +2,9 @@
 
 import { use, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { useRouter, notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import { account } from '@/lib/appwrite';
 import {
   getCurso,
   DIFICULTAD_COLORES,
@@ -35,12 +36,26 @@ export default function CursoMapaPage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = use(params);
+  const router = useRouter();
   const curso = getCurso(lang);
 
   const [completados, setCompletados] = useState<string[]>([]);
   const [filtro, setFiltro] = useState<FiltroDificultad>('todas');
   const [nivelSeleccionado, setNivelSeleccionado] = useState<Nivel | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [autenticado, setAutenticado] = useState<boolean | null>(null);
+
+  // Verificar sesión — redirige a login si no hay
+  useEffect(() => {
+    account
+      .get()
+      .then(() => setAutenticado(true))
+      .catch(() => {
+        setAutenticado(false);
+        const redirect = `/courses/${lang}`;
+        router.replace(`/login?redirect=${encodeURIComponent(redirect)}`);
+      });
+  }, [router, lang]);
 
   useEffect(() => {
     const saved = cargarProgreso();
@@ -78,6 +93,33 @@ export default function CursoMapaPage({
   };
 
   if (!curso) return notFound();
+
+  // Mientras verifica sesión, mostrar pantalla de carga
+  if (autenticado === null) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#08090b] text-white">
+        <div className="text-center">
+          <div className="mx-auto mb-6 h-12 w-12 animate-spin rounded-full border-2 border-red-600/30 border-t-red-600" />
+          <p className="font-mono text-xs tracking-[0.3em] text-white/40">
+            VERIFICANDO SESIÓN...
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  // Si no está autenticado, no renderizar nada (el useEffect ya redirige)
+  if (autenticado === false) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#08090b] text-white">
+        <div className="text-center">
+          <p className="font-mono text-xs tracking-[0.3em] text-white/40">
+            REDIRIGIENDO AL LOGIN...
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   const totalNiveles = curso.niveles.length;
   const totalCompletados = curso.niveles.filter((n) =>
@@ -187,16 +229,6 @@ export default function CursoMapaPage({
         </div>
 
         <div className="relative aspect-[16/10] w-full overflow-hidden border border-white/10 bg-[#0b0d10]">
-          {/* AQUÍ VA TU IMAGEN DE MAPA — Descomenta cuando la tengas:
-          <Image
-            src={`/maps/${curso.slug}-map.png`}
-            alt={`Mapa de ${curso.nombre}`}
-            fill
-            priority
-            className="object-cover opacity-80"
-          />
-          */}
-
           <div
             className="absolute inset-0 opacity-20"
             style={{
@@ -380,7 +412,7 @@ export default function CursoMapaPage({
                   </div>
                 )}
 
-                                {nivelSeleccionado.contenido.quiz && (
+                {nivelSeleccionado.contenido.quiz && (
                   <div>
                     <h4 className="font-mono text-[10px] tracking-[0.3em] text-red-500">
                       🎯 QUIZ
@@ -431,6 +463,7 @@ export default function CursoMapaPage({
     </main>
   );
 }
+
 function QuizPreguntaItem({
   numero,
   pregunta,
@@ -460,7 +493,8 @@ function QuizPreguntaItem({
           const esEsta = seleccionada === oi;
           const esLaCorrecta = oi === correcta;
 
-          let clases = 'border-white/10 bg-white/[0.02] text-white/70 hover:border-red-600/40 hover:bg-red-600/10 hover:text-white';
+          let clases =
+            'border-white/10 bg-white/[0.02] text-white/70 hover:border-red-600/40 hover:bg-red-600/10 hover:text-white';
 
           if (respondida) {
             if (esEsta && esLaCorrecta) {
@@ -468,7 +502,8 @@ function QuizPreguntaItem({
             } else if (esEsta && !esLaCorrecta) {
               clases = 'border-red-500 bg-red-500/20 text-red-200';
             } else if (esLaCorrecta) {
-              clases = 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300/80';
+              clases =
+                'border-emerald-500/50 bg-emerald-500/10 text-emerald-300/80';
             } else {
               clases = 'border-white/5 bg-white/[0.01] text-white/30';
             }

@@ -1,10 +1,21 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import { account } from '@/lib/appwrite';
 import { CURSOS } from '@/lib/courses-data';
 
 export default function CoursesPage() {
+  const [autenticado, setAutenticado] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    account
+      .get()
+      .then(() => setAutenticado(true))
+      .catch(() => setAutenticado(false));
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#08090b] text-white">
       <div className="pointer-events-none fixed inset-0 z-0">
@@ -28,6 +39,48 @@ export default function CoursesPage() {
             desbloquea niveles y llega al jefe final para obtener tu certificado.
           </p>
         </div>
+
+        {/* BANNER DE LOGIN (solo si no está autenticado) */}
+        {autenticado === false && (
+          <div className="mb-8 flex flex-col gap-4 border border-red-500/30 bg-red-600/10 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">🎮</span>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  Crea tu cuenta para empezar a jugar
+                </p>
+                <p className="mt-1 text-xs leading-6 text-white/60">
+                  Explora los mundos libremente, pero necesitas una cuenta para
+                  entrar a las misiones y guardar tu progreso.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Link
+                href="/register"
+                className="whitespace-nowrap border border-red-600 bg-red-600 px-5 py-3 font-mono text-[10px] font-bold tracking-[0.2em] text-white transition hover:bg-red-500"
+              >
+                CREAR CUENTA
+              </Link>
+              <Link
+                href="/login"
+                className="whitespace-nowrap border border-white/15 bg-white/[0.02] px-5 py-3 font-mono text-[10px] font-bold tracking-[0.2em] text-white/70 transition hover:bg-white/[0.05] hover:text-white"
+              >
+                INICIAR SESIÓN
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {autenticado === true && (
+          <div className="mb-8 flex items-center gap-3 border border-emerald-500/30 bg-emerald-500/10 p-4">
+            <span className="text-xl">✅</span>
+            <p className="text-sm text-emerald-200">
+              Sesión activa. Tus misiones completadas se guardarán
+              automáticamente.
+            </p>
+          </div>
+        )}
 
         {/* GRID DE LENGUAJES */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -84,7 +137,7 @@ export default function CoursesPage() {
 
                 <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
                   <span className="font-mono text-[9px] tracking-[0.2em] text-red-500 transition group-hover:text-red-400">
-                    EXPLORAR MUNDO
+                    {autenticado ? 'ENTRAR AL MUNDO' : 'REQUIERE CUENTA'}
                   </span>
                   <span className="text-white/20 transition group-hover:translate-x-1 group-hover:text-red-500">
                     →
@@ -104,19 +157,24 @@ export default function CoursesPage() {
             <div>
               <div className="text-2xl">🗺️</div>
               <p className="mt-2 text-sm text-white/60">
-                Cada lenguaje es un <strong className="text-white">mundo</strong> con un mapa lleno de misiones.
+                Cada lenguaje es un{' '}
+                <strong className="text-white">mundo</strong> con un mapa lleno
+                de misiones.
               </p>
             </div>
             <div>
               <div className="text-2xl">🚩</div>
               <p className="mt-2 text-sm text-white/60">
-                Las <strong className="text-white">banderas</strong> marcan los niveles. Complétalos para desbloquear el siguiente.
+                Las <strong className="text-white">banderas</strong> marcan los
+                niveles. Complétalos para desbloquear el siguiente.
               </p>
             </div>
             <div>
               <div className="text-2xl">👑</div>
               <p className="mt-2 text-sm text-white/60">
-                Al terminar todo, enfrentas al <strong className="text-white">jefe final</strong> y ganas tu certificado.
+                Al terminar todo, enfrentas al{' '}
+                <strong className="text-white">jefe final</strong> y ganas tu
+                certificado.
               </p>
             </div>
           </div>
