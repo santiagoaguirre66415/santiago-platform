@@ -304,7 +304,7 @@ export default function Home() {
     });
   }, []);
 
-  const reiniciarProgreso = () => {
+    const reiniciarProgreso = () => {
     setXp(0);
     setNivelesDesbloqueados([1]);
     setLogrosDesbloqueados([]);
