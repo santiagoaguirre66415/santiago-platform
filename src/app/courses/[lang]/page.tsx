@@ -380,38 +380,21 @@ export default function CursoMapaPage({
                   </div>
                 )}
 
-                {nivelSeleccionado.contenido.quiz && (
+                                {nivelSeleccionado.contenido.quiz && (
                   <div>
                     <h4 className="font-mono text-[10px] tracking-[0.3em] text-red-500">
                       🎯 QUIZ
                     </h4>
                     <div className="mt-3 space-y-4">
                       {nivelSeleccionado.contenido.quiz.map((q, qi) => (
-                        <div
+                        <QuizPreguntaItem
                           key={qi}
-                          className="border border-white/10 bg-white/[0.02] p-4"
-                        >
-                          <p className="text-sm font-medium text-white">
-                            {qi + 1}. {q.pregunta}
-                          </p>
-                          <div className="mt-3 space-y-2">
-                            {q.opciones.map((opt, oi) => (
-                              <button
-                                key={oi}
-                                onClick={() => {
-                                  alert(
-                                    oi === q.correcta
-                                      ? `✅ ¡Correcto! ${q.explicacion}`
-                                      : `❌ Incorrecto. ${q.explicacion}`
-                                  );
-                                }}
-                                className="block w-full border border-white/10 bg-white/[0.02] px-4 py-2 text-left text-sm text-white/70 transition hover:border-red-600/40 hover:bg-red-600/10 hover:text-white"
-                              >
-                                {opt}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                          numero={qi + 1}
+                          pregunta={q.pregunta}
+                          opciones={q.opciones}
+                          correcta={q.correcta}
+                          explicacion={q.explicacion}
+                        />
                       ))}
                     </div>
                   </div>
@@ -446,5 +429,82 @@ export default function CursoMapaPage({
         </div>
       )}
     </main>
+  );
+}
+function QuizPreguntaItem({
+  numero,
+  pregunta,
+  opciones,
+  correcta,
+  explicacion,
+}: {
+  numero: number;
+  pregunta: string;
+  opciones: string[];
+  correcta: number;
+  explicacion: string;
+}) {
+  const [seleccionada, setSeleccionada] = useState<number | null>(null);
+
+  const respondida = seleccionada !== null;
+  const esCorrecta = seleccionada === correcta;
+
+  return (
+    <div className="border border-white/10 bg-white/[0.02] p-4">
+      <p className="text-sm font-medium text-white">
+        {numero}. {pregunta}
+      </p>
+
+      <div className="mt-3 space-y-2">
+        {opciones.map((opt, oi) => {
+          const esEsta = seleccionada === oi;
+          const esLaCorrecta = oi === correcta;
+
+          let clases = 'border-white/10 bg-white/[0.02] text-white/70 hover:border-red-600/40 hover:bg-red-600/10 hover:text-white';
+
+          if (respondida) {
+            if (esEsta && esLaCorrecta) {
+              clases = 'border-emerald-500 bg-emerald-500/20 text-emerald-200';
+            } else if (esEsta && !esLaCorrecta) {
+              clases = 'border-red-500 bg-red-500/20 text-red-200';
+            } else if (esLaCorrecta) {
+              clases = 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300/80';
+            } else {
+              clases = 'border-white/5 bg-white/[0.01] text-white/30';
+            }
+          }
+
+          return (
+            <button
+              key={oi}
+              onClick={() => !respondida && setSeleccionada(oi)}
+              disabled={respondida}
+              className={`block w-full border px-4 py-2 text-left text-sm transition disabled:cursor-not-allowed ${clases}`}
+            >
+              <span className="flex items-center gap-2">
+                {respondida && esLaCorrecta && <span>✓</span>}
+                {respondida && esEsta && !esLaCorrecta && <span>✕</span>}
+                <span>{opt}</span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {respondida && (
+        <div
+          className={`mt-3 border p-3 text-sm ${
+            esCorrecta
+              ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-200'
+              : 'border-red-500/40 bg-red-500/10 text-red-200'
+          }`}
+        >
+          <div className="font-semibold">
+            {esCorrecta ? '✅ ¡Correcto!' : '❌ Respuesta incorrecta'}
+          </div>
+          <p className="mt-1 text-xs leading-6 opacity-90">{explicacion}</p>
+        </div>
+      )}
+    </div>
   );
 }
