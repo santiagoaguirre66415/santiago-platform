@@ -541,6 +541,20 @@ html.light .a11y-panel .bg-white\/15 {
   filter: none !important;
 }
 
+/* Números grandes de nivel (01-05) en modo claro */
+html.light .text-white\/\[0\.06\] {
+  color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* También para otros números con opacidad muy baja */
+html.light .text-white\/\[0\.08\] {
+  color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .text-white\/\[0\.1\] {
+  color: rgba(0, 0, 0, 0.12) !important;
+}
+
 /* ============================================================
    ALTO CONTRASTE
    ============================================================ */
