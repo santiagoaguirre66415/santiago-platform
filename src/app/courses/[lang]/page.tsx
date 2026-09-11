@@ -440,16 +440,25 @@ export default function CursoMapaPage({
               </div>
             )}
 
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => completarNivel(nivelSeleccionado.id)}
-                disabled={estaCompletado(nivelSeleccionado)}
-                className="flex-1 border border-red-600 bg-red-600 px-6 py-3 font-mono text-[10px] tracking-[0.2em] transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {estaCompletado(nivelSeleccionado)
-                  ? '✓ COMPLETADA'
-                  : 'COMPLETAR MISIÓN →'}
-              </button>
+                        <div className="mt-6 flex gap-3">
+              {nivelSeleccionado.contenido ? (
+                <button
+                  onClick={() => completarNivel(nivelSeleccionado.id)}
+                  disabled={estaCompletado(nivelSeleccionado)}
+                  className="flex-1 border border-red-600 bg-red-600 px-6 py-3 font-mono text-[10px] tracking-[0.2em] transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {estaCompletado(nivelSeleccionado)
+                    ? '✓ COMPLETADA'
+                    : 'COMPLETAR MISIÓN →'}
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="flex-1 cursor-not-allowed border border-white/10 bg-white/[0.02] px-6 py-3 font-mono text-[10px] tracking-[0.2em] text-white/30"
+                >
+                  🚧 MISIÓN PRÓXIMAMENTE
+                </button>
+              )}
               <button
                 onClick={() => setNivelSeleccionado(null)}
                 className="border border-white/10 px-6 py-3 font-mono text-[10px] tracking-[0.2em] text-white/60 transition hover:bg-white/5 hover:text-white"
