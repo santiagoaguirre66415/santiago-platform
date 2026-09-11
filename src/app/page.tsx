@@ -97,34 +97,42 @@ const PROYECTOS = [
   {
     numero: '01',
     titulo: 'CALMA',
-    estado: 'PROYECTO FINALIZADO',
+    estado: '✅ PROYECTO FINALIZADO',
     descripcion: 'Aplicación enfocada en acompañamiento y bienestar con una experiencia de interacción mediante chatbot.',
     tecnologias: ['TypeScript', 'React', 'Next.js', 'Appwrite'],
     visual: 'calma',
+    repo: null as string | null,
+    demo: null as string | null,
   },
   {
     numero: '02',
-    titulo: 'SISTEMA DE ASISTENCIA QR',
-    estado: 'PROYECTO EN DESARROLLO',
-    descripcion: 'Sistema de asistencia mediante códigos QR con validación de horario y distancia para realizar registros de forma más precisa.',
-    tecnologias: ['JavaScript', 'React', 'Node.js', 'SQL'],
-    visual: 'qr',
-  },
-  {
-    numero: '03',
     titulo: 'PORTAFOLIO PERSONAL',
-    estado: 'PROYECTO PERSONAL',
+    estado: '✅ PROYECTO ACTIVO',
     descripcion: 'Portafolio web con una experiencia interactiva que muestra mi formación, tecnologías, proyectos y evolución como desarrollador.',
     tecnologias: ['TypeScript', 'Next.js', 'Tailwind CSS', 'Appwrite'],
     visual: 'portfolio',
+    repo: 'https://github.com/santiagoaguirre66415/santiago-platform',
+    demo: 'https://sanas07a.dev',
+  },
+  {
+    numero: '03',
+    titulo: 'SISTEMA DE ASISTENCIA QR',
+    estado: '🚧 PROYECTO EN DESARROLLO',
+    descripcion: 'Sistema de asistencia mediante códigos QR con validación de horario y distancia para realizar registros de forma más precisa.',
+    tecnologias: ['JavaScript', 'React', 'Node.js', 'SQL'],
+    visual: 'qr',
+    repo: null as string | null,
+    demo: null as string | null,
   },
   {
     numero: '04',
     titulo: 'PROYECTOS DE FORMACIÓN',
-    estado: 'PROCESO DE APRENDIZAJE',
+    estado: '📚 PROCESO DE APRENDIZAJE',
     descripcion: 'Conjunto de ejercicios y proyectos desarrollados durante mi proceso de formación en programación y desarrollo de software.',
     tecnologias: ['Python', 'Java', 'Flutter', 'SQL'],
     visual: 'codigo',
+    repo: null as string | null,
+    demo: null as string | null,
   },
 ];
 
@@ -254,7 +262,7 @@ function VisualProyecto({ tipo }: { tipo: string }) {
 export default function Home() {
   const [xp, setXp] = useState(0);
   const [nivelesDesbloqueados, setNivelesDesbloqueados] = useState<number[]>([1]);
-  const [logrosDesbloqueados, setLogrosDesbloqueados] = useState<number[]>([]);
+  const [logrosDesbloqueados, setLogrosDesbloqueados] = useState<number[]>([1, 2]);
   const [notificacion, setNotificacion] = useState<string | null>(null);
 
   useEffect(() => {
@@ -304,10 +312,16 @@ export default function Home() {
     });
   }, []);
 
-    const reiniciarProgreso = () => {
+  const reiniciarProgreso = () => {
+    const confirmar = window.confirm(
+      '¿Estás seguro de que quieres reiniciar tu progreso? Esta acción no se puede deshacer.'
+    );
+
+    if (!confirmar) return;
+
     setXp(0);
     setNivelesDesbloqueados([1]);
-    setLogrosDesbloqueados([]);
+    setLogrosDesbloqueados([1, 2]);
     localStorage.removeItem(STORAGE_KEY);
     setNotificacion('PROGRESO REINICIADO');
     setTimeout(() => setNotificacion(null), 2500);
@@ -354,7 +368,7 @@ export default function Home() {
             <div className="mb-6 flex items-center gap-3 sm:mb-8 sm:gap-4">
               <div className="h-px w-8 bg-red-600 sm:w-10" />
               <span className="font-mono text-[8px] font-semibold tracking-[0.3em] text-red-500 sm:text-[10px] sm:tracking-[0.35em]">
-                PORTAFOLIO / 2026
+                PORTAFOLIO / 2025 — ACTUAL
               </span>
             </div>
 
@@ -389,6 +403,22 @@ export default function Home() {
               >
                 VER PROYECTOS
                 <span className="transition-transform group-hover:translate-x-1">→</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/tu-linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-white/10 px-5 py-3 text-center text-[10px] font-bold tracking-[0.15em] text-white/70 transition-all hover:border-white/30 hover:text-white sm:px-6 sm:text-xs sm:tracking-[0.18em]"
+              >
+                LINKEDIN
+              </a>
+              <a
+                href="/cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-white/10 px-5 py-3 text-center text-[10px] font-bold tracking-[0.15em] text-white/70 transition-all hover:border-white/30 hover:text-white sm:px-6 sm:text-xs sm:tracking-[0.18em]"
+              >
+                CV
               </a>
               <a
                 href="mailto:santiago.aguirre66415@ucaldas.edu.co"
@@ -657,6 +687,34 @@ export default function Home() {
                       </span>
                     ))}
                   </div>
+
+                  {/* LINKS DEL PROYECTO */}
+                  {(proyecto.repo || proyecto.demo) && (
+                    <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5">
+                      {proyecto.demo && (
+                        <a
+                          href={proyecto.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/link flex items-center gap-2 border border-red-600/40 bg-red-600/10 px-4 py-2 font-mono text-[9px] tracking-[0.2em] text-red-300 transition hover:bg-red-600/20"
+                        >
+                          DEMO
+                          <span className="transition-transform group-hover/link:translate-x-1">→</span>
+                        </a>
+                      )}
+                      {proyecto.repo && (
+                        <a
+                          href={proyecto.repo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/link flex items-center gap-2 border border-white/15 bg-white/[0.02] px-4 py-2 font-mono text-[9px] tracking-[0.2em] text-white/60 transition hover:bg-white/[0.05] hover:text-white"
+                        >
+                          CÓDIGO
+                          <span className="transition-transform group-hover/link:translate-x-1">→</span>
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </article>
             ))}
@@ -738,7 +796,7 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-white/35 sm:mt-8">
             ¿Tienes una idea, proyecto o simplemente quieres hablar de tecnología? Estoy abierto a nuevas oportunidades para aprender y construir.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:flex-wrap">
             <a
               href="mailto:santiago.aguirre66415@ucaldas.edu.co"
               className="w-full border border-red-600 bg-red-600 px-7 py-3 text-xs font-bold tracking-[0.2em] transition hover:bg-red-500 sm:w-auto"
@@ -752,6 +810,22 @@ export default function Home() {
               className="w-full border border-white/10 px-7 py-3 text-xs font-bold tracking-[0.2em] text-white/60 transition hover:border-white/30 hover:text-white sm:w-auto"
             >
               GITHUB
+            </a>
+            <a
+              href="https://www.linkedin.com/in/tu-linkedin"
+              target="_blank"
+              rel="noreferrer"
+              className="w-full border border-white/10 px-7 py-3 text-xs font-bold tracking-[0.2em] text-white/60 transition hover:border-white/30 hover:text-white sm:w-auto"
+            >
+              LINKEDIN
+            </a>
+            <a
+              href="/cv.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="w-full border border-white/10 px-7 py-3 text-xs font-bold tracking-[0.2em] text-white/60 transition hover:border-white/30 hover:text-white sm:w-auto"
+            >
+              CV
             </a>
           </div>
         </div>
