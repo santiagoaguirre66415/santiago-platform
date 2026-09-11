@@ -391,14 +391,14 @@ html.light .text-white\/\[0\.07\] { color: rgba(0, 0, 0, 0.17) !important; }
 html.light .text-white\/\[0\.08\] { color: rgba(0, 0, 0, 0.2) !important; }
 html.light .text-white\/\[0\.1\] { color: rgba(0, 0, 0, 0.22) !important; }
 
-/* Bordes */
+/* Bordes blancos → negros */
 html.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.15) !important; }
 html.light .border-white\/15 { border-color: rgba(0, 0, 0, 0.15) !important; }
 html.light .border-white\/20 { border-color: rgba(0, 0, 0, 0.2) !important; }
 html.light .border-white\/\[0\.06\] { border-color: rgba(0, 0, 0, 0.08) !important; }
 html.light .border-white\/\[0\.05\] { border-color: rgba(0, 0, 0, 0.06) !important; }
 
-/* Acentos rojos más oscuros */
+/* Acentos rojos más oscuros en modo claro */
 html.light .text-red-500 { color: #b91c1c !important; }
 html.light .text-red-400 { color: #991b1b !important; }
 html.light .text-red-300 { color: #991b1b !important; }
@@ -409,10 +409,14 @@ html.light .text-rose-200\/90 { color: rgba(159, 18, 57, 0.9) !important; }
 html.light .text-emerald-300 { color: #065f46 !important; }
 html.light .text-emerald-500 { color: #047857 !important; }
 
+/* Números grandes 01-05 en rojo (modo claro) */
+html.light .text-red-600\/40 { color: rgba(185, 28, 28, 0.4) !important; }
+
 /* Fondos rojos */
 html.light .bg-red-600 { background-color: #dc2626 !important; }
 html.light .bg-red-600\/10 { background-color: rgba(220, 38, 38, 0.1) !important; }
 html.light .bg-red-600\/20 { background-color: rgba(220, 38, 38, 0.15) !important; }
+html.light .bg-red-600\/30 { background-color: rgba(220, 38, 38, 0.25) !important; }
 html.light .bg-red-600\/\[0\.03\] { background-color: rgba(220, 38, 38, 0.03) !important; }
 html.light .bg-red-500\/20 { background-color: rgba(220, 38, 38, 0.15) !important; }
 html.light .bg-red-500\/10 { background-color: rgba(220, 38, 38, 0.1) !important; }
@@ -451,7 +455,59 @@ html.light footer { color: rgba(0, 0, 0, 0.6) !important; }
 html.light footer .text-white\/20 { color: rgba(0, 0, 0, 0.55) !important; }
 
 /* ============================================================
-   PANEL DE ACCESIBILIDAD
+   MODO OSCURO — MEJORAR CONTRASTE
+   ============================================================ */
+
+/* Textos con opacidades muy bajas → más visibles */
+html.dark .text-white\/20 { color: rgba(255, 255, 255, 0.5) !important; }
+html.dark .text-white\/25 { color: rgba(255, 255, 255, 0.55) !important; }
+html.dark .text-white\/30 { color: rgba(255, 255, 255, 0.6) !important; }
+html.dark .text-white\/35 { color: rgba(255, 255, 255, 0.65) !important; }
+html.dark .text-white\/40 { color: rgba(255, 255, 255, 0.7) !important; }
+html.dark .text-white\/45 { color: rgba(255, 255, 255, 0.72) !important; }
+html.dark .text-white\/50 { color: rgba(255, 255, 255, 0.75) !important; }
+
+/* Bordes más visibles */
+html.dark .border-white\/5 { border-color: rgba(255, 255, 255, 0.1) !important; }
+html.dark .border-white\/\[0\.05\] { border-color: rgba(255, 255, 255, 0.1) !important; }
+html.dark .border-white\/\[0\.06\] { border-color: rgba(255, 255, 255, 0.12) !important; }
+
+/* Fondos ligeramente diferenciados */
+html.dark .bg-white\/\[0\.02\] { background-color: rgba(255, 255, 255, 0.04) !important; }
+html.dark .bg-white\/\[0\.025\] { background-color: rgba(255, 255, 255, 0.045) !important; }
+html.dark .bg-white\/\[0\.03\] { background-color: rgba(255, 255, 255, 0.05) !important; }
+html.dark .bg-white\/\[0\.04\] { background-color: rgba(255, 255, 255, 0.06) !important; }
+html.dark .bg-white\/10 { background-color: rgba(255, 255, 255, 0.12) !important; }
+
+/* Colores rojos más vivos en dark */
+html.dark .text-red-500 { color: #f87171 !important; }
+html.dark .text-red-400 { color: #fb7185 !important; }
+html.dark .text-red-300 { color: #fca5a5 !important; }
+
+/* Rojo del rose */
+html.dark .text-rose-300 { color: #fda4af !important; }
+html.dark .text-rose-400 { color: #fb7185 !important; }
+
+/* Verde esmeralda más visible */
+html.dark .text-emerald-500 { color: #34d399 !important; }
+html.dark .text-emerald-300 { color: #6ee7b7 !important; }
+
+/* Grid de fondo más visible */
+html.dark .gamer-grid {
+  opacity: 0.05 !important;
+}
+
+/* Footer en dark */
+html.dark footer {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+html.dark footer .text-white\/20 {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* ============================================================
+   PANEL DE ACCESIBILIDAD — SIEMPRE VISIBLE
    ============================================================ */
 
 .a11y-btn { filter: none !important; }
