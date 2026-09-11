@@ -37,14 +37,12 @@ export default function CoursesPage() {
               href={`/courses/${curso.slug}`}
               className="group relative overflow-hidden border border-white/10 bg-[#0b0d10] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-red-600/40 hover:bg-[#0d1014]"
             >
-              {/* Glow de color */}
               <div
                 className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity group-hover:opacity-30"
                 style={{ backgroundColor: curso.color }}
               />
 
               <div className="relative">
-                {/* Icono + nombre */}
                 <div className="mb-5 flex items-start justify-between">
                   <div
                     className="flex h-14 w-14 items-center justify-center border text-2xl"
@@ -69,7 +67,6 @@ export default function CoursesPage() {
                   {curso.descripcion}
                 </p>
 
-                {/* Barra de progreso (placeholder 0%) */}
                 <div className="mt-6 flex items-center gap-3">
                   <div className="h-1 flex-1 overflow-hidden bg-white/10">
                     <div
