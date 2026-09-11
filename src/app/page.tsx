@@ -528,7 +528,7 @@ export default function Home() {
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 md:px-12 md:py-32 lg:px-20">
           <div className="grid gap-8 sm:gap-12 lg:grid-cols-[280px_1fr] lg:gap-16">
             <div>
-              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/[0.06] sm:text-6xl md:text-7xl">01</div>
+              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/20 sm:text-6xl md:text-7xl">01</div>
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">ORIGEN</div>
               <h2 className="mt-2 text-2xl font-bold sm:text-3xl">El comienzo</h2>
             </div>
@@ -562,7 +562,7 @@ export default function Home() {
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 md:px-12 md:py-32 lg:px-20">
           <div className="grid gap-8 sm:gap-12 lg:grid-cols-[280px_1fr] lg:gap-16">
             <div>
-              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/[0.06] sm:text-6xl md:text-7xl">02</div>
+              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/20 sm:text-6xl md:text-7xl">02</div>
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">FORMACIÓN</div>
               <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Mis estudios</h2>
             </div>
@@ -590,7 +590,7 @@ export default function Home() {
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 md:px-12 md:py-32 lg:px-20">
           <div className="grid gap-8 sm:gap-12 lg:grid-cols-[280px_1fr] lg:gap-16">
             <div>
-              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/[0.06] sm:text-6xl md:text-7xl">03</div>
+              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/20 sm:text-6xl md:text-7xl">03</div>
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">EXPERIENCIA</div>
               <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Experiencia práctica</h2>
             </div>
@@ -612,7 +612,7 @@ export default function Home() {
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 md:px-12 md:py-32 lg:px-20">
           <div className="grid gap-8 sm:gap-12 lg:grid-cols-[280px_1fr] lg:gap-16">
             <div>
-              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/[0.06] sm:text-6xl md:text-7xl">04</div>
+              <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/20 sm:text-6xl md:text-7xl">04</div>
               <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">TECNOLOGÍAS</div>
               <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Mi conjunto de herramientas</h2>
               <p className="mt-4 text-sm leading-7 text-white/30 sm:mt-6">
@@ -623,8 +623,8 @@ export default function Home() {
               {TECNOLOGIAS.map((grupo) => (
                 <div key={grupo.categoria}>
                   <div className="mb-4 flex items-center gap-4 sm:mb-5">
-                    <span className="font-mono text-[9px] tracking-[0.3em] text-white/25">{grupo.categoria}</span>
-                    <div className="h-px flex-1 bg-white/[0.06]" />
+                    <span className="font-mono text-[9px] tracking-[0.3em] text-red-400 sm:text-[10px]">{grupo.categoria}</span>
+                    <div className="h-px flex-1 bg-red-600/30" />
                   </div>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
                     {grupo.elementos.map((tecnologia) => (
@@ -650,7 +650,7 @@ export default function Home() {
       <RevealSection id="nivel-5" className="relative z-10 border-t border-white/10" onUnlock={() => desbloquearNivel(5)}>
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 md:px-12 md:py-32 lg:px-20">
           <div className="mb-12 sm:mb-16">
-            <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/[0.06] sm:text-6xl md:text-7xl">05</div>
+            <div className="font-mono text-5xl font-black tracking-[-0.08em] text-white/20 sm:text-6xl md:text-7xl">05</div>
             <div className="mt-4 font-mono text-[9px] tracking-[0.35em] text-red-500">PROYECTOS DESTACADOS</div>
             <div className="mt-2 flex flex-col justify-between gap-3 md:flex-row md:items-end md:gap-5">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Lo que he construido</h2>

@@ -383,14 +383,6 @@ html.light .text-white\/70 { color: rgba(0, 0, 0, 0.82) !important; }
 html.light .text-white\/85 { color: rgba(0, 0, 0, 0.9) !important; }
 html.light .text-white\/90 { color: rgba(0, 0, 0, 0.95) !important; }
 
-/* Números grandes (01-05) */
-html.light .text-white\/\[0\.04\] { color: rgba(0, 0, 0, 0.1) !important; }
-html.light .text-white\/\[0\.05\] { color: rgba(0, 0, 0, 0.12) !important; }
-html.light .text-white\/\[0\.06\] { color: rgba(0, 0, 0, 0.15) !important; }
-html.light .text-white\/\[0\.07\] { color: rgba(0, 0, 0, 0.17) !important; }
-html.light .text-white\/\[0\.08\] { color: rgba(0, 0, 0, 0.2) !important; }
-html.light .text-white\/\[0\.1\] { color: rgba(0, 0, 0, 0.22) !important; }
-
 /* Bordes blancos → negros */
 html.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.15) !important; }
 html.light .border-white\/15 { border-color: rgba(0, 0, 0, 0.15) !important; }
@@ -408,9 +400,6 @@ html.light .text-rose-400 { color: #881337 !important; }
 html.light .text-rose-200\/90 { color: rgba(159, 18, 57, 0.9) !important; }
 html.light .text-emerald-300 { color: #065f46 !important; }
 html.light .text-emerald-500 { color: #047857 !important; }
-
-/* Números grandes 01-05 en rojo (modo claro) */
-html.light .text-red-600\/40 { color: rgba(185, 28, 28, 0.4) !important; }
 
 /* Fondos rojos */
 html.light .bg-red-600 { background-color: #dc2626 !important; }
