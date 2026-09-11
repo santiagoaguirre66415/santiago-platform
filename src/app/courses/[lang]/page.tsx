@@ -5,42 +5,28 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import {
-  CURSOS,
   getCurso,
   DIFICULTAD_COLORES,
   DIFICULTAD_LABELS,
   type Dificultad,
   type Nivel,
 } from '@/lib/courses-data';
-
-const STORAGE_KEY = 'santiago-courses-progress';
+import { loadProgress, saveProgress, addXp } from '@/lib/progress';
 
 type FiltroDificultad = 'todas' | Dificultad;
 
 interface ProgresoGuardado {
-  completados: string[]; // ids de niveles
+  completados: string[];
 }
 
 function cargarProgreso(): ProgresoGuardado {
-  if (typeof window === 'undefined') return { completados: [] };
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { completados: [] };
-    const parsed = JSON.parse(raw);
-    return {
-      completados: Array.isArray(parsed.completados) ? parsed.completados : [],
-    };
-  } catch {
-    return { completados: [] };
-  }
+  const data = loadProgress();
+  return { completados: data.misionesCompletadas };
 }
 
 function guardarProgreso(data: ProgresoGuardado) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {
-    // ignore
-  }
+  const existing = loadProgress();
+  saveProgress({ ...existing, misionesCompletadas: data.completados });
 }
 
 export default function CursoMapaPage({
@@ -82,9 +68,12 @@ export default function CursoMapaPage({
     completados.includes(nivel.id);
 
   const completarNivel = (id: string) => {
-    setCompletados((prev) =>
-      prev.includes(id) ? prev : [...prev, id]
-    );
+    setCompletados((prev) => {
+      if (prev.includes(id)) return prev;
+      const nivel = curso?.niveles.find((n) => n.id === id);
+      if (nivel) addXp(nivel.xp);
+      return [...prev, id];
+    });
     setNivelSeleccionado(null);
   };
 
@@ -94,7 +83,8 @@ export default function CursoMapaPage({
   const totalCompletados = curso.niveles.filter((n) =>
     completados.includes(n.id)
   ).length;
-  const porcentaje = Math.round((totalCompletados / totalNiveles) * 100);
+  const porcentaje =
+    totalNiveles > 0 ? Math.round((totalCompletados / totalNiveles) * 100) : 0;
 
   return (
     <main className="min-h-screen bg-[#08090b] text-white">
@@ -109,15 +99,13 @@ export default function CursoMapaPage({
       <Navbar />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pb-20 pt-32 sm:px-6 md:px-12">
-        {/* BREADCRUMB */}
         <Link
           href="/courses"
-          className="mb-6 inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.25em] text-white/40 transition hover:text-red-500"
+          className="mb-6 inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.25em] text-white/40 transition hover:text-white"
         >
           ← VOLVER A CURSOS
         </Link>
 
-        {/* HEADER DEL CURSO */}
         <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div
@@ -130,7 +118,10 @@ export default function CursoMapaPage({
               {curso.icono}
             </div>
             <div>
-              <span className="font-mono text-[9px] tracking-[0.35em] text-red-500">
+              <span
+                className="font-mono text-[9px] tracking-[0.35em]"
+                style={{ color: curso.color }}
+              >
                 MUNDO
               </span>
               <h1 className="text-3xl font-black tracking-[-0.03em] sm:text-4xl">
@@ -145,7 +136,10 @@ export default function CursoMapaPage({
               <span className="font-mono text-[9px] tracking-[0.25em] text-white/40">
                 PROGRESO
               </span>
-              <div className="font-mono text-2xl font-bold text-red-500">
+              <div
+                className="font-mono text-2xl font-bold"
+                style={{ color: curso.color }}
+              >
                 {porcentaje}%
               </div>
             </div>
@@ -161,43 +155,48 @@ export default function CursoMapaPage({
           </div>
         </div>
 
-        {/* FILTROS DE DIFICULTAD */}
         <div className="mb-8 flex flex-wrap gap-2">
           {(['todas', 'basico', 'intermedio', 'avanzado', 'boss'] as const).map(
-            (f) => (
-              <button
-                key={f}
-                onClick={() => setFiltro(f)}
-                aria-pressed={filtro === f}
-                className={`border px-4 py-2 font-mono text-[9px] tracking-[0.2em] transition ${
-                  filtro === f
-                    ? 'border-red-600 bg-red-600/10 text-red-400'
-                    : 'border-white/10 text-white/40 hover:bg-white/5 hover:text-white'
-                }`}
-              >
-                {f === 'todas' ? 'TODAS' : DIFICULTAD_LABELS[f]}
-              </button>
-            )
+            (f) => {
+              const activo = filtro === f;
+              return (
+                <button
+                  key={f}
+                  onClick={() => setFiltro(f)}
+                  aria-pressed={activo}
+                  style={
+                    activo
+                      ? {
+                          borderColor: curso.color,
+                          backgroundColor: `${curso.color}20`,
+                          color: curso.color,
+                        }
+                      : undefined
+                  }
+                  className={`border px-4 py-2 font-mono text-[9px] tracking-[0.2em] transition ${
+                    activo
+                      ? ''
+                      : 'border-white/10 text-white/40 hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  {f === 'todas' ? 'TODAS' : DIFICULTAD_LABELS[f]}
+                </button>
+              );
+            }
           )}
         </div>
 
-        {/* =========================================================
-            MAPA — Aquí pones tu imagen de fondo estilo Minecraft
-            Las banderas se posicionan con `mapPosition` de cada nivel
-        ========================================================= */}
         <div className="relative aspect-[16/10] w-full overflow-hidden border border-white/10 bg-[#0b0d10]">
-          {/* 👇 AQUÍ VA TU IMAGEN DE MAPA */}
-          {/* Reemplaza esta línea por tu imagen: */}
-          {/*
+          {/* AQUÍ VA TU IMAGEN DE MAPA — Descomenta cuando la tengas:
           <Image
-            src="/maps/python-map.png"
-            alt="Mapa de Python"
+            src={`/maps/${curso.slug}-map.png`}
+            alt={`Mapa de ${curso.nombre}`}
             fill
-            className="object-cover opacity-60"
+            priority
+            className="object-cover opacity-80"
           />
           */}
 
-          {/* Placeholder visual mientras pones tu mapa */}
           <div
             className="absolute inset-0 opacity-20"
             style={{
@@ -209,12 +208,10 @@ export default function CursoMapaPage({
             }}
           />
 
-          {/* Indicador de esquina */}
           <div className="absolute left-3 top-3 border border-white/10 bg-[#08090b]/80 px-3 py-2 font-mono text-[8px] tracking-[0.2em] text-white/40 backdrop-blur">
             MAPA / {curso.nombre.toUpperCase()}
           </div>
 
-          {/* BANDERAS (niveles) */}
           {nivelesFiltrados.map((nivel) => {
             const desbloqueado = estaDesbloqueado(nivel);
             const completado = estaCompletado(nivel);
@@ -236,9 +233,7 @@ export default function CursoMapaPage({
                   top: `${nivel.mapPosition.y}%`,
                 }}
               >
-                {/* Bandera */}
                 <div className="relative flex flex-col items-center">
-                  {/* Icono de estado */}
                   <div
                     className={`flex h-10 w-10 items-center justify-center border-2 text-lg transition-all sm:h-12 sm:w-12 sm:text-xl ${
                       completado
@@ -255,8 +250,6 @@ export default function CursoMapaPage({
                   >
                     {completado ? '✓' : desbloqueado ? '🚩' : '🔒'}
                   </div>
-
-                  {/* Etiqueta */}
                   <div className="mt-1 whitespace-nowrap border border-white/10 bg-[#08090b]/90 px-2 py-1 font-mono text-[8px] tracking-wider text-white/70 backdrop-blur sm:text-[9px]">
                     {nivel.titulo}
                   </div>
@@ -265,7 +258,6 @@ export default function CursoMapaPage({
             );
           })}
 
-          {/* Estado vacío si el filtro no tiene niveles */}
           {nivelesFiltrados.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center">
               <p className="text-sm text-white/30">
@@ -275,41 +267,39 @@ export default function CursoMapaPage({
           )}
         </div>
 
-        {/* LEYENDA */}
         <div className="mt-6 flex flex-wrap items-center gap-4 border border-white/10 bg-white/[0.02] p-4">
           <span className="font-mono text-[9px] tracking-[0.25em] text-white/40">
             LEYENDA:
           </span>
-          {(
-            ['basico', 'intermedio', 'avanzado', 'boss'] as Dificultad[]
-          ).map((d) => (
-            <div key={d} className="flex items-center gap-2">
-              <span
-                className="h-3 w-3 border"
-                style={{
-                  borderColor: DIFICULTAD_COLORES[d],
-                  backgroundColor: `${DIFICULTAD_COLORES[d]}40`,
-                }}
-              />
-              <span className="font-mono text-[9px] tracking-wider text-white/50">
-                {DIFICULTAD_LABELS[d]}
-              </span>
-            </div>
-          ))}
+          {(['basico', 'intermedio', 'avanzado', 'boss'] as Dificultad[]).map(
+            (d) => (
+              <div key={d} className="flex items-center gap-2">
+                <span
+                  className="h-3 w-3 border"
+                  style={{
+                    borderColor: DIFICULTAD_COLORES[d],
+                    backgroundColor: `${DIFICULTAD_COLORES[d]}40`,
+                  }}
+                />
+                <span className="font-mono text-[9px] tracking-wider text-white/50">
+                  {DIFICULTAD_LABELS[d]}
+                </span>
+              </div>
+            )
+          )}
         </div>
       </div>
 
-      {/* MODAL DE NIVEL SELECCIONADO */}
+      {/* MODAL DE NIVEL */}
       {nivelSeleccionado && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
           onClick={() => setNivelSeleccionado(null)}
         >
           <div
-            className="relative w-full max-w-md border border-white/15 bg-[#0b0d10] p-6 shadow-2xl"
+            className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto border border-white/15 bg-[#0b0d10] p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Borde de color según dificultad */}
             <div
               className="absolute left-0 top-0 h-1 w-full"
               style={{
@@ -345,7 +335,7 @@ export default function CursoMapaPage({
               {nivelSeleccionado.descripcion}
             </p>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="mt-5 grid grid-cols-2 gap-3">
               <div className="border border-white/10 bg-white/[0.02] p-3">
                 <span className="block font-mono text-[8px] tracking-[0.2em] text-white/40">
                   DURACIÓN
@@ -364,18 +354,86 @@ export default function CursoMapaPage({
               </div>
             </div>
 
+            {nivelSeleccionado.contenido ? (
+              <div className="mt-6 space-y-6">
+                <div>
+                  <h4 className="font-mono text-[10px] tracking-[0.3em] text-red-500">
+                    📖 TEORÍA
+                  </h4>
+                  <div className="mt-3 space-y-3 border-l-2 border-red-600/30 pl-4">
+                    {nivelSeleccionado.contenido.teoria.map((t, i) => (
+                      <p key={i} className="text-sm leading-7 text-white/60">
+                        {t}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+
+                {nivelSeleccionado.contenido.ejemplo && (
+                  <div>
+                    <h4 className="font-mono text-[10px] tracking-[0.3em] text-red-500">
+                      💻 EJEMPLO
+                    </h4>
+                    <pre className="mt-3 overflow-x-auto border border-white/10 bg-[#08090b] p-4 font-mono text-xs leading-6 text-emerald-300">
+                      {nivelSeleccionado.contenido.ejemplo}
+                    </pre>
+                  </div>
+                )}
+
+                {nivelSeleccionado.contenido.quiz && (
+                  <div>
+                    <h4 className="font-mono text-[10px] tracking-[0.3em] text-red-500">
+                      🎯 QUIZ
+                    </h4>
+                    <div className="mt-3 space-y-4">
+                      {nivelSeleccionado.contenido.quiz.map((q, qi) => (
+                        <div
+                          key={qi}
+                          className="border border-white/10 bg-white/[0.02] p-4"
+                        >
+                          <p className="text-sm font-medium text-white">
+                            {qi + 1}. {q.pregunta}
+                          </p>
+                          <div className="mt-3 space-y-2">
+                            {q.opciones.map((opt, oi) => (
+                              <button
+                                key={oi}
+                                onClick={() => {
+                                  alert(
+                                    oi === q.correcta
+                                      ? `✅ ¡Correcto! ${q.explicacion}`
+                                      : `❌ Incorrecto. ${q.explicacion}`
+                                  );
+                                }}
+                                className="block w-full border border-white/10 bg-white/[0.02] px-4 py-2 text-left text-sm text-white/70 transition hover:border-red-600/40 hover:bg-red-600/10 hover:text-white"
+                              >
+                                {opt}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="mt-6 border border-yellow-500/30 bg-yellow-500/10 p-4 text-center">
+                <p className="text-sm text-yellow-300">
+                  🚧 Contenido próximamente
+                </p>
+              </div>
+            )}
+
             <div className="mt-6 flex gap-3">
               <button
-                onClick={() => {
-                  // Aquí después pondrás la navegación a la lección real
-                  alert(
-                    `Aquí se abriría la lección: ${nivelSeleccionado.titulo}`
-                  );
-                  completarNivel(nivelSeleccionado.id);
-                }}
-                className="flex-1 border border-red-600 bg-red-600 px-6 py-3 font-mono text-[10px] tracking-[0.2em] transition hover:bg-red-500"
+                onClick={() => completarNivel(nivelSeleccionado.id)}
+                disabled={estaCompletado(nivelSeleccionado)}
+                className="flex-1 border border-red-600 bg-red-600 px-6 py-3 font-mono text-[10px] tracking-[0.2em] transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                INICIAR MISIÓN →
+                {estaCompletado(nivelSeleccionado)
+                  ? '✓ COMPLETADA'
+                  : 'COMPLETAR MISIÓN →'}
               </button>
               <button
                 onClick={() => setNivelSeleccionado(null)}
@@ -384,12 +442,6 @@ export default function CursoMapaPage({
                 CERRAR
               </button>
             </div>
-
-            {estaCompletado(nivelSeleccionado) && (
-              <p className="mt-3 text-center font-mono text-[9px] tracking-wider text-emerald-400">
-                ✓ YA COMPLETASTE ESTA MISIÓN
-              </p>
-            )}
           </div>
         </div>
       )}

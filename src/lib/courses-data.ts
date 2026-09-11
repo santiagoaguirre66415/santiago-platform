@@ -1,13 +1,22 @@
 /**
  * Estructura de datos de los cursos.
  * Cada lenguaje tiene niveles (misiones) posicionados en un mapa.
- *
- * `mapPosition` es el porcentaje dentro del mapa (0-100) donde
- * se dibuja la bandera del nivel.
- * Tú pones la imagen del mapa de fondo y ajustas las coordenadas.
  */
 
 export type Dificultad = 'basico' | 'intermedio' | 'avanzado' | 'boss';
+
+export interface QuizPregunta {
+  pregunta: string;
+  opciones: string[];
+  correcta: number;
+  explicacion: string;
+}
+
+export interface ContenidoMision {
+  teoria: string[];
+  ejemplo?: string;
+  quiz?: QuizPregunta[];
+}
 
 export interface Nivel {
   id: string;
@@ -16,15 +25,16 @@ export interface Nivel {
   dificultad: Dificultad;
   xp: number;
   duracion: string;
-  mapPosition: { x: number; y: number }; // porcentaje del mapa
-  requiere?: string[]; // ids de niveles previos
+  mapPosition: { x: number; y: number };
+  requiere?: string[];
+  contenido?: ContenidoMision;
 }
 
 export interface CursoLenguaje {
   slug: string;
   nombre: string;
   icono: string;
-  color: string;       // color hex para acentos
+  color: string;
   descripcion: string;
   niveles: Nivel[];
 }
@@ -45,6 +55,40 @@ export const CURSOS: CursoLenguaje[] = [
         xp: 10,
         duracion: '10 min',
         mapPosition: { x: 15, y: 75 },
+        contenido: {
+          teoria: [
+            'Python es un lenguaje de programación de alto nivel, interpretado y de propósito general.',
+            'Fue creado por Guido van Rossum en 1991 y hoy es uno de los lenguajes más populares del mundo.',
+            'Se usa en ciencia de datos, inteligencia artificial, desarrollo web, automatización y más.',
+            'Su sintaxis es clara y legible, ideal para quienes empiezan a programar.',
+          ],
+          ejemplo: `# Tu primer programa\nprint("¡Hola, mundo!")`,
+          quiz: [
+            {
+              pregunta: '¿Quién creó Python?',
+              opciones: ['Linus Torvalds', 'Guido van Rossum', 'James Gosling', 'Brendan Eich'],
+              correcta: 1,
+              explicacion: 'Guido van Rossum creó Python en 1991.',
+            },
+            {
+              pregunta: '¿Qué tipo de lenguaje es Python?',
+              opciones: [
+                'Compilado y de bajo nivel',
+                'Interpretado y de alto nivel',
+                'Solo para móviles',
+                'Solo para bases de datos',
+              ],
+              correcta: 1,
+              explicacion: 'Python es interpretado y de alto nivel.',
+            },
+            {
+              pregunta: '¿Cuál es una aplicación común de Python?',
+              opciones: ['Diseño gráfico', 'Ciencia de datos', 'Edición de video', 'Reparar computadoras'],
+              correcta: 1,
+              explicacion: 'Python es muy usado en ciencia de datos, IA y automatización.',
+            },
+          ],
+        },
       },
       {
         id: 'py-02',
@@ -123,6 +167,29 @@ export const CURSOS: CursoLenguaje[] = [
         xp: 10,
         duracion: '10 min',
         mapPosition: { x: 20, y: 70 },
+        contenido: {
+          teoria: [
+            'Java es un lenguaje orientado a objetos, compilado y multiplataforma.',
+            'Fue creado por Sun Microsystems (ahora Oracle) en 1995.',
+            'Funciona en la JVM (Java Virtual Machine), lo que permite "escribir una vez, ejecutar en cualquier lugar".',
+            'Es muy usado en aplicaciones empresariales y apps Android.',
+          ],
+          ejemplo: `public class Main {\n  public static void main(String[] args) {\n    System.out.println("¡Hola, mundo!");\n  }\n}`,
+          quiz: [
+            {
+              pregunta: '¿Qué significa JVM?',
+              opciones: ['Java Very Modern', 'Java Virtual Machine', 'Just Value Method', 'Java Version Manager'],
+              correcta: 1,
+              explicacion: 'JVM significa Java Virtual Machine.',
+            },
+            {
+              pregunta: '¿En qué año se creó Java?',
+              opciones: ['1985', '1991', '1995', '2000'],
+              correcta: 2,
+              explicacion: 'Java fue creado en 1995 por Sun Microsystems.',
+            },
+          ],
+        },
       },
       {
         id: 'jv-02',
@@ -171,6 +238,28 @@ export const CURSOS: CursoLenguaje[] = [
         xp: 10,
         duracion: '15 min',
         mapPosition: { x: 25, y: 70 },
+        contenido: {
+          teoria: [
+            'HTML significa HyperText Markup Language.',
+            'Es el lenguaje que estructura el contenido de todas las páginas web.',
+            'Usa etiquetas (tags) para definir elementos como títulos, párrafos, imágenes y enlaces.',
+            'Un archivo HTML siempre empieza con <!DOCTYPE html>.',
+          ],
+          ejemplo: `<!DOCTYPE html>\n<html>\n  <head>\n    <title>Mi página</title>\n  </head>\n  <body>\n    <h1>¡Hola!</h1>\n    <p>Mi primera página web.</p>\n  </body>\n</html>`,
+          quiz: [
+            {
+              pregunta: '¿Qué significa HTML?',
+              opciones: [
+                'HyperText Markup Language',
+                'High Tech Modern Language',
+                'Home Tool Markup Language',
+                'HyperText Machine Learning',
+              ],
+              correcta: 0,
+              explicacion: 'HTML significa HyperText Markup Language.',
+            },
+          ],
+        },
       },
       {
         id: 'ht-02',
@@ -209,6 +298,15 @@ export const CURSOS: CursoLenguaje[] = [
         xp: 10,
         duracion: '15 min',
         mapPosition: { x: 20, y: 65 },
+        contenido: {
+          teoria: [
+            'CSS significa Cascading Style Sheets.',
+            'Se usa para dar estilo y diseño a las páginas HTML.',
+            'Los selectores permiten apuntar a elementos específicos.',
+            'Ejemplo: p { color: red; } pinta todos los párrafos de rojo.',
+          ],
+          ejemplo: `body {\n  background: #08090b;\n  color: white;\n  font-family: Arial;\n}\n\nh1 {\n  color: #dc2626;\n}`,
+        },
       },
       {
         id: 'cs-02',
@@ -257,6 +355,23 @@ export const CURSOS: CursoLenguaje[] = [
         xp: 10,
         duracion: '15 min',
         mapPosition: { x: 15, y: 70 },
+        contenido: {
+          teoria: [
+            'JavaScript es el lenguaje de programación de la web.',
+            'Se ejecuta directamente en el navegador.',
+            'Permite crear interactividad, animaciones y aplicaciones completas.',
+            'Usa let y const para declarar variables.',
+          ],
+          ejemplo: `const nombre = "Santiago";\nlet edad = 20;\n\nconsole.log(\`Hola, \${nombre}\`);`,
+          quiz: [
+            {
+              pregunta: '¿Dónde se ejecuta JavaScript?',
+              opciones: ['Solo en servidores', 'En el navegador', 'Solo en móviles', 'En bases de datos'],
+              correcta: 1,
+              explicacion: 'JavaScript se ejecuta en el navegador y también en servidores con Node.js.',
+            },
+          ],
+        },
       },
       {
         id: 'js-02',
@@ -315,6 +430,15 @@ export const CURSOS: CursoLenguaje[] = [
         xp: 10,
         duracion: '15 min',
         mapPosition: { x: 25, y: 70 },
+        contenido: {
+          teoria: [
+            'PHP significa PHP: Hypertext Preprocessor.',
+            'Es un lenguaje de scripting del lado del servidor.',
+            'Muy usado para crear sitios web dinámicos y APIs.',
+            'Todo código PHP va dentro de <?php ... ?>.',
+          ],
+          ejemplo: `<?php\n  echo "¡Hola, mundo!";\n?>`,
+        },
       },
       {
         id: 'ph-02',
@@ -345,10 +469,10 @@ export function getCurso(slug: string) {
 }
 
 export const DIFICULTAD_COLORES: Record<Dificultad, string> = {
-  basico: '#22c55e',      // verde
-  intermedio: '#eab308',  // amarillo
-  avanzado: '#ef4444',    // rojo
-  boss: '#dc2626',        // rojo intenso
+  basico: '#22c55e',
+  intermedio: '#eab308',
+  avanzado: '#ef4444',
+  boss: '#dc2626',
 };
 
 export const DIFICULTAD_LABELS: Record<Dificultad, string> = {
