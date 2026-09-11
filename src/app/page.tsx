@@ -98,6 +98,7 @@ const PROYECTOS = [
     numero: '01',
     titulo: 'CALMA',
     estado: '✅ PROYECTO FINALIZADO',
+    colorEstado: 'text-emerald-400',
     descripcion: 'Aplicación enfocada en acompañamiento y bienestar con una experiencia de interacción mediante chatbot.',
     tecnologias: ['TypeScript', 'React', 'Next.js', 'Appwrite'],
     visual: 'calma',
@@ -108,6 +109,7 @@ const PROYECTOS = [
     numero: '02',
     titulo: 'PORTAFOLIO PERSONAL',
     estado: '✅ PROYECTO ACTIVO',
+    colorEstado: 'text-emerald-400',
     descripcion: 'Portafolio web con una experiencia interactiva que muestra mi formación, tecnologías, proyectos y evolución como desarrollador.',
     tecnologias: ['TypeScript', 'Next.js', 'Tailwind CSS', 'Appwrite'],
     visual: 'portfolio',
@@ -118,6 +120,7 @@ const PROYECTOS = [
     numero: '03',
     titulo: 'SISTEMA DE ASISTENCIA QR',
     estado: '🚧 PROYECTO EN DESARROLLO',
+    colorEstado: 'text-amber-400',
     descripcion: 'Sistema de asistencia mediante códigos QR con validación de horario y distancia para realizar registros de forma más precisa.',
     tecnologias: ['JavaScript', 'React', 'Node.js', 'SQL'],
     visual: 'qr',
@@ -128,6 +131,7 @@ const PROYECTOS = [
     numero: '04',
     titulo: 'PROYECTOS DE FORMACIÓN',
     estado: '📚 PROCESO DE APRENDIZAJE',
+    colorEstado: 'text-sky-400',
     descripcion: 'Conjunto de ejercicios y proyectos desarrollados durante mi proceso de formación en programación y desarrollo de software.',
     tecnologias: ['Python', 'Java', 'Flutter', 'SQL'],
     visual: 'codigo',
@@ -333,7 +337,7 @@ export default function Home() {
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="gamer-grid absolute inset-0" />
         <div className="absolute left-1/2 top-[-300px] h-[650px] w-[650px] -translate-x-1/2 rounded-full bg-red-600/10 blur-[140px]" />
-        <div className="absolute bottom-[15%] right-[-250px] h-[500px] w-[500px] rounded-full bg-red-900/10 blur-[130px]" />
+        <div className="absolute bottom-[15%] right-[-250px] h-[500px] w-[500px] rounded-full bg-red-600/10 blur-[130px]" />
       </div>
 
       <Navbar />
@@ -496,10 +500,12 @@ export default function Home() {
                 <div
                   key={nivel.nivel}
                   className={`group relative border p-3 transition-all sm:p-4 ${
-                    desbloqueado
+                    activo
+                      ? 'border-red-600/60 bg-white/[0.025]'
+                      : desbloqueado
                       ? 'border-white/10 bg-white/[0.025]'
                       : 'border-white/[0.05] bg-black/20 opacity-40'
-                  } ${activo ? 'border-red-600/60' : ''}`}
+                  }`}
                 >
                   {activo && <div className="absolute left-0 top-0 h-px w-full bg-red-600" />}
                   <div className="flex items-center justify-between">
@@ -623,7 +629,7 @@ export default function Home() {
               {TECNOLOGIAS.map((grupo) => (
                 <div key={grupo.categoria}>
                   <div className="mb-4 flex items-center gap-4 sm:mb-5">
-                    <span className="font-mono text-[9px] tracking-[0.3em] text-red-400 sm:text-[10px]">{grupo.categoria}</span>
+                    <span className="font-mono text-[9px] tracking-[0.3em] text-red-500 sm:text-[10px]">{grupo.categoria}</span>
                     <div className="h-px flex-1 bg-red-600/30" />
                   </div>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
@@ -674,7 +680,7 @@ export default function Home() {
                 </div>
 
                 <div className="p-5 sm:p-7">
-                  <div className="font-mono text-[8px] tracking-[0.3em] text-red-500">{proyecto.estado}</div>
+                  <div className={`font-mono text-[8px] tracking-[0.3em] ${proyecto.colorEstado}`}>{proyecto.estado}</div>
                   <div className="mt-3 flex items-start justify-between gap-5">
                     <h3 className="text-xl font-bold tracking-tight sm:text-2xl">{proyecto.titulo}</h3>
                     <span className="text-xl text-white/20 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-red-500">↗</span>
