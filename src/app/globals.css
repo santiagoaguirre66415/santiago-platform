@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+/* ============================================================
+   BASE
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #08090b;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -12,11 +16,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -25,9 +26,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ========== Portafolio gamificado ========== */
+::selection {
+  background: #dc2626;
+  color: white;
+}
 
-/* Reveal al scroll */
+:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   REVEAL / ANIMACIONES
+   ============================================================ */
+
 .reveal-section {
   opacity: 0;
   transform: translateY(28px) scale(0.98);
@@ -41,40 +54,14 @@ body {
   transform: translateY(0) scale(1);
 }
 
-/* Level-up flash sutil */
 @keyframes level-up-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-  }
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
 .level-up-flash {
   animation: level-up-pulse 0.8s ease-out;
-}
-
-/* Respetar reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .reveal-section {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .level-up-flash {
-    animation: none;
-  }
-}
-
-/* Focus visible accesible */
-:focus-visible {
-  outline: 2px solid rgb(248 113 113);
-  outline-offset: 2px;
 }
 
 @keyframes toast-in {
@@ -88,28 +75,10 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-\[toast-in_0\.35s_ease-out\] {
-    animation: none !important;
-  }
-}
+/* ============================================================
+   PORTFOLIO GAMER
+   ============================================================ */
 
-/* ========== PORTFOLIO GAMER ========== */
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: #08090b;
-}
-
-::selection {
-  background: #dc2626;
-  color: white;
-}
-
-/* Grid de fondo */
 .gamer-grid {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
@@ -207,13 +176,8 @@ body {
   background: rgba(255, 255, 255, 0.07);
 }
 
-.linea-mockup.grande {
-  width: 80%;
-}
-
-.linea-mockup.mediana {
-  width: 55%;
-}
+.linea-mockup.grande { width: 80%; }
+.linea-mockup.mediana { width: 55%; }
 
 .tarjetas-mockup {
   display: grid;
@@ -255,16 +219,10 @@ body {
   background: white;
 }
 
-.codigo-qr i {
-  display: block;
-  background: #08090b;
-}
-
+.codigo-qr i { display: block; background: #08090b; }
 .codigo-qr i:nth-child(2),
 .codigo-qr i:nth-child(4),
-.codigo-qr i:nth-child(8) {
-  background: white;
-}
+.codigo-qr i:nth-child(8) { background: white; }
 
 .contenedor-qr small {
   font-family: monospace;
@@ -273,9 +231,7 @@ body {
   color: rgba(255, 255, 255, 0.25);
 }
 
-.informacion-qr {
-  max-width: 240px;
-}
+.informacion-qr { max-width: 240px; }
 
 .fila-asistencia {
   display: flex;
@@ -289,9 +245,7 @@ body {
   color: rgba(255, 255, 255, 0.25);
 }
 
-.fila-asistencia b {
-  color: rgba(220, 38, 38, 0.8);
-}
+.fila-asistencia b { color: rgba(220, 38, 38, 0.8); }
 
 .visual-portafolio {
   position: relative;
@@ -354,58 +308,38 @@ body {
   color: rgba(255, 255, 255, 0.12);
 }
 
-.visual-codigo b {
-  color: rgba(220, 38, 38, 0.8);
-}
+.visual-codigo b { color: rgba(220, 38, 38, 0.8); }
 
 @media (max-width: 640px) {
-  .contenido-qr {
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .codigo-qr {
-    width: 80px;
-    height: 80px;
-    padding: 8px;
-  }
-
-  .titulo-mockup {
-    font-size: 20px;
-  }
-
-  .principal-calma {
-    padding: 20px;
-  }
-
-  .visual-codigo {
-    font-size: 7px;
-    padding: 20px;
-  }
+  .contenido-qr { gap: 15px; padding: 15px; }
+  .codigo-qr { width: 80px; height: 80px; padding: 8px; }
+  .titulo-mockup { font-size: 20px; }
+  .principal-calma { padding: 20px; }
+  .visual-codigo { font-size: 7px; padding: 20px; }
 }
 
-/* Reducir animaciones para usuarios que lo prefieren */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+/* ============================================================
+   ACCESIBILIDAD — TAMAÑO DE FUENTE Y LUPA
+   ============================================================ */
 
-/* ========== ACCESIBILIDAD ========== */
-
-/* Tamaños de fuente */
 html[data-font-size="sm"] { font-size: 14px; }
 html[data-font-size="md"] { font-size: 16px; }
 html[data-font-size="lg"] { font-size: 18px; }
 html[data-font-size="xl"] { font-size: 20px; }
 
+html[data-zoom="normal"] body { zoom: 1; }
+html[data-zoom="lg"] body { zoom: 1.1; }
+html[data-zoom="xl"] body { zoom: 1.25; }
+html[data-zoom="xxl"] body { zoom: 1.5; }
+
+/* Excepción: el panel de accesibilidad NO se escala */
+html[data-zoom] .a11y-panel,
+html[data-zoom] .a11y-btn {
+  zoom: calc(1 / 1); /* el zoom del body lo afecta pero es fixed */
+}
+
 /* ============================================================
-   MODO CLARO COMPLETO
+   MODO CLARO
    ============================================================ */
 
 html.light {
@@ -428,7 +362,7 @@ html.light .bg-\[\#0c0e11\]\/70 { background-color: rgba(240, 240, 245, 0.7) !im
 html.light .bg-\[\#101216\] { background-color: #ececef !important; }
 html.light .bg-\[\#0d0f12\]\/95 { background-color: rgba(255, 255, 255, 0.98) !important; }
 
-/* Fondos con opacidad blanca → opacidad negra */
+/* Fondos con opacidad blanca → negra */
 html.light .bg-white\/\[0\.02\] { background-color: rgba(0, 0, 0, 0.02) !important; }
 html.light .bg-white\/\[0\.025\] { background-color: rgba(0, 0, 0, 0.025) !important; }
 html.light .bg-white\/\[0\.03\] { background-color: rgba(0, 0, 0, 0.03) !important; }
@@ -437,31 +371,38 @@ html.light .bg-white\/5 { background-color: rgba(0, 0, 0, 0.05) !important; }
 html.light .bg-white\/10 { background-color: rgba(0, 0, 0, 0.08) !important; }
 html.light .bg-white\/15 { background-color: rgba(0, 0, 0, 0.12) !important; }
 
-/* Textos blancos → negros */
+/* Textos blancos → negros (con contraste fuerte) */
 html.light .text-white { color: #0a0a0a !important; }
-html.light .text-white\/20 { color: rgba(0, 0, 0, 0.25) !important; }
-html.light .text-white\/25 { color: rgba(0, 0, 0, 0.35) !important; }
-html.light .text-white\/30 { color: rgba(0, 0, 0, 0.45) !important; }
-html.light .text-white\/35 { color: rgba(0, 0, 0, 0.5) !important; }
-html.light .text-white\/40 { color: rgba(0, 0, 0, 0.55) !important; }
-html.light .text-white\/45 { color: rgba(0, 0, 0, 0.6) !important; }
-html.light .text-white\/50 { color: rgba(0, 0, 0, 0.65) !important; }
-html.light .text-white\/55 { color: rgba(0, 0, 0, 0.7) !important; }
-html.light .text-white\/60 { color: rgba(0, 0, 0, 0.75) !important; }
-html.light .text-white\/65 { color: rgba(0, 0, 0, 0.78) !important; }
-html.light .text-white\/70 { color: rgba(0, 0, 0, 0.8) !important; }
+html.light .text-white\/20 { color: rgba(0, 0, 0, 0.45) !important; }
+html.light .text-white\/25 { color: rgba(0, 0, 0, 0.5) !important; }
+html.light .text-white\/30 { color: rgba(0, 0, 0, 0.55) !important; }
+html.light .text-white\/35 { color: rgba(0, 0, 0, 0.6) !important; }
+html.light .text-white\/40 { color: rgba(0, 0, 0, 0.65) !important; }
+html.light .text-white\/45 { color: rgba(0, 0, 0, 0.7) !important; }
+html.light .text-white\/50 { color: rgba(0, 0, 0, 0.72) !important; }
+html.light .text-white\/55 { color: rgba(0, 0, 0, 0.75) !important; }
+html.light .text-white\/60 { color: rgba(0, 0, 0, 0.78) !important; }
+html.light .text-white\/65 { color: rgba(0, 0, 0, 0.8) !important; }
+html.light .text-white\/70 { color: rgba(0, 0, 0, 0.82) !important; }
 html.light .text-white\/85 { color: rgba(0, 0, 0, 0.9) !important; }
 html.light .text-white\/90 { color: rgba(0, 0, 0, 0.95) !important; }
 
+/* Números grandes (01-05) con opacidades muy bajas */
+html.light .text-white\/\[0\.04\] { color: rgba(0, 0, 0, 0.1) !important; }
+html.light .text-white\/\[0\.05\] { color: rgba(0, 0, 0, 0.12) !important; }
+html.light .text-white\/\[0\.06\] { color: rgba(0, 0, 0, 0.15) !important; }
+html.light .text-white\/\[0\.07\] { color: rgba(0, 0, 0, 0.17) !important; }
+html.light .text-white\/\[0\.08\] { color: rgba(0, 0, 0, 0.2) !important; }
+html.light .text-white\/\[0\.1\] { color: rgba(0, 0, 0, 0.22) !important; }
+
 /* Bordes blancos → negros */
-html.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.1) !important; }
+html.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.15) !important; }
 html.light .border-white\/15 { border-color: rgba(0, 0, 0, 0.15) !important; }
 html.light .border-white\/20 { border-color: rgba(0, 0, 0, 0.2) !important; }
 html.light .border-white\/\[0\.06\] { border-color: rgba(0, 0, 0, 0.08) !important; }
 html.light .border-white\/\[0\.05\] { border-color: rgba(0, 0, 0, 0.06) !important; }
-html.light .bg-white\/10.backdrop-blur-xl { background-color: rgba(255, 255, 255, 0.9) !important; }
 
-/* Rojo del texto destacado se mantiene, pero ajustamos */
+/* Acentos rojos más oscuros */
 html.light .text-red-500 { color: #b91c1c !important; }
 html.light .text-red-300 { color: #991b1b !important; }
 html.light .text-red-200 { color: #7f1d1d !important; }
@@ -469,7 +410,7 @@ html.light .text-rose-300 { color: #9f1239 !important; }
 html.light .text-rose-200\/90 { color: rgba(159, 18, 57, 0.9) !important; }
 html.light .text-emerald-300 { color: #065f46 !important; }
 
-/* Fondos rojos mantienen buena visibilidad */
+/* Fondos rojos */
 html.light .bg-red-600 { background-color: #dc2626 !important; }
 html.light .bg-red-600\/10 { background-color: rgba(220, 38, 38, 0.1) !important; }
 html.light .bg-red-600\/20 { background-color: rgba(220, 38, 38, 0.15) !important; }
@@ -477,7 +418,7 @@ html.light .bg-red-600\/\[0\.03\] { background-color: rgba(220, 38, 38, 0.03) !i
 html.light .bg-red-500\/20 { background-color: rgba(220, 38, 38, 0.15) !important; }
 html.light .bg-red-500\/10 { background-color: rgba(220, 38, 38, 0.1) !important; }
 
-/* Mockups de proyectos en modo claro */
+/* Mockups en modo claro */
 html.light .pantalla-proyecto { background: #ececef !important; }
 html.light .barra-navegador { background: #f5f5f7 !important; border-color: rgba(0, 0, 0, 0.08) !important; }
 html.light .punto-navegador { background: rgba(0, 0, 0, 0.2) !important; }
@@ -496,28 +437,43 @@ html.light .visual-codigo { color: rgba(0, 0, 0, 0.5) !important; }
 html.light .visual-codigo span { color: rgba(0, 0, 0, 0.2) !important; }
 
 /* Grid de fondo */
-html.light .gamer-grid,
-html.light [class*="bg-[linear-gradient(rgba(255,255,255"] {
+html.light .gamer-grid {
   opacity: 0.02 !important;
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.5) 1px, transparent 1px) !important;
 }
 
-/* Logros bloqueados en modo claro */
 html.light .grayscale { filter: grayscale(1) opacity(0.5) !important; }
 
-/* Panel de accesibilidad en modo claro */
+/* Footer */
+html.light footer {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+html.light footer .text-white\/20 {
+  color: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* ============================================================
+   PANEL DE ACCESIBILIDAD — SIEMPRE VISIBLE
+   ============================================================ */
+
+.a11y-btn {
+  filter: none !important;
+}
+
 html.light .a11y-panel {
   background: #ffffff !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
   color: #0a0a0a !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;
 }
 
 html.light .a11y-panel .text-white\/50,
 html.light .a11y-panel .text-white\/40,
 html.light .a11y-panel .text-white\/60 {
-  color: rgba(0, 0, 0, 0.6) !important;
+  color: rgba(0, 0, 0, 0.7) !important;
 }
 
 html.light .a11y-panel .text-white {
@@ -525,34 +481,19 @@ html.light .a11y-panel .text-white {
 }
 
 html.light .a11y-panel .border-white\/10 {
-  border-color: rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
 html.light .a11y-panel .bg-white\/\[0\.02\] {
-  background-color: rgba(0, 0, 0, 0.02) !important;
+  background-color: rgba(0, 0, 0, 0.03) !important;
 }
 
 html.light .a11y-panel .bg-white\/15 {
-  background-color: rgba(0, 0, 0, 0.15) !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Botón accesibilidad siempre visible */
-.a11y-btn {
-  filter: none !important;
-}
-
-/* Números grandes de nivel (01-05) en modo claro */
-html.light .text-white\/\[0\.06\] {
-  color: rgba(0, 0, 0, 0.08) !important;
-}
-
-/* También para otros números con opacidad muy baja */
-html.light .text-white\/\[0\.08\] {
-  color: rgba(0, 0, 0, 0.1) !important;
-}
-
-html.light .text-white\/\[0\.1\] {
-  color: rgba(0, 0, 0, 0.12) !important;
+html.light .a11y-panel button:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 /* ============================================================
@@ -560,7 +501,7 @@ html.light .text-white\/\[0\.1\] {
    ============================================================ */
 
 html.high-contrast body {
-  filter: contrast(1.15) saturate(1.15) !important;
+  filter: contrast(1.15) saturate(1.15);
 }
 
 html.high-contrast a,
@@ -572,17 +513,17 @@ html.high-contrast .text-white\/20,
 html.high-contrast .text-white\/25,
 html.high-contrast .text-white\/30,
 html.high-contrast .text-white\/35 {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.75) !important;
 }
 
 html.light.high-contrast .text-white\/20,
 html.light.high-contrast .text-white\/25,
 html.light.high-contrast .text-white\/30,
 html.light.high-contrast .text-white\/35 {
-  color: rgba(0, 0, 0, 0.75) !important;
+  color: rgba(0, 0, 0, 0.8) !important;
 }
 
-/* Excepción: el botón y panel de accesibilidad NO se filtran */
+/* Excepción: accesibilidad NO se filtra */
 html.high-contrast .a11y-btn,
 html.high-contrast .a11y-panel {
   filter: none !important;
@@ -613,14 +554,8 @@ html.highlight-links a {
 }
 
 /* ============================================================
-   FOCUS Y SKIP-TO-CONTENT
+   SKIP TO CONTENT
    ============================================================ */
-
-:focus-visible {
-  outline: 2px solid #dc2626;
-  outline-offset: 3px;
-  border-radius: 2px;
-}
 
 .skip-to-content {
   position: absolute;
@@ -637,4 +572,29 @@ html.highlight-links a {
 .skip-to-content:focus {
   left: 1rem;
   top: 1rem;
+}
+
+/* ============================================================
+   PREFERS REDUCED MOTION (sistema)
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .level-up-flash {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
