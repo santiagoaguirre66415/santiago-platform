@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,8 +42,11 @@ export default function RootLayout({
       <head>
         <meta name="google-site-verification" content="wgEL8aLbIn7x8bv2NgJxmu9Zt5vkXDJnPTf3tt6gLoM" />
       </head>
-      <body className="min-h-full flex flex-col bg-slate-950 text-white">
-        {children}
+      <body className="min-h-full flex flex-col bg-[#08090b] text-white">
+        <a href="#main-content" className="skip-to-content">
+          Saltar al contenido principal
+        </a>
+        <AccessibilityProvider>{children}</AccessibilityProvider>
       </body>
     </html>
   );
